@@ -1,5 +1,5 @@
-name: "Are We P2P Yet?"
-title: "Are We P2P Yet?"
+name: "Are We OIDC Yet?"
+title: "Are We OIDC Yet?"
 include:
   - index.md
 
