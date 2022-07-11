@@ -72,3 +72,4 @@ TODO
 
 #### How do I migrate from my existing SSO to new-style OIDC?
 
+#### Does this mean that the login page/screen's branding isn't going to match the branding of my app any more?
