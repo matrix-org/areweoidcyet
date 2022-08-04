@@ -1,7 +1,7 @@
 ---
 image: https://areweoidcyet.com/assets/images/logo.png
 ---
-[![Matrix](/assets/images/matrix-logo-white.svg)](https://matrix.org){: .logo} _Last updated: 2022-07-11_
+[![Matrix](/assets/images/matrix-logo-white.svg)](https://matrix.org){: .logo} _Last updated: 2022-08-04_
 
 ```
 
@@ -25,11 +25,11 @@ Track the progress of OIDC migration for [Matrix](https://matrix.org) and join u
 
 Related MSCs:
 
-- MSCxxxx: Migration of Matrix to OIDC
+- [MSC3861: Matrix architecture change to delegate authentication via OIDCC](https://github.com/matrix-org/matrix-spec-proposals/pull/3861)
 - [MSC2964: Delegation of auth from homeserver to OIDC Provider](https://github.com/matrix-org/matrix-spec-proposals/pull/2964)
 - [MSC2965: OIDC Provider discovery](https://github.com/matrix-org/matrix-spec-proposals/pull/2965)
 - [MSC2966: Usage of OAuth 2.0 Dynamic Client Registration in Matrix](https://github.com/matrix-org/matrix-spec-proposals/pull/2966)
-- [MSC2967: API scope restriction](https://github.com/matrix-org/matrix-spec-proposals/pull/2967)
+- [MSC2967: API scopes](https://github.com/matrix-org/matrix-spec-proposals/pull/2967)
 - [MSC3824: OIDC-aware clients](https://github.com/matrix-org/matrix-spec-proposals/pull/3824)
 
 Outstanding key decision points:
