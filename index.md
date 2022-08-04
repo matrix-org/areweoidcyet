@@ -15,19 +15,21 @@ image: https://areweoidcyet.com/assets/images/logo.png
 
 # Not Yet.
 
-## What?
+[What](#what) • [Why](#why) • [When/Status](#when) • [FAQs](#faqs)
+
+<a id="what"></a>## What?
 
 This site is being used to track the progress of [Matrix](https://matrix.org) migrating to OIDC for authentication. You can join the discussion at [#matrix-auth:matrix.org](https://matrix.to/#/#matrix-auth:matrix.org).
 
 We have also set up the [Matrix OIDC Playground](https://github.com/vector-im/oidc-playground) which contains Homeservers, OIDC Providers and Clients for you to try out.
 
-## Why?
+<a id="why"></a>## Why?
 
 For detailed background on the rationale to this project please see [MSC3861](https://github.com/matrix-org/matrix-spec-proposals/pull/3861).
 
 ***TL;DR** Currently Matrix uses a custom authentication protocol baked in to the Matrix spec. This poses a number of drawbacks. To overcome these drawbacks we are working to migrate to use OIDC instead.*
 
-## When?
+<a id="when"></a>## When?
 
 Good question. There are a number of moving parts to this project which are outlined below.
 
@@ -62,7 +64,7 @@ TODO: Client requirements + status.
 
 TODO: OP requirements + status.
 
-### FAQs
+<a id="faqs"></a>## FAQs
 TODO
 
 #### How will this work with E2EE?
