@@ -15,22 +15,34 @@ image: https://areweoidcyet.com/assets/images/logo.png
 
 # Not Yet.
 
-TODO: rationale.
+## What?
 
-TODO: diagrams showing the difference.
+This site is being used to track the progress of [Matrix](https://matrix.org) migrating to OIDC for authentication. You can join the discussion at [#matrix-auth:matrix.org](https://matrix.to/#/#matrix-auth:matrix.org).
 
-Track the progress of OIDC migration for [Matrix](https://matrix.org) and join us at [#matrix-auth:matrix.org](https://matrix.to/#/#matrix-auth:matrix.org).
+We have also set up the [Matrix OIDC Playground](https://github.com/vector-im/oidc-playground) which contains Homeservers, OIDC Providers and Clients for you to try out.
 
-### Matrix
+## Why?
+
+For detailed background on the rationale to this project please see [MSC3861](https://github.com/matrix-org/matrix-spec-proposals/pull/3861).
+
+***TL;DR** Currently Matrix uses a custom authentication protocol baked in to the Matrix spec. This poses a number of drawbacks. To overcome these drawbacks we are working to migrate to use OIDC instead.*
+
+## When?
+
+Good question. There are a number of moving parts to this project which are outlined below.
+
+### Matrix Spec
 
 Related MSCs:
 
-- [MSC3861: Matrix architecture change to delegate authentication via OIDCC](https://github.com/matrix-org/matrix-spec-proposals/pull/3861)
-- [MSC2964: Delegation of auth from homeserver to OIDC Provider](https://github.com/matrix-org/matrix-spec-proposals/pull/2964)
-- [MSC2965: OIDC Provider discovery](https://github.com/matrix-org/matrix-spec-proposals/pull/2965)
-- [MSC2966: Usage of OAuth 2.0 Dynamic Client Registration in Matrix](https://github.com/matrix-org/matrix-spec-proposals/pull/2966)
-- [MSC2967: API scopes](https://github.com/matrix-org/matrix-spec-proposals/pull/2967)
-- [MSC3824: OIDC-aware clients](https://github.com/matrix-org/matrix-spec-proposals/pull/3824)
+| Proposal | Status | Implementations |
+| - | - | - |
+| [MSC3861: Matrix architecture change to delegate authentication via OIDC](https://github.com/matrix-org/matrix-spec-proposals/pull/3861) | Draft but ready for review once dependencies are also ready | n/a |
+| [MSC2964: Delegation of auth from homeserver to OIDC Provider](https://github.com/matrix-org/matrix-spec-proposals/pull/2964) | Draft | Partial implementations in the [Playground](https://github.com/vector-im/oidc-playground) |
+| [MSC2965: OIDC Provider discovery](https://github.com/matrix-org/matrix-spec-proposals/pull/2965) | Draft | Available in the [Playground](https://github.com/vector-im/oidc-playground) |
+| [MSC2966: Usage of OAuth 2.0 Dynamic Client Registration in Matrix](https://github.com/matrix-org/matrix-spec-proposals/pull/2966) | Draft | Available in the [Playground](https://github.com/vector-im/oidc-playground) |
+| [MSC2967: API scopes](https://github.com/matrix-org/matrix-spec-proposals/pull/2967) | Draft | Partially implemented |
+| [MSC3824: OIDC-aware clients](https://github.com/matrix-org/matrix-spec-proposals/pull/3824) | Draft | Available in the [Playground](https://github.com/vector-im/oidc-playground#clientsapplications-to-try)|
 
 Outstanding key decision points:
 
