@@ -36,6 +36,12 @@ For detailed background on the rationale to this project please see [MSC3861](ht
 
 Good question. There are a number of moving parts to this project which are outlined below.
 
+Jump to:
+- [Spec](#spec)
+- [Homeservers](#homeservers)
+- [Clients](#clients)
+- [OIDC Providers](#oidc-providers)
+
 <a id="spec"></a>
 ### Matrix Spec
 
@@ -56,6 +62,7 @@ Outstanding key decision points:
 - How will UIA protected endpoints work?
 - How does guest access work?
 
+<a id="homeservers"></a>
 ### Homeservers
 
 TODO: Homeserver requirements + status.
@@ -269,9 +276,360 @@ These are the requirements for a client to be OIDC-aware from [MSC3824](https://
 |Sign post and link users to manage their account at the OP web UI given by MSC2965|RECOMMENDED|[MSC2965](https://github.com/matrix-org/matrix-spec-proposals/pull/2965) and [MSC3824](https://github.com/matrix-org/matrix-spec-proposals/pull/3824)|🎓 [PR](https://github.com/matrix-org/matrix-react-sdk/pull/8681)|❌|❌|
 | Label the SSO button as "Continue"|RECOMMENDED|[MSC3824](https://github.com/matrix-org/matrix-spec-proposals/pull/3824)|🎓 [PR](https://github.com/matrix-org/matrix-react-sdk/pull/8681)|❌|🚧 [PR](https://github.com/vector-im/element-android/pull/6367)|
 
+<a id="oidc-providers"></a>
 ### OIDC Providers
 
-TODO: OP requirements + status.
+<table>
+  <tr>
+   <td><strong>Requirement</strong>
+   </td>
+   <td><strong>Purpose</strong>
+   </td>
+   <td><strong></strong>
+   </td>
+   <td><strong>Matrix Auth Service</strong>
+   </td>
+   <td><strong>Keycloak</strong>
+   </td>
+   <td><strong>Okta</strong>
+   </td>
+   <td><strong>Auth0</strong>
+   </td>
+  </tr>
+  <tr>
+   <td>Support for <a href="https://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a>
+   </td>
+   <td>
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+  </tr>
+  <tr>
+   <td>Support for <a href="https://openid.net/specs/openid-connect-discovery-1_0.html">OpenID Connect Discovery 1.0</a> without auth
+   </td>
+   <td>To allow Matrix client and HS to know how to interact with OP
+<p>
+<a href="https://github.com/matrix-org/matrix-spec-proposals/pull/2965">MSC2965</a>
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+  </tr>
+  <tr>
+   <td>OP => HS notification of sign out
+   </td>
+   <td>Session/device management
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>❌ <a href="https://github.com/matrix-org/matrix-authentication-service/issues/111">Planned</a>
+   </td>
+   <td>Would need a keycloak event listener that then made outbound HTTP requests in some format supported by the HS
+   </td>
+   <td>TODO: look at extension points in Okta
+   </td>
+   <td>Use
+<p>
+<a href="https://auth0.com/docs/customize/log-streams/custom-log-streams">https://auth0.com/docs/customize/log-streams/custom-log-streams</a> to push events to HS
+   </td>
+  </tr>
+  <tr>
+   <td>OP => HS notification of deactivation
+   </td>
+   <td>
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>❌ <a href="https://github.com/matrix-org/matrix-authentication-service/issues/146">Planned</a>
+   </td>
+   <td>❌ Would need a keycloak event listener that then made outbound HTTP requests in some format supported by the HS
+   </td>
+   <td>❌ TODO: look at extension points in Okta
+   </td>
+   <td>❌ Use
+<p>
+<a href="https://auth0.com/docs/customize/log-streams/custom-log-streams">https://auth0.com/docs/customize/log-streams/custom-log-streams</a> to push events to HS
+   </td>
+  </tr>
+  <tr>
+   <td><a href="https://datatracker.ietf.org/doc/html/rfc7009">RFC7009 Token Revocation</a>
+   </td>
+   <td>Allow Matrix client to logout their own session
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>❌ <a href="https://github.com/matrix-org/matrix-authentication-service/issues/144">Planned</a>
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>✅ <a href="https://auth0.com/docs/secure/tokens/refresh-tokens/revoke-refresh-tokens">But, refresh tokens only</a>
+   </td>
+  </tr>
+  <tr>
+   <td>RFC7662 OAuth Token Introspection
+<p>
+or
+<p>
+Short lived JWT
+<p>
+Or some other supported scheme
+   </td>
+   <td>Allow HS to check validity and capabilities of access token with OP
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>✅ RFC7662
+   </td>
+   <td>✅ RFC7662
+   </td>
+   <td>✅ RFC7662
+   </td>
+   <td>🚧 JWT - which currently isn’t supported by Synapse
+   </td>
+  </tr>
+  <tr>
+   <td>RFC7636 OAuth PKCE
+   </td>
+   <td>Protection against authorization code interception attack
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+  </tr>
+  <tr>
+   <td>Web UI for managing sessions
+   </td>
+   <td>Can optionally use an id_token_hint param as detailed in <a href="https://github.com/matrix-org/matrix-spec-proposals/pull/2965">MSC2965</a>
+   </td>
+   <td>RECOMMENDED
+   </td>
+   <td>🚧 In progress
+   </td>
+   <td>✅ User Account Service
+   </td>
+   <td>✅
+   </td>
+   <td>❌
+   </td>
+  </tr>
+  <tr>
+   <td>Support for <code>urn:matrix:device:api:*</code> scope
+   </td>
+   <td>Basic API permissioning
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+  </tr>
+  <tr>
+   <td>🚧 Support for <code>urn:matrix:device:uia:*</code> scopes
+   </td>
+   <td>Permissioning for UIA endpoints
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>🚧
+   </td>
+   <td>🚧
+   </td>
+   <td>🚧
+   </td>
+   <td>🚧
+   </td>
+  </tr>  <tr>
+   <td>Handle device ID custom scope <code>urn:matrix:device:client:XXXXXXXX</code>
+   </td>
+   <td>Session/device management
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>✅
+   </td>
+   <td>✅Using dynamic-scopes feature
+   </td>
+   <td>❌ it is unclear if this is possible
+   </td>
+   <td>❌ it is unclear if this is possible
+   </td>
+  </tr>
+  <tr>
+   <td>OpenID Connect Dynamic Client Registration in conformance with <a href="https://github.com/matrix-org/matrix-spec-proposals/pull/2966">MSC2966</a>
+   </td>
+   <td>Allow a HS to accept logins from any Matrix client
+   </td>
+   <td>OPTIONAL
+   </td>
+   <td>🚧 <a href="https://github.com/matrix-org/matrix-authentication-service/issues/17">In progress</a>
+   </td>
+   <td>❌request is blocked by CORS on web
+   </td>
+   <td>❌An API token is required to call the registration endpoint
+   </td>
+   <td>✅ <a href="https://auth0.com/docs/get-started/applications/dynamic-client-registration">Yes</a>
+   </td>
+  </tr>
+  <tr>
+   <td>T&C opt-in for registration
+   </td>
+   <td>Where HS admin wants it
+   </td>
+   <td>OPTIONAL
+   </td>
+   <td>❌ <a href="https://github.com/matrix-org/matrix-authentication-service/issues/22">Planned</a>
+   </td>
+   <td>✅ <a href="https://www.keycloak.org/docs/latest/server_admin/#proc-enabling-terms-conditions_server_administration_guide">Yes</a>
+   </td>
+   <td>❌ No
+   </td>
+   <td>❌ <a href="https://auth0.com/docs/secure/data-privacy-and-compliance/gdpr/gdpr-track-consent-with-custom-ui">Unclear</a>
+   </td>
+  </tr>
+  <tr>
+   <td>reCAPTCHA for registration
+   </td>
+   <td>Where HS admin wants it
+   </td>
+   <td>OPTIONAL
+   </td>
+   <td>❌ <a href="https://github.com/matrix-org/matrix-authentication-service/issues/138">Planned</a>
+   </td>
+   <td>✅ <a href="https://www.keycloak.org/docs/latest/server_admin/#proc-enabling-recaptcha_server_administration_guide">Yes</a>
+   </td>
+   <td>✅ <a href="https://developer.okta.com/docs/reference/api/captchas/">Yes</a>
+   </td>
+   <td>✅ <a href="https://auth0.com/docs/secure/attack-protection/bot-detection">Yes</a>
+   </td>
+  </tr>
+  <tr>
+   <td><a href="https://matrix-org.github.io/synapse/latest/openid.html">Support for upstream OIDC Provider</a>
+   </td>
+   <td>Single Sign On/social login
+   </td>
+   <td>OPTIONAL
+   </td>
+   <td>❌ <a href="https://github.com/matrix-org/matrix-authentication-service/issues/19">Planned</a>
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+  </tr>
+  <tr>
+   <td><a href="https://matrix-org.github.io/synapse/latest/usage/configuration/user_authentication/single_sign_on/saml.html">Support for upstream SAML provider</a>
+   </td>
+   <td>Single Sign On
+   </td>
+   <td>OPTIONAL
+   </td>
+   <td>❌ <a href="https://github.com/matrix-org/matrix-authentication-service/issues/159">Planned</a>
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+  </tr>
+  <tr>
+   <td><a href="https://matrix-org.github.io/synapse/latest/usage/configuration/user_authentication/single_sign_on/cas.html">Support for upstream CAS provider</a>
+   </td>
+   <td>Single Sign On
+   </td>
+   <td>OPTIONAL
+   </td>
+   <td>❌ <a href="https://github.com/matrix-org/matrix-authentication-service/issues/160">Planned</a>
+   </td>
+   <td>?
+   </td>
+   <td>?
+   </td>
+   <td>?
+   </td>
+  </tr>
+  <tr>
+   <td>Allow user to add multiple email addresses and verify them
+   </td>
+   <td>Allow HS to use email as target for notifications.
+<p>
+Also used for Identity Server?
+   </td>
+   <td>OPTIONAL
+   </td>
+   <td>✅
+   </td>
+   <td>❌ Would need extension
+   </td>
+   <td>❌ <a href="https://support.okta.com/help/s/question/0D51Y00006cnHn1SAE/activation-email-to-secondary-email-address?language=en_US">Only one additional email </a>+ no verification(?)
+   </td>
+   <td>❌ <a href="https://community.auth0.com/t/can-we-verify-additional-emails/49545">Additional custom fields</a> but no verification
+   </td>
+  </tr>
+  <tr>
+   <td>Allow user to add phone numbers and verify them
+   </td>
+   <td>?
+   </td>
+   <td>OPTIONAL
+   </td>
+   <td>❌
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>❌
+   </td>
+  </tr>
+  <tr>
+   <td>Those email address and phone number exposed via ID token and or user info endpoint
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+  </tr>
+</table>
 
 <a id="faqs"></a>
 ## FAQs
