@@ -36,6 +36,7 @@ For detailed background on the rationale to this project please see [MSC3861](ht
 
 Good question. There are a number of moving parts to this project which are outlined below.
 
+<a id="spec"></a>
 ### Matrix Spec
 
 Related MSCs:
