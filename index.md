@@ -452,7 +452,6 @@ These are the requirements for a client to be OIDC-aware from [MSC3824](https://
    <td>Support for <a href="https://openid.net/specs/openid-connect-discovery-1_0.html">OpenID Connect Discovery 1.0</a> without auth
    </td>
    <td>To allow Matrix client and HS to know how to interact with OP
-<p>
 <a href="https://github.com/matrix-org/matrix-spec-proposals/pull/2965">MSC2965</a>
    </td>
    <td>REQUIRED
@@ -480,7 +479,6 @@ These are the requirements for a client to be OIDC-aware from [MSC3824](https://
    <td>TODO: look at extension points in Okta
    </td>
    <td>Use
-<p>
 <a href="https://auth0.com/docs/customize/log-streams/custom-log-streams">https://auth0.com/docs/customize/log-streams/custom-log-streams</a> to push events to HS
    </td>
   </tr>
@@ -498,7 +496,6 @@ These are the requirements for a client to be OIDC-aware from [MSC3824](https://
    <td>❌ TODO: look at extension points in Okta
    </td>
    <td>❌ Use
-<p>
 <a href="https://auth0.com/docs/customize/log-streams/custom-log-streams">https://auth0.com/docs/customize/log-streams/custom-log-streams</a> to push events to HS
    </td>
   </tr>
@@ -519,13 +516,7 @@ These are the requirements for a client to be OIDC-aware from [MSC3824](https://
    </td>
   </tr>
   <tr>
-   <td>RFC7662 OAuth Token Introspection
-<p>
-or
-<p>
-Short lived JWT
-<p>
-Or some other supported scheme
+   <td>RFC7662 OAuth Token Introspection or Short lived JWT Or some other agreed scheme
    </td>
    <td>Allow HS to check validity and capabilities of access token with OP
    </td>
@@ -719,7 +710,6 @@ Or some other supported scheme
    <td>Allow user to add multiple email addresses and verify them
    </td>
    <td>Allow HS to use email as target for notifications.
-<p>
 Also used for Identity Server?
    </td>
    <td>OPTIONAL
