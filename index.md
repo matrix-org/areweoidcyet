@@ -259,13 +259,15 @@ TODO: Homeserver requirements + status.
 
 #### OIDC Aware clients
 
-These are the requirements for a client to be OIDC-aware:
+These are the requirements for a client to be OIDC-aware from [MSC3824](https://github.com/matrix-org/matrix-spec-proposals/blob/hughns/sso-redirect-action/proposals/3824-oidc-aware-clients.md#definition-of-oidc-aware):
 
 |Requirement| |Relevant spec(s)|Element Web|Element iOS|Element Android|
 |--- |--- |--- |--- |--- |--- |
-|Discovery of OP web UI in /.well-known/matrix/client and outbound linking to it|RECOMMENDED|MSC2965 and MSC3824|🎓 [PR](https://github.com/matrix-org/matrix-react-sdk/pull/8681)|❌|❌|
-|GET /_matrix/client/v3/login/sso/redirect?action=register|RECOMMENDED|MSC3824|🎓 [PR](https://github.com/matrix-org/matrix-react-sdk/pull/8681)|❌|🚧 [PR](https://github.com/vector-im/element-android/pull/6367)|
-|Use preference specified in response of GET /_matrix/client/v3/login|RECOMMENDED|MSC3824|🎓 [PR](https://github.com/matrix-org/matrix-react-sdk/pull/8681)|❌|🚧 [PR](https://github.com/vector-im/element-android/pull/6367)|
+| Support the `m.login.sso` auth flow | REQUIRED | [Matrix Spec](https://spec.matrix.org/latest/client-server-api/#sso-client-login) | ✅ | ✅ | ✅ |
+|Where a `delegated_oidc_compatibility` value of `true` is present on an `m.login.sso` then only offer that auth flow to the user|RECOMMENDED|MSC3824|🎓 [PR](https://github.com/matrix-org/matrix-react-sdk/pull/8681)|❌|🚧 [PR](https://github.com/vector-im/element-android/pull/6367)|
+| Append `action=login` and `action=register` parameters to the SSO redirect URLs|RECOMMENDED|MSC3824|🎓 [PR](https://github.com/matrix-org/matrix-react-sdk/pull/8681)|❌|🚧 [PR](https://github.com/vector-im/element-android/pull/6367)|
+|Sign post and link users to manage their account at the OP web UI given by MSC2965|RECOMMENDED|MSC2965 and MSC3824|🎓 [PR](https://github.com/matrix-org/matrix-react-sdk/pull/8681)|❌|❌|
+| Label the SSO button as "Continue"|RECOMMENDED|MSC3824|🎓 [PR](https://github.com/matrix-org/matrix-react-sdk/pull/8681)|❌|🚧 [PR](https://github.com/vector-im/element-android/pull/6367)|
 
 ### OIDC Providers
 
