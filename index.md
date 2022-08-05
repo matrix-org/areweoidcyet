@@ -15,7 +15,7 @@ image: https://areweoidcyet.com/assets/images/logo.png
 
 # Not Yet.
 
-[What](#what) • [Why](#why) • [When/Status](#when) • [FAQs](#faqs)
+[What?](#what) • [Why?](#why) • [When?/Status](#when) • [FAQs](#faqs)
 
 <a id="what"></a>
 ## What?
