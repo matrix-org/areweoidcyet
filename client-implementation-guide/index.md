@@ -2,9 +2,7 @@
 
 a.k.a. How to make your Matrix client OIDC-native
 
-<div class="callout callout-info" markdown="span">
-n.b. The plan is that this document will become a doc on matrix.org. Please feel free to make edits/comments/suggestions etc.
-</div>
+> n.b. The plan is that this document will become a doc on matrix.org. Please feel free to make edits/comments/suggestions etc.
 
 If you only want to make the client [OIDC-aware as per MSC3824](https://github.com/matrix-org/matrix-spec-proposals/pull/3824) then see the [client requirements section](https://github.com/matrix-org/matrix-spec-proposals/blob/hughns/sso-redirect-action/proposals/3824-oidc-aware-clients.md#definition-of-oidc-aware) of the MSC.
 
@@ -31,7 +29,7 @@ To determine whether a Homeserver is using auth delegated via OIDC you make use 
 
 e.g. from [https://synapse-oidc.lab.element.dev/.well-known/matrix/client](https://synapse-oidc.lab.element.dev/.well-known/matrix/client)
 
-```json
+```
 {
   "m.homeserver": {
     "base_url": "https://synapse-oidc.lab.element.dev/"
@@ -51,11 +49,10 @@ It is not always that case that an OP will support dynamic client registration. 
 
 The client registration is currently implemented on a per-device basis. The client should store the client ID it is assigned (mapped to the specific homeserver) as this will be needed when refreshing tokens.
 
-<div class="callout callout-info" markdown="span">
-A note on dynamic client registration
-
-If you have used OIDC for auth in an app previously then you may be surprised to see that the client needs to be dynamically registered instead of statically. This is due to the open nature of the Matrix eco-system where by default any client can be used to connect to any HS. In the legacy (non-OIDC) architecture it is implicit that any client can connect to any HS, whereas in OIDC architecture it becomes explicit: each client either needs to be pre-registered with a HS/OP or the HS/OP allows clients to dynamically register.
-</div>
+> **A note on dynamic client registration:**
+> If you have used OIDC for auth in an app previously then you may be surprised to see that the client needs to be dynamically registered instead of statically.
+> This is due to the open nature of the Matrix eco-system where by default any client can be used to connect to any HS.
+> In the legacy (non-OIDC) architecture it is implicit that any client can connect to any HS, whereas in OIDC architecture it becomes explicit: each client either needs to be pre-registered with a HS/OP or the HS/OP allows clients to dynamically register.
 
 **Recommended flow**
 
@@ -75,9 +72,9 @@ Once you have generated the device ID (e.g. `ABCDEFGHIJKL`) you then use it in t
 
 There are three scopes that you need to request access to:
 
-* `openid` - standard OIDC scope 
-* `urn:matrix:org.matrix.msc2967.client:api:*` - gives full access to Client Server API. See [MSC2967: API scopes](https://github.com/matrix-org/matrix-spec-proposals/pull/2967) for details of future scopes
-* `urn:matrix:org.matrix.msc2967.client:device:<generated device ID>` - e.g. `urn:matrix:org.matrix.msc2967.client:device:ABCDEFGHIJKL`
+- `openid` - standard OIDC scope 
+- `urn:matrix:org.matrix.msc2967.client:api:*` - gives full access to Client Server API. See [MSC2967: API scopes](https://github.com/matrix-org/matrix-spec-proposals/pull/2967) for details of future scopes
+- `urn:matrix:org.matrix.msc2967.client:device:<generated device ID>` - e.g. `urn:matrix:org.matrix.msc2967.client:device:ABCDEFGHIJKL`
 
 So, a complete scope would be:
 
@@ -135,5 +132,5 @@ More can be found at [https://openid.net/developers/certified/](https://openid.n
 
 # Implementation examples
 
-* Hydrogen - [https://github.com/sandhose/hydrogen-web/blob/sandhose/oidc-login/src/matrix/net/OidcApi.ts](https://github.com/sandhose/hydrogen-web/blob/sandhose/oidc-login/src/matrix/net/OidcApi.ts)
-* files-sdk-demo - [https://github.com/vector-im/files-sdk-demo/blob/oidc/src/ClientManager.ts](https://github.com/vector-im/files-sdk-demo/blob/oidc/src/ClientManager.ts)
+- Hydrogen - [https://github.com/sandhose/hydrogen-web/blob/sandhose/oidc-login/src/matrix/net/OidcApi.ts](https://github.com/sandhose/hydrogen-web/blob/sandhose/oidc-login/src/matrix/net/OidcApi.ts)
+- files-sdk-demo - [https://github.com/vector-im/files-sdk-demo/blob/oidc/src/ClientManager.ts](https://github.com/vector-im/files-sdk-demo/blob/oidc/src/ClientManager.ts)
