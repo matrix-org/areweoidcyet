@@ -65,7 +65,118 @@ Outstanding key decision points:
 <a id="homeservers"></a>
 ### Homeservers
 
-TODO: Homeserver requirements + status.
+<table>
+  <tr>
+   <td><strong>Requirement</strong>
+   </td>
+   <td><strong>Relevant specs</strong>
+   </td>
+   <td>
+   </td>
+   <td><strong>Synapse</strong>
+   </td>
+   <td><strong>Dendrite</strong>
+   </td>
+  </tr>
+  <tr>
+   <td>Specify OP to be used in /.well-known/matrix/client 
+   </td>
+   <td><a href="https://github.com/matrix-org/matrix-spec-proposals/pull/2965">MSC2965</a>
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>✅
+   </td>
+   <td>❌
+   </td>
+  </tr>
+  <tr>
+   <td>Token verification and introspection
+   </td>
+   <td>RFC7662
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>✅ using RFC7662 Token Introspection but probably want to also support plain short lived JWT 
+   </td>
+   <td>❌
+   </td>
+  </tr>
+  <tr>
+   <td><a href="https://github.com/matrix-org/matrix-authentication-service/issues/118">UIA/re-auth for sensitive actions</a>
+   </td>
+   <td> 🚧 Not yet defined
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+  </tr>
+  <tr>
+   <td>Auto-provisioning of Matrix device
+   </td>
+   <td>MSC2964
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>✅
+   </td>
+   <td>❌
+   </td>
+  </tr>
+  <tr>
+   <td>Auto-provision Matrix user based on token introspection
+   </td>
+   <td>
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>✅
+   </td>
+   <td>❌
+   </td>
+  </tr>
+  <tr>
+   <td>Receive and process sign out notifications from OP
+   </td>
+   <td>🚧
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>❌ <a href="https://matrix-org.github.io/synapse/latest/admin_api/user_admin_api.html#delete-a-device">Could use existing delete a device endpoint</a>
+   </td>
+   <td>❌
+   </td>
+  </tr>
+  <tr>
+   <td>Receive and process account deletion from OP
+   </td>
+   <td>🚧
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>❌ <a href="https://matrix-org.github.io/synapse/latest/admin_api/user_admin_api.html#deactivate-account">Could use existing deactivate account endpoint</a>
+   </td>
+   <td>❌
+   </td>
+  </tr>
+  <tr>
+   <td>Specify OP web UI in .well-known as account
+   </td>
+   <td>
+   </td>
+   <td>RECOMMENDED
+   </td>
+   <td>✅
+   </td>
+   <td>❌
+   </td>
+  </tr>
+</table>
+
+n.b. this is currently all in a [branch of Synapse](https://github.com/sandhose/synapse/tree/quenting/oauth-delegation) rather than in mainline.
 
 <a id="clients"></a>
 ### Clients
