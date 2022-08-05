@@ -60,11 +60,212 @@ Outstanding key decision points:
 
 TODO: Homeserver requirements + status.
 
+<a id="clients"></a>
 ### Clients
+
+[MSC3824](https://github.com/matrix-org/matrix-spec-proposals/pull/3824) proposes four types of Matrix client:
+
+1. **OIDC native client** - This is a client that fully uses OIDC when talking to an OIDC enabled homeserver.
+1. **OIDC aware client** - This is a client that is aware of OIDC but will still use existing auth types (e.g. `m.login.sso`) to auth with an OIDC enabled homeserver.
+1. **Legacy client with SSO support** - This is a client that is not aware of OIDC but does support `m.login.sso` flow. e.g. Element Web, iOS, Android, Fluffy, Nheko, Cinny
+1. **Legacy client without SSO support** - This is a client that is not aware of OIDC at all and nor does it support `m.login.sso` flow. Typically auth is done via `m.login.password` only. e.g. Fractal
+
+#### OIDC Native clients
 
 [Client implementation guide](./client-implementation-guide)
 
-TODO: Client requirements + status.
+<table>
+  <tr>
+   <td><strong>Requirement</strong>
+   </td>
+   <td><strong></strong>
+   </td>
+   <td><strong>Relevant spec(s)</strong>
+   </td>
+   <td><strong>Hydrogen</strong>
+   </td>
+   <td><strong>Files SDK Demo</strong>
+   </td>
+   <td><strong>Element Web</strong>
+   </td>
+   <td><strong>Element iOS</strong>
+   </td>
+   <td><strong>Element Android</strong>
+   </td>
+   <td><strong>Element X iOS</strong>
+   </td>
+  </tr>
+  <tr>
+   <td>Discovery of OP in /.well-known/matrix/client
+   </td>
+   <td>REQUIRED
+   </td>
+   <td><a href="https://github.com/matrix-org/matrix-spec-proposals/pull/2965">MSC2965</a>
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>✅
+   </td>
+  </tr>
+  <tr>
+   <td>Discovery of OP web UI in /.well-known/matrix/client and outbound linking to it
+   </td>
+   <td>RECOMMENDED
+   </td>
+   <td><a href="https://github.com/matrix-org/matrix-spec-proposals/pull/2965">MSC2965</a>
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+  </tr>
+  <tr>
+   <td>Dynamic client registration
+   </td>
+   <td>REQUIRED
+   </td>
+   <td><a href="https://github.com/matrix-org/matrix-spec-proposals/pull/2966">MSC2966</a> and <a href="https://datatracker.ietf.org/doc/html/rfc7591">RFC7591 OAuth 2.0 Dynamic Client Registration Protocol</a>
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>✅
+   </td>
+  </tr>
+  <tr>
+   <td>Signup flow - prompt=create
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+  </tr>
+  <tr>
+   <td>Login flow -  no prompt param
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+  </tr>
+  <tr>
+   <td>Refresh token handling
+   </td>
+   <td>REQUIRED
+   </td>
+   <td><a href="https://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a>
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+  </tr>
+  <tr>
+   <td>Sign out - Token revocation
+   </td>
+   <td>REQUIRED
+   </td>
+   <td><a href="https://datatracker.ietf.org/doc/html/rfc7009">RFC7009 Token Revocation</a>
+   </td>
+   <td>✅
+   </td>
+   <td>✅
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+  </tr>
+  <tr>
+   <td><a href="https://github.com/matrix-org/matrix-authentication-service/issues/118">Re-auth for sensitive actions</a>
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>The spec for this is not yet complete
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+   <td>❌
+   </td>
+  </tr>
+</table>
+
+#### OIDC Aware clients
+
+These are the requirements for a client to be OIDC-aware:
+
+|Requirement| |Relevant spec(s)|Element Web|Element iOS|Element Android|
+|--- |--- |--- |--- |--- |--- |
+|Discovery of OP web UI in /.well-known/matrix/client and outbound linking to it|RECOMMENDED|MSC2965 and MSC3824|🎓 [PR](https://github.com/matrix-org/matrix-react-sdk/pull/8681)|❌|❌|
+|GET /_matrix/client/v3/login/sso/redirect?action=register|RECOMMENDED|MSC3824|🎓 [PR](https://github.com/matrix-org/matrix-react-sdk/pull/8681)|❌|🚧 [PR](https://github.com/vector-im/element-android/pull/6367)|
+|Use preference specified in response of GET /_matrix/client/v3/login|RECOMMENDED|MSC3824|🎓 [PR](https://github.com/matrix-org/matrix-react-sdk/pull/8681)|❌|🚧 [PR](https://github.com/vector-im/element-android/pull/6367)|
 
 ### OIDC Providers
 
