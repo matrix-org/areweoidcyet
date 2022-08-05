@@ -61,6 +61,8 @@ TODO: Homeserver requirements + status.
 
 ### Clients
 
+[Client implementation guide](./client-implementation-guide)
+
 TODO: Client requirements + status.
 
 ### OIDC Providers
