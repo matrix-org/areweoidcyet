@@ -811,8 +811,11 @@ Also used for Identity Server?
    </td>
   </tr>
 </table>
+
 <a id="faqs"></a>
+
 ## FAQs
+
 TODO
 
 #### How will this work with E2EE?
