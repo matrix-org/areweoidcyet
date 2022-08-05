@@ -41,6 +41,7 @@ Jump to:
 - [Homeservers](#homeservers)
 - [Clients](#clients)
 - [OIDC Providers](#oidc-providers)
+- [Migration support](#migration)
 
 <a id="spec"></a>
 ### Matrix Spec
@@ -170,6 +171,24 @@ Outstanding key decision points:
    <td>RECOMMENDED
    </td>
    <td>✅
+   </td>
+   <td>❌
+   </td>
+  </tr>
+  <tr>
+   <td>GET /_matrix/client/v3/capabilities should include <pre>{
+  "capabilities": {
+    "m.change_password": {
+      "enabled": false
+    }
+  }
+}</pre>
+   </td>
+   <td>
+   </td>
+   <td>REQUIRED
+   </td>
+   <td>✅ by ensuring password auth is off
    </td>
    <td>❌
    </td>
@@ -742,6 +761,59 @@ Also used for Identity Server?
   </tr>
 </table>
 
+<a id="migration"></a>
+## Migration support
+
+<table>
+  <tr>
+   <td><strong>Capability</strong>
+   </td>
+   <td><strong>Synapse</strong>
+   </td>
+   <td><strong>Dendrite</strong>
+   </td>
+  </tr>
+  <tr>
+   <td>Compatibility layer so that non-OIDC native clients can connect to OIDC enabled Homeserver
+   </td>
+   <td>🚧 In progress via Matrix Auth Service
+   </td>
+   <td>❌ Not required?
+   </td>
+  </tr>
+  <tr>
+   <td>Ability for auth server to run embedded within process
+   </td>
+   <td>❌ Planned via Matrix Auth Service
+   </td>
+   <td>❌ Not required?
+   </td>
+  </tr>
+  <tr>
+   <td>Ability to migrate existing password user into Matrix Auth Service
+   </td>
+   <td>❌ Planned
+   </td>
+   <td>❌ Desirable?
+   </td>
+  </tr>
+  <tr>
+   <td>Ability to migrate existing SSO users into Matrix Auth Service
+   </td>
+   <td>❌ Planned
+   </td>
+   <td>Not required - no SSO support at present
+   </td>
+  </tr>
+  <tr>
+   <td>Ability to migrate existing access tokens into Matrix Auth Service
+   </td>
+   <td>❌ Planned - requires client to support refresh tokens?
+   </td>
+   <td>?
+   </td>
+  </tr>
+</table>
 <a id="faqs"></a>
 ## FAQs
 TODO
