@@ -25,6 +25,7 @@ This site is being used to track the progress of [Matrix](https://matrix.org) mi
 We have also set up the [Matrix OIDC Playground](https://github.com/vector-im/oidc-playground) which contains Homeservers, OIDC Providers and Clients for you to try out.
 
 <a id="why"></a>
+
 ## Why?
 
 For detailed background on the rationale to this project please see [MSC3861](https://github.com/matrix-org/matrix-spec-proposals/pull/3861).
@@ -32,6 +33,7 @@ For detailed background on the rationale to this project please see [MSC3861](ht
 ***TL;DR** Currently Matrix uses a custom authentication protocol baked in to the Matrix spec. This poses a number of drawbacks. To overcome these drawbacks we are working to migrate to use OIDC instead.*
 
 <a id="when"></a>
+
 ## When?
 
 Good question. There are a number of moving parts to this project which are outlined below.
@@ -44,6 +46,7 @@ Jump to:
 - [Migration support](#migration)
 
 <a id="spec"></a>
+
 ### Matrix Spec
 
 Related MSCs:
@@ -64,6 +67,7 @@ Outstanding key decision points:
 - How does guest access work?
 
 <a id="homeservers"></a>
+
 ### Homeservers
 
 <table>
@@ -198,6 +202,7 @@ Outstanding key decision points:
 n.b. this is currently all in a [branch of Synapse](https://github.com/sandhose/synapse/tree/quenting/oauth-delegation) rather than in mainline.
 
 <a id="clients"></a>
+
 ### Clients
 
 [MSC3824](https://github.com/matrix-org/matrix-spec-proposals/pull/3824) proposes four types of Matrix client:
@@ -407,6 +412,7 @@ These are the requirements for a client to be OIDC-aware from [MSC3824](https://
 | Label the SSO button as "Continue"|RECOMMENDED|[MSC3824](https://github.com/matrix-org/matrix-spec-proposals/pull/3824)|🎓 [PR](https://github.com/matrix-org/matrix-react-sdk/pull/8681)|❌|🚧 [PR](https://github.com/vector-im/element-android/pull/6367)|
 
 <a id="oidc-providers"></a>
+
 ### OIDC Providers
 
 <table>
@@ -762,7 +768,8 @@ Also used for Identity Server?
 </table>
 
 <a id="migration"></a>
-## Migration support
+
+### Migration support
 
 <table>
   <tr>
