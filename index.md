@@ -1,7 +1,7 @@
 ---
 image: https://areweoidcyet.com/assets/images/logo.png
 ---
-[![Matrix](/assets/images/matrix-logo-white.svg)](https://matrix.org){: .logo} _Last updated: 2022-08-05_
+[![Matrix](/assets/images/matrix-logo-white.svg)](https://matrix.org){: .logo} _Last updated: 2022-08-08_
 
 ```
 
@@ -619,7 +619,7 @@ These are the requirements for a client to be OIDC-aware from [MSC3824](https://
    </td>
    <td>🚧 <a href="https://github.com/matrix-org/matrix-authentication-service/issues/17">In progress</a>
    </td>
-   <td>❌request is blocked by CORS on web
+   <td>✅ But, request is blocked by CORS on web
    </td>
    <td>❌An API token is required to call the registration endpoint
    </td>
