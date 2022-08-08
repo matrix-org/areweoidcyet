@@ -165,23 +165,23 @@ These are the requirements for a client to be OIDC-aware from [MSC3824](https://
 
 ## FAQs
 
-#### Are we going to migrate existing accounts over?
+### Are we going to migrate existing accounts over?
 
 That will depend on the homeserver administrator. In the case of the matrix.org homeserver we will.
 
 We are planning to implement a number of migration capabilities outlined [above](#migration).
 
-#### Will I lose my old-style login/password?
+### Will I lose my old-style login/password?
 
 Assuming that your homeserver migrates you to an OIDC Provider that supports username/password login then you will still be able to use that to sign in.
 
 However, you will be entering your username/password into a UI controlled by the OIDC Provider, not the client.
 
-#### How do I do social login with this?
+### How do I do social login with this?
 
 Similar to how the homeserver achieves this today, the OIDC Provider can act as an identity broker and support login via upstream social (and other) identity providers.
 
-#### How does this work with QR code login?
+### How does this work with QR code login?
 
 The [RFC8628](https://datatracker.ietf.org/doc/html/rfc8628) OIDC device authorization grant (aka "device flow") can be used to allow login on a device using a second device.
 
@@ -191,7 +191,7 @@ It can work a bit like this:
 
 ![Device Flow demo 2](https://user-images.githubusercontent.com/6955675/180743561-e2e158cd-2caf-4e43-9eed-9e86da84597c.gif)
 
-#### What do I do for my Nintendo 3DS which doesn't have a web browser?
+### What do I do for my Nintendo 3DS which doesn't have a web browser?
 
 OIDC provides at least two flows that could help with this:
 
@@ -200,13 +200,13 @@ OIDC provides at least two flows that could help with this:
 
 It is important to note that the second option (Resource Owner Password Credentials Grant) is considered insecure by the [OAuth 2.0 Security Best Current Practice](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics-20#section-2.4) guide. As such, it is expected that the presence of this capability in an OIDC Provider can not be relied on. For example, we don't expect that matrix.org will support this flow.
 
-#### How will this work with E2EE?
+### How will this work with E2EE?
 
 It works in the same way that the current password login works: login is separate from E2EE setup.
 
 That said, there are some scenarios that OIDC can help with. For example, when signing in to a new device you can use the OIDC device flow on an existing login to both authorise the sign in and also verify the new device for E2EE.
 
-#### Does this mean I can't combine E2EE & account password?
+### Does this mean I can't combine E2EE & account password?
 
 In short, yes.
 
@@ -220,23 +220,23 @@ However, with our use case for E2EE the client is high on the trust ladder as it
 
 So, arguably a custom grant using PAKE could be used and not break the trust model in Matrix.
 
-#### Are you really rebuilding all of Keycloak in matrix-authentication-service?!
+### Are you really rebuilding all of Keycloak in matrix-authentication-service?!
 
 Hopefully not! In the same way that Matrix is not an authentication protocol, it also doesn't make sense to completely reinvent the wheel.
 
 As to how far we will get... it will most likely depend on what we need for migration support.
 
-#### Will clients need to support both old-style and new-style auth?
+### Will clients need to support both old-style and new-style auth?
 
 For a period of time, yes.
 
 Similarly, some homeservers (depending on how they are being used) will need to support both old-style (non-OIDC) and new-style (OIDC) client auth for a period of time.
 
-#### How do I migrate from my existing SSO to new-style OIDC?
+### How do I migrate from my existing SSO to new-style OIDC?
 
 You could either get your existing clients to re-login via OIDC or we are planning for being able to migrate existing SSO logins and access tokens over to the matrix-authentication-service OP.
 
-#### Does this mean that the login page/screen's branding won't match the branding of my app any more?
+### Does this mean that the login page/screen's branding won't match the branding of my app any more?
 
 Assuming that you are following best practise and not using the Resource Owner Password Credentials Grant, then: yes, the branding on the login form is under the control of the homeserver administrator not the client.
 
