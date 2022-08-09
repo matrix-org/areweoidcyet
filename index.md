@@ -256,3 +256,9 @@ The openness of the Matrix ecosystem is a defining feature. That a user can choo
 We believe that, by adopting the OIDC model and making the division between the client and homeserver more explicit, we can better build trust in the open ecosystem and allow it to continue to grow and flourish.
 
 The branding trade-off is an interesting aspect of this: yes, as a client implementor you may lose some control over the branding of the login page. However, you gain from where the user has already signed in on their device - the user does not need to reauthenticate to use your client.
+
+### Hang on, isn't this just an MSC? It all sounds very final?
+
+Correct, it is a proposal at thi stage. However, we need to prove it first - MSCs require proof in a working implementation before they can be approved.
+
+We've outlined the plan here that assumes that the MSC will be successful.
