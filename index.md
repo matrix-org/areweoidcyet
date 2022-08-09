@@ -20,7 +20,7 @@ image: https://areweoidcyet.com/assets/images/logo.png
 <a id="what"></a>
 ## What?
 
-This site is being used to track the progress of [Matrix](https://matrix.org) migrating to [Open ID Connect](https://openid.net/connect/) (OIDC) for authentication. You can join the discussion at [#matrix-auth:matrix.org](https://matrix.to/#/#matrix-auth:matrix.org).
+This site is being used to track the progress of [Matrix](https://matrix.org) migrating to [OpenID Connect](https://openid.net/connect/) (OIDC) for authentication. You can join the discussion at [#matrix-auth:matrix.org](https://matrix.to/#/#matrix-auth:matrix.org).
 
 We have also set up the [Matrix OIDC Playground](https://github.com/vector-im/oidc-playground) which contains Homeservers, OIDC Providers and Clients for you to try out.
 
