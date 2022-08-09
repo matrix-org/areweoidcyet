@@ -207,9 +207,11 @@ That said, there are some scenarios that OIDC can help with. For example, when s
 
 ### Does this mean I can't combine E2EE & account password?
 
-In short, yes.
+In short, yes. However, in a world that is (gradually) moving away from passwords, this isn't necessarily a bad thing.
 
-The reason for this is that there isn't a standard OIDC/OAuth grant that allows for a trusted client to authenticate using a PAKE mechanism meaning that the password can remain in the client.
+Today there are also many cases where users don't have a password: SSO, social login, web passkeys etc.
+
+The reason that this doesn't work well in OIDC is that there isn't a standard OIDC/OAuth grant that allows for a trusted client to authenticate using a PAKE mechanism meaning that the password can remain in the client.
 
 If the client was to just sent the password to the OIDC Provider like it does today then the E2EE could be broken by the OIDC Provider/homeserver operator.
 
