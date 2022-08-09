@@ -21,3 +21,12 @@ pre {
     display: inline-block;
     line-height: 1em;
 }
+
+td {
+    border-left: 1px #444 solid;
+    border-bottom: 1px #444 solid;
+}
+
+td:first-left {
+    border-left: none;
+}
