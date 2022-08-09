@@ -20,7 +20,7 @@ image: https://areweoidcyet.com/assets/images/logo.png
 <a id="what"></a>
 ## What?
 
-This site is being used to track the progress of [Matrix](https://matrix.org) migrating to OIDC for authentication. You can join the discussion at [#matrix-auth:matrix.org](https://matrix.to/#/#matrix-auth:matrix.org).
+This site is being used to track the progress of [Matrix](https://matrix.org) migrating to [Open ID Connect](https://openid.net/connect/) (OIDC) for authentication. You can join the discussion at [#matrix-auth:matrix.org](https://matrix.to/#/#matrix-auth:matrix.org).
 
 We have also set up the [Matrix OIDC Playground](https://github.com/vector-im/oidc-playground) which contains Homeservers, OIDC Providers and Clients for you to try out.
 
@@ -30,7 +30,7 @@ We have also set up the [Matrix OIDC Playground](https://github.com/vector-im/oi
 
 For detailed background on the rationale to this project please see [MSC3861](https://github.com/matrix-org/matrix-spec-proposals/pull/3861).
 
-***TL;DR** Currently Matrix uses a custom authentication protocol baked in to the Matrix spec. This poses a number of drawbacks. To overcome these drawbacks we are working to migrate to use OIDC instead.*
+***TL;DR** Currently Matrix uses a custom authentication protocol baked in to the Matrix spec. This poses a number of drawbacks. To overcome these drawbacks we are working to migrate to use the industry standard authentication protocol [Open ID Connect](https://openid.net/connect/) (OIDC) instead.*
 
 <a id="when"></a>
 
