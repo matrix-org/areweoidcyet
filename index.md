@@ -91,7 +91,7 @@ n.b. this is currently all in a [branch of Synapse](https://github.com/sandhose/
 
 1. **OIDC native client** - This is a client that fully uses OIDC when talking to an OIDC enabled homeserver.
 1. **OIDC aware client** - This is a client that is aware of OIDC but will still use existing auth types (e.g. `m.login.sso`) to auth with an OIDC enabled homeserver.
-1. **Legacy client with SSO support** - This is a client that is not aware of OIDC but does support `m.login.sso` flow. e.g. Element Web, iOS, Android, Fluffy, Nheko, Cinny
+1. **Legacy client with SSO support** - This is a client that is not aware of OIDC but does support `m.login.sso` flow. e.g. Element Web, iOS, Android, FluffyChat, Nheko, Cinny
 1. **Legacy client without SSO support** - This is a client that is not aware of OIDC at all and nor does it support `m.login.sso` flow. Typically auth is done via `m.login.password` only. e.g. Fractal
 
 #### OIDC Native clients
