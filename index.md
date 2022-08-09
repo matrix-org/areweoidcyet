@@ -221,9 +221,17 @@ However, with our use case for E2EE the client is high on the trust ladder as it
 
 So, arguably a custom grant using PAKE could be used and not break the trust model in Matrix.
 
+### What's this matrix-authentication-service that I've heard about?
+
+[matrix-authentication-service](https://github.com/matrix-org/matrix-authentication-service) is a new OIDC Provider that we have been working on that will is used for much of the [migration support](#migration) outlined above.
+
+It is designed to be lightweight enough (using Rust) that it can be embedded within a homeserver process (such as a Synapse).
+
+At this stage you could think of it as a bit like SQLite vs PostgreSQL support in Synapse: Synapse ships with SQLite built-in for quickstart, but you can easily scale out to PostgreSQL where you need to.
+
 ### Are you really rebuilding all of Keycloak in matrix-authentication-service?!
 
-Hopefully not! In the same way that Matrix is not an authentication protocol, it also doesn't make sense to completely reinvent the wheel.
+Hopefully not! In the same way that Matrix is not an authentication protocol, it also doesn't make sense to completely reinvent the OIDC Provider "wheel".
 
 As to how far we will get... it will most likely depend on what we need for migration support.
 
