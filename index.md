@@ -235,11 +235,11 @@ So, arguably a custom grant using PAKE could be used and not break the trust mod
 
 ### What's this matrix-authentication-service that I've heard about?
 
-[matrix-authentication-service](https://github.com/matrix-org/matrix-authentication-service) is a new OIDC Provider that we have been working on that will is used for much of the [migration support](#migration) outlined above.
+[matrix-authentication-service](https://github.com/matrix-org/matrix-authentication-service) is a new OIDC Provider that we have been working on that will be used for much of the [migration support](#migration) outlined above.
 
 It is designed to be lightweight enough (using Rust) that it can be embedded within a homeserver process (such as a Synapse).
 
-At this stage you could think of it as a bit like SQLite vs PostgreSQL support in Synapse: Synapse ships with SQLite built-in for quickstart, but you can easily scale out to PostgreSQL where you need to.
+At this stage you could think of it as a bit like SQLite vs PostgreSQL support in Synapse: Synapse ships with SQLite built-in for quickstart, but you can easily scale out to PostgreSQL where you need to - similarly Synapse will ship with Matrix-Authentication-Service by default, but can scale out to KeyCloak or another provider for additional authentication capabilities.
 
 ### Are you really rebuilding all of Keycloak in matrix-authentication-service?!
 
