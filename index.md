@@ -24,6 +24,8 @@ This site is being used to track the progress of [Matrix](https://matrix.org) mi
 
 We have also set up the [Matrix OIDC Playground](https://github.com/vector-im/oidc-playground) which contains Homeservers, OIDC Providers and Clients for you to try out.
 
+There are also some videos below showing some of the use cases in action.
+
 <a id="why"></a>
 
 ## Why?
@@ -179,6 +181,16 @@ However, you will be entering your username/password into a UI controlled by the
 ### How do I do social login with this?
 
 Similar to how the homeserver achieves this today, the OIDC Provider can act as an identity broker and support login via upstream social (and other) identity providers.
+
+### How will this look in native mobile apps?
+
+We've built proof of concept apps to explore this and show how it can behave:
+
+![iOS](./assets/images/oidctest-ios.gif) ![Android](./assets/images/oidctest-android.gif)
+
+In both cases it is a lightweight app built using the [AppAuth](https://appauth.io/) SDK. The OIDC Provider used here is the matrix-authentication-service.
+
+The plan is to build these out a bit further to explore some more of the handover points between the app and OIDC Provider (e.g. for account management).
 
 ### How does this work with QR code login?
 
