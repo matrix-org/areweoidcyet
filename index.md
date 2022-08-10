@@ -259,6 +259,6 @@ The branding trade-off is an interesting aspect of this: yes, as a client implem
 
 ### Hang on, isn't this just an MSC? It all sounds very final?
 
-Correct, it is a proposal at thi stage. However, we need to prove it first - MSCs require proof in a working implementation before they can be approved.
+Correct, it is a proposal at this stage. However, we need to prove it first - MSCs require proof in a working implementation before they can be approved.
 
 We've outlined the plan here that assumes that the MSC will be successful.
