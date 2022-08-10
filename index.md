@@ -186,7 +186,8 @@ Similar to how the homeserver achieves this today, the OIDC Provider can act as 
 
 We've built proof of concept apps to explore this and show how it can behave:
 
-![iOS](./assets/images/oidctest-ios.gif) ![Android](./assets/images/oidctest-android.gif)
+| ![iOS](./assets/images/oidctest-ios.gif) | ![Android](./assets/images/oidctest-android.gif) |
+| - | - |
 
 In both cases it is a lightweight app built using the [AppAuth](https://appauth.io/) SDK. The OIDC Provider used here is the matrix-authentication-service.
 
