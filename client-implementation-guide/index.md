@@ -119,13 +119,13 @@ TODO
 
 Some SDKs that can help with this work:
 
-| Library | MSC2965 Issuer discovery | RFC7591 Client Registration | Access token handling | RFC7009 Logout | Sample usage |
-|---|---|---|---|---|---|
-| [Matrix Rust SDK](https://github.com/matrix-org/matrix-rust-sdk) | ? | ? | ? | ? | |
-| [AppAuth-JS](https://github.com/openid/AppAuth-JS) | ❌ | ❌ | ✅ | ✅ | |
-| [AppAuth-iOS](https://github.com/openid/AppAuth-iOS) | ❌ | ✅ | ✅ | ❌ | |
-| [AppAuth-Android](https://github.com/openid/AppAuth-Android)| ❌ | ✅ | ✅ | ❌ | |
-| [oidc-client-ts](https://github.com/authts/oidc-client-ts) | ❌ | ❌ | ✅ | ✅ | files-sdk-demo |
+| Library | MSC2965 Issuer discovery | RFC7591 Client Registration | Access token handling | RFC7009 Logout | Device Flow | Sample usage |
+|---|---|---|---|---|---|---|
+| [Matrix Rust SDK](https://github.com/matrix-org/matrix-rust-sdk) | ? | ? | ? | ? | ? | |
+| [AppAuth-JS](https://github.com/openid/AppAuth-JS) | ❌ | ❌ | ✅ | ✅ | ❌ | |
+| [AppAuth-iOS](https://github.com/openid/AppAuth-iOS) | ❌ | ✅ | ✅ | ❌ | ✅ | |
+| [AppAuth-Android](https://github.com/openid/AppAuth-Android)| ❌ | ✅ | ✅ | ❌ | 🚧 [PR](https://github.com/openid/AppAuth-Android/pull/763) | |
+| [oidc-client-ts](https://github.com/authts/oidc-client-ts) | ❌ | ❌ | ✅ | ✅ | 🚧 [Branch](https://github.com/hughns/oidc-client-ts/tree/hughns/device-flow) | files-sdk-demo |
 
 
 More can be found at [https://openid.net/developers/certified/](https://openid.net/developers/certified/) under the Certified Relying Party Libraries section.
