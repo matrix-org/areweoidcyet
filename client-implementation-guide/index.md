@@ -122,9 +122,9 @@ Some SDKs that can help with this work:
 | Library | MSC2965 Issuer discovery | RFC7591 Client Registration | Access token handling | RFC7009 Logout | Sample usage |
 |---|---|---|---|---|---|
 | [Matrix Rust SDK](https://github.com/matrix-org/matrix-rust-sdk) | ? | ? | ? | ? | |
-| [AppAuth-JS](https://github.com/openid/AppAuth-JS) | ❌ | ❌ | ✅ | ? | |
-| [AppAuth-iOS](https://github.com/openid/AppAuth-iOS) | ❌ | ✅ | ✅ | ? | |
-| [AppAuth-Android](https://github.com/openid/AppAuth-Android)| ❌ | ✅ | ✅ | ? | |
+| [AppAuth-JS](https://github.com/openid/AppAuth-JS) | ❌ | ❌ | ✅ | ✅ | |
+| [AppAuth-iOS](https://github.com/openid/AppAuth-iOS) | ❌ | ✅ | ✅ | ❌ | |
+| [AppAuth-Android](https://github.com/openid/AppAuth-Android)| ❌ | ✅ | ✅ | ❌ | |
 | [oidc-client-ts](https://github.com/authts/oidc-client-ts) | ❌ | ❌ | ✅ | ✅ | files-sdk-demo |
 
 
