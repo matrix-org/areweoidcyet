@@ -1,7 +1,7 @@
 ---
 image: https://areweoidcyet.com/assets/images/logo.png
 ---
-[![Matrix](/assets/images/matrix-logo-white.svg)](https://matrix.org){: .logo} _Last updated: 2022-08-08_
+[![Matrix](/assets/images/matrix-logo-white.svg)](https://matrix.org){: .logo} _Last updated: 2022-09-14_
 
 ```
 
@@ -140,6 +140,7 @@ These are the requirements for a client to be OIDC-aware from [MSC3824](https://
 | Support for <code>urn:matrix:client:api:*</code> scope | Basic API permissioning | REQUIRED | ✅ | ✅ | ✅ | ✅ |
 | 🚧 Support for <code>urn:matrix:client:uia:*</code> scopes | Permissioning for UIA endpoints | REQUIRED | 🚧 | 🚧 | 🚧 | 🚧 
 | Handle device ID custom scope <code>urn:matrix:client:device:XXXXXXXX</code> | Session/device management | REQUIRED | ✅ | ✅Using dynamic-scopes feature | ❌ it is unclear if this is possible | ❌ it is unclear if this is possible |
+| Prevent reuse of user ID after account deletion | Requirement of Homeserver | REQUIRED | ❌ Planned | ? | ? | ? |
 | OpenID Connect Dynamic Client Registration in conformance with <a href="https://github.com/matrix-org/matrix-spec-proposals/pull/2966">MSC2966</a> | Allow a HS to accept logins from any Matrix client | OPTIONAL | 🚧 <a href="https://github.com/matrix-org/matrix-authentication-service/issues/17">In progress</a> | ✅ But, request is blocked by CORS on web | ❌An API token is required to call the registration endpoint | ✅ <a href="https://auth0.com/docs/get-started/applications/dynamic-client-registration">Yes</a> |
 | T&C opt-in for registration | Where HS admin wants it | OPTIONAL | ❌ <a href="https://github.com/matrix-org/matrix-authentication-service/issues/22">Planned</a> | ✅ <a href="https://www.keycloak.org/docs/latest/server_admin/#proc-enabling-terms-conditions_server_administration_guide">Yes</a> | ❌ No | ❌ <a href="https://auth0.com/docs/secure/data-privacy-and-compliance/gdpr/gdpr-track-consent-with-custom-ui">Unclear</a> |
 | reCAPTCHA for registration | Where HS admin wants it | OPTIONAL | ❌ <a href="https://github.com/matrix-org/matrix-authentication-service/issues/138">Planned</a> | ✅ <a href="https://www.keycloak.org/docs/latest/server_admin/#proc-enabling-recaptcha_server_administration_guide">Yes</a> | ✅ <a href="https://developer.okta.com/docs/reference/api/captchas/">Yes</a> | ✅ <a href="https://auth0.com/docs/secure/attack-protection/bot-detection">Yes</a> |
