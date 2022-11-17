@@ -203,7 +203,7 @@ It can work a bit like this:
 
 ![Device Flow demo 2](https://user-images.githubusercontent.com/6955675/180743561-e2e158cd-2caf-4e43-9eed-9e86da84597c.gif)
 
-### What do I do for my Nintendo 3DS which doesn't have a web browser?
+### What do I do for my device which doesn't have a web browser?
 
 OIDC provides at least two flows that could help with this:
 
