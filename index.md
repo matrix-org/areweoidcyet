@@ -1,7 +1,7 @@
 ---
 image: https://areweoidcyet.com/assets/images/logo.png
 ---
-[![Matrix](/assets/images/matrix-logo-white.svg)](https://matrix.org){: .logo} _Last updated: 2023-01-12_
+[![Matrix](/assets/images/matrix-logo-white.svg)](https://matrix.org){: .logo} _Last updated: 2023-02-03_
 
 ```
 
@@ -60,10 +60,10 @@ Related MSCs:
 | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | [MSC3861: Matrix architecture change to delegate authentication via OIDC](https://github.com/matrix-org/matrix-spec-proposals/pull/3861) | ✅ Draft but ready for review once dependencies are also ready | n/a                                                                                                      |
 | [MSC2964: Delegation of auth from homeserver to OIDC Provider](https://github.com/matrix-org/matrix-spec-proposals/pull/2964)            | 🚧 Draft                                                       | 🚧 Partial implementations in the [Playground](https://github.com/vector-im/oidc-playground)              |
-| [MSC2965: OIDC Provider discovery](https://github.com/matrix-org/matrix-spec-proposals/pull/2965)                                        | ✅ Draft, but feature complete                                 | ✅ Available in the [Playground](https://github.com/vector-im/oidc-playground)                            |
+| [MSC2965: OIDC Provider discovery](https://github.com/matrix-org/matrix-spec-proposals/pull/2965)                                        | ✅ Feature complete                                            | ✅ Available in the [Playground](https://github.com/vector-im/oidc-playground)                            |
 | [MSC2966: Usage of OAuth 2.0 Dynamic Client Registration in Matrix](https://github.com/matrix-org/matrix-spec-proposals/pull/2966)       | 🚧 Draft                                                       | ✅ Available in the [Playground](https://github.com/vector-im/oidc-playground)                            |
 | [MSC2967: API scopes](https://github.com/matrix-org/matrix-spec-proposals/pull/2967)                                                     | 🚧 Not yet feature complete                                    | 🚧 Partially implemented                                                                                 |
-| [MSC3824: OIDC-aware clients](https://github.com/matrix-org/matrix-spec-proposals/pull/3824)                                             | ✅ Draft, but feature complete                                 | ✅ Available in the [Playground](https://github.com/vector-im/oidc-playground#clientsapplications-to-try) |
+| [MSC3824: OIDC-aware clients](https://github.com/matrix-org/matrix-spec-proposals/pull/3824)                                             | ✅ Feature complete                                            | ✅ Available in the [Playground](https://github.com/vector-im/oidc-playground#clientsapplications-to-try) |
 
 Outstanding key decision points:
 
