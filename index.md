@@ -4,7 +4,6 @@ image: https://areweoidcyet.com/assets/images/logo.png
 [![Matrix](/assets/images/matrix-logo-white.svg)](https://matrix.org){: .logo} _Last updated: 2023-02-21
 
 ```
-
                                        _     _                   _   ___ 
   __ _ _ __ ___  __      _____    ___ (_) __| | ___   _   _  ___| |_/ _ \
  / _` | '__/ _ \ \ \ /\ / / _ \  / _ \| |/ _` |/ __| | | | |/ _ \ __\// /
@@ -55,7 +54,6 @@ Jump to:
 
 Related MSCs:
 
-
 | Proposal                                                                                                                                 | Status                                                         | Implementations                                                                                           |
 | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | [MSC3861: Matrix architecture change to delegate authentication via OIDC](https://github.com/matrix-org/matrix-spec-proposals/pull/3861) | ✅ Draft but ready for review once dependencies are also ready | n/a                                                                                                       |
@@ -72,7 +70,6 @@ Outstanding key decision points:
 <a id="homeservers"></a>
 
 ### Homeservers
-
 
 | **Requirement**                                                                                                                   | **Relevant specs**                                                                  |             | **Synapse**                                                                                                        | **Dendrite** |
 | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------ | ------------ |
@@ -105,7 +102,6 @@ n.b. this is currently all in a [branch of Synapse](https://github.com/sandhose/
 
 [Client implementation guide](./client-implementation-guide)
 
-
 | **Requirement**                                                                                                    |             | **Relevant spec(s)**                                                                                                                                                                                       | **Hydrogen** | **Files SDK Demo** | **Element Web** | **Element iOS** | **Element Android** | **Element X iOS** |
 | ------------------------------------------------------------------------------------------------------------------ | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | ------------------ | --------------- | --------------- | ------------------- | ----------------- |
 | Discovery of OP in /.well-known/matrix/client                                                                      | REQUIRED    | <a href="https://github.com/matrix-org/matrix-spec-proposals/pull/2965">MSC2965</a>                                                                                                                        | ✅           | ✅                 | ❌              | ❌              | ❌                  | ✅                |
@@ -120,7 +116,6 @@ n.b. this is currently all in a [branch of Synapse](https://github.com/sandhose/
 #### OIDC Aware clients
 
 These are the requirements for a client to be OIDC-aware from [MSC3824](https://github.com/matrix-org/matrix-spec-proposals/blob/hughns/sso-redirect-action/proposals/3824-oidc-aware-clients.md#definition-of-oidc-aware):
-
 
 | Requirement                                                                                                                      |             | Relevant spec(s)                                                                                                                                      | Element Web                                                       | Element iOS | Element Android                                                 |
 | -------------------------------------------------------------------------------------------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | ----------- | --------------------------------------------------------------- |
@@ -159,11 +154,9 @@ These are the requirements for a client to be OIDC-aware from [MSC3824](https://
 | Allow user to add phone numbers and verify them                                                                                                               | ?                                                                                                                                                 | OPTIONAL    | ❌                                                                                                 |                                                                                                                                   |                                                                                                                                                                                       | ✅ Yes, if a Twillio account is configured      | ❌                                                                                                                                                                       |
 | Those email address and phone number exposed via ID token and or user info endpoint                                                                           |                                                                                                                                                   |             |                                                                                                    |                                                                                                                                   |                                                                                                                                                                                       | ✅ Yes, claims can be asserted to the ID Token  |                                                                                                                                                                          |
 
-
 <a id="migration"></a>
 
 ### Migration support
-
 
 | **Capability**                                                                             | **Synapse**                                             | **Dendrite**                             |
 | ------------------------------------------------------------------------------------------ | ------------------------------------------------------- | ---------------------------------------- |
