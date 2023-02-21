@@ -65,7 +65,7 @@ Related MSCs:
 
 Outstanding key decision points:
 
-- Application services - how will theses work
+- Application services - how will these work
 
 <a id="homeservers"></a>
 
