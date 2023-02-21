@@ -21,7 +21,7 @@ When implementing an OIDC-native client you can test against the [OIDC Playgroun
 There are two steps to get started:
 
 1. Discovery - determining which OP is being used by a Homeserver to issue access tokens (or if OIDC is not supported)
-2. Client registration - obtaining a client_id [+ client_secret] to use when interacting with the OP
+2. Client registration - obtaining a `client_id` [+ `client_secret`] to use when interacting with the OP
 
 **Discovery**
 
@@ -45,7 +45,7 @@ e.g. from [https://synapse-oidc.lab.element.dev/.well-known/matrix/client](https
 
 Unless your client has been statically registered with the OpenID Provider you will need to make use of what is known as “dynamic client registration”. This is described in [MSC2966](https://github.com/matrix-org/matrix-spec-proposals/pull/2966) which makes use of [RFC7591](https://datatracker.ietf.org/doc/html/rfc7591).
 
-It is not always that case that an OP will support dynamic client registration. If this is the case and the client doesn’t already know of a static client_id then you make an HTTP request against the OP passing metadata to 
+It is not always that case that an OP will support dynamic client registration. If this is the case and the client doesn’t already know of a static `client_id` then you make an HTTP request against the OP passing metadata to describe the client.
 
 The client registration is currently implemented on a per-device basis. The client should store the client ID it is assigned (mapped to the specific homeserver) as this will be needed when refreshing tokens.
 
@@ -54,7 +54,9 @@ The client registration is currently implemented on a per-device basis. The clie
 > This is due to the open nature of the Matrix eco-system where by default any client can be used to connect to any HS.
 > In the legacy (non-OIDC) architecture it is implicit that any client can connect to any HS, whereas in OIDC architecture it becomes explicit: each client either needs to be pre-registered with a HS/OP or the HS/OP allows clients to dynamically register.
 
-**Recommended flow**
+You can test dynamic client registration against the `synapse-oidc.lab.element.dev` homeserver in the [OIDC Playground](https://github.com/vector-im/oidc-playground).
+
+**Recommended flows**
 
 Here are the recommended flows depending on whether your client also supports “legacy” (non-OIDC) auth:
 
@@ -64,7 +66,7 @@ Here are the recommended flows depending on whether your client also supports �
 
 ## User Login and User Registration
 
-This is a typical OAuth/OIDC login flow. [PKCE](https://www.rfc-editor.org/rfc/rfc7636.html) is mandated in order to address some attacks.
+This is a typical OAuth/OIDC login flow. [PKCE](https://www.rfc-editor.org/rfc/rfc7636.html) is mandated in order to follow security best practises.
 
 One notable change from before is that you need to generate a device ID yourself whereas with legacy auth the Homeserver would create a device ID for you if you didn’t specify one.
 
@@ -101,19 +103,83 @@ GET /auth?
 
 The most important point to understand here is that the OpenID Provider is now responsible for issuing tokens and the homeserver isn’t involved in this process anymore.
 
-Additionally access tokens must be issued with an expiration date, and so token refresh handling is a requirement of the implementation too.
+Additionally, access tokens are issued with an expiration date so token refresh handling is a requirement of the implementation too.
 
 ## Logout
 
-[RFC7009 Token Revocation](https://datatracker.ietf.org/doc/html/rfc7009) is used which is pretty straightforward.
+The steps for a client to follow is:
 
-## UIA/re-auth for sensitive API calls
-
-This isn’t fully defined/implemented yet.
+1. Revoke the access and refresh tokens with the OP using [RFC7009 Token Revocation](https://datatracker.ietf.org/doc/html/rfc7009)
+2. Destroy any local state
+3. (Re)direct a browser user-agent to [RP-Initiated Logout](https://openid.net/specs/openid-connect-rpinitiated-1_0.html) endpoint so that the user can be logged out of the OP if they wish
 
 ## Account management
 
-TODO
+The OP is now responsible for providing an account management UI.
+
+The client is responsible for sign-posting the user to the account management UI.
+
+For example, in Element Web the sign-posting looks like this:
+
+![Example with legacy fallback](./account%20management.png)
+
+The OP is expected to provide the following capabilities:
+
+- viewing other signed in devices and sessions
+- signing out other devices and sessions
+- changing password if applicable
+- deleting/deactivating the account
+
+If applicable the OP can also provide capabilities:
+
+- associating email and MSISDN with the account
+- linking to upstream identity providers (e.g. Google, Facebook, Twitter, etc)
+
+# Differences compare to legacy auth
+
+## User registration
+
+The OP is responsible for the user interface for registration. The only responsibility the client has is to indicate to the OP if the user is wishing to register vs login (via the `prompt=create` param).
+
+## User login
+
+Again, the OP is responsible for show the user interface for login.
+
+## Client is agnostic to underlying auth type
+
+The client no longer needs to know whether the user is authenticating using password or some upstream social or SSO provider. All are treated the same.
+
+## Client must explicitly register it's existence with the OP
+
+In legacy auth any client could connect to any homeserver by default. In OIDC auth the client must be registered with the OP before it can connect to the HS/OP.
+
+This can either be done statically (e.g. the client is pre-registered with the OP) or dynamically (e.g. the client registers itself with the OP).
+
+## Device IDs
+
+Matrix device IDs must be explicitly generated by the client instead of the homeserver allocating one. This is because the client needs to know the device ID in order to request the correct scope from the OP.
+
+## Refresh tokens
+
+The client must implement refresh token handling whereas it was previouslt optional.
+
+## 3PID management
+
+The OP is now responsible for adding and validating email and MSISDN 3PIDs. The client no longer needs to present a UI for this.
+
+The client can still query the available 3PIDs for the purpose of setting up notifications.
+
+## Password management
+
+Password management related operations including reset and account recovery must be managed entirely by the oP.
+
+## Signing out other devices
+
+This must now be done via the OP account management UI.
+
+## Account deactivation
+
+This must now be done via the OP account management UI.
 
 # Client libraries
 
