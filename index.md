@@ -1,7 +1,7 @@
 ---
 image: https://areweoidcyet.com/assets/images/logo.png
 ---
-[![Matrix](/assets/images/matrix-logo-white.svg)](https://matrix.org){: .logo} _Last updated: 2023-02-03_
+[![Matrix](/assets/images/matrix-logo-white.svg)](https://matrix.org){: .logo} _Last updated: 2023-02-21
 
 ```
 
@@ -23,7 +23,7 @@ image: https://areweoidcyet.com/assets/images/logo.png
 
 This site is being used to track the progress of [Matrix](https://matrix.org) migrating to [OpenID Connect](https://openid.net/connect/) (OIDC) for authentication. You can join the discussion at [#matrix-auth:matrix.org](https://matrix.to/#/#matrix-auth:matrix.org).
 
-We have also set up the [Matrix OIDC Playground](https://github.com/vector-im/oidc-playground) which contains Homeservers, OIDC Providers and Clients for you to try out.
+We have also set up the [Matrix OIDC Playground](https://github.com/vector-im/oidc-playground) which contains Homeservers, OpenID Providers and Clients for you to try out.
 
 There are also some videos below showing some of the use cases in action.
 
@@ -46,7 +46,7 @@ Jump to:
 - [Spec](#spec)
 - [Homeservers](#homeservers)
 - [Clients](#clients)
-- [OIDC Providers](#oidc-providers)
+- [OpenID Providers](#oidc-providers)
 - [Migration support](#migration)
 
 <a id="spec"></a>
@@ -59,8 +59,8 @@ Related MSCs:
 | Proposal                                                                                                                                 | Status                                                         | Implementations                                                                                          |
 | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | [MSC3861: Matrix architecture change to delegate authentication via OIDC](https://github.com/matrix-org/matrix-spec-proposals/pull/3861) | ✅ Draft but ready for review once dependencies are also ready | n/a                                                                                                      |
-| [MSC2964: Delegation of auth from homeserver to OIDC Provider](https://github.com/matrix-org/matrix-spec-proposals/pull/2964)            | 🚧 Draft                                                       | 🚧 Partial implementations in the [Playground](https://github.com/vector-im/oidc-playground)              |
-| [MSC2965: OIDC Provider discovery](https://github.com/matrix-org/matrix-spec-proposals/pull/2965)                                        | ✅ Feature complete                                            | ✅ Available in the [Playground](https://github.com/vector-im/oidc-playground)                            |
+| [MSC2964: Delegation of auth from homeserver to OpenID Provider](https://github.com/matrix-org/matrix-spec-proposals/pull/2964)            | 🚧 Draft                                                       | 🚧 Partial implementations in the [Playground](https://github.com/vector-im/oidc-playground)              |
+| [MSC2965: OpenID Provider discovery](https://github.com/matrix-org/matrix-spec-proposals/pull/2965)                                        | ✅ Feature complete                                            | ✅ Available in the [Playground](https://github.com/vector-im/oidc-playground)                            |
 | [MSC2966: Usage of OAuth 2.0 Dynamic Client Registration in Matrix](https://github.com/matrix-org/matrix-spec-proposals/pull/2966)       | 🚧 Draft                                                       | ✅ Available in the [Playground](https://github.com/vector-im/oidc-playground)                            |
 | [MSC2967: API scopes](https://github.com/matrix-org/matrix-spec-proposals/pull/2967)                                                     | 🚧 Not yet feature complete                                    | 🚧 Partially implemented                                                                                 |
 | [MSC3824: OIDC-aware clients](https://github.com/matrix-org/matrix-spec-proposals/pull/3824)                                             | ✅ Feature complete                                            | ✅ Available in the [Playground](https://github.com/vector-im/oidc-playground#clientsapplications-to-try) |
@@ -132,7 +132,7 @@ These are the requirements for a client to be OIDC-aware from [MSC3824](https://
 
 <a id="oidc-providers"></a>
 
-### OIDC Providers
+### OpenID Providers
 
 | <strong>Requirement</strong>                                                                                                                                  | <strong>Purpose</strong>                                                                                                                         | <strong></strong> | <strong>Matrix Auth Service</strong>                                                              | <strong>Keycloak</strong>                                                                                                         | <strong>Okta</strong>                                                                                                                                                                 | [ZITADEL](https://github.com/zitadel/zitadel)  | <strong>Auth0</strong>                                                                                                                                                   |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -152,7 +152,7 @@ These are the requirements for a client to be OIDC-aware from [MSC3824](https://
 | OpenID Connect Dynamic Client Registration in conformance with <a href="https://github.com/matrix-org/matrix-spec-proposals/pull/2966">MSC2966</a>             | Allow a HS to accept logins from any Matrix client                                                                                               | OPTIONAL          | 🚧<a href="https://github.com/matrix-org/matrix-authentication-service/issues/17">In progress</a> | ✅ But, request is blocked by CORS on web                                                                                         | ❌An API token is required to call the registration endpoint                                                                                                                          | ❌                                             | ✅<a href="https://auth0.com/docs/get-started/applications/dynamic-client-registration">Yes</a>                                                                          |
 | T&C opt-in for registration                                                                                                                                   | Where HS admin wants it                                                                                                                          | OPTIONAL          | ❌<a href="https://github.com/matrix-org/matrix-authentication-service/issues/22">Planned</a>     | ✅<a href="https://www.keycloak.org/docs/latest/server_admin/#proc-enabling-terms-conditions_server_administration_guide">Yes</a> | ❌ No                                                                                                                                                                                 | ✅                                             | ❌<a href="https://auth0.com/docs/secure/data-privacy-and-compliance/gdpr/gdpr-track-consent-with-custom-ui">Unclear</a>                                                 |
 | reCAPTCHA for registration                                                                                                                                    | Where HS admin wants it                                                                                                                          | OPTIONAL          | ❌<a href="https://github.com/matrix-org/matrix-authentication-service/issues/138">Planned</a>    | ✅<a href="https://www.keycloak.org/docs/latest/server_admin/#proc-enabling-recaptcha_server_administration_guide">Yes</a>        | ✅<a href="https://developer.okta.com/docs/reference/api/captchas/">Yes</a>                                                                                                           | ✅ reCaptcha Enterprise                        | ✅<a href="https://auth0.com/docs/secure/attack-protection/bot-detection">Yes</a>                                                                                        |
-| <a href="https://matrix-org.github.io/synapse/latest/openid.html">Support for upstream OIDC Provider</a>                                                      | Single Sign On/social login                                                                                                                      | OPTIONAL          | ❌<a href="https://github.com/matrix-org/matrix-authentication-service/issues/19">Planned</a>     | ✅                                                                                                                                | ✅                                                                                                                                                                                    | ✅                                             | ✅                                                                                                                                                                       |
+| <a href="https://matrix-org.github.io/synapse/latest/openid.html">Support for upstream OpenID Provider</a>                                                      | Single Sign On/social login                                                                                                                      | OPTIONAL          | ❌<a href="https://github.com/matrix-org/matrix-authentication-service/issues/19">Planned</a>     | ✅                                                                                                                                | ✅                                                                                                                                                                                    | ✅                                             | ✅                                                                                                                                                                       |
 | <a href="https://matrix-org.github.io/synapse/latest/usage/configuration/user_authentication/single_sign_on/saml.html">Support for upstream SAML provider</a> | Single Sign On                                                                                                                                   | OPTIONAL          | ❌<a href="https://github.com/matrix-org/matrix-authentication-service/issues/159">Planned</a>    | ✅                                                                                                                                | ✅                                                                                                                                                                                    | ✅                                             | ✅                                                                                                                                                                       |
 | <a href="https://matrix-org.github.io/synapse/latest/usage/configuration/user_authentication/single_sign_on/cas.html">Support for upstream CAS provider</a>   | Single Sign On                                                                                                                                   | OPTIONAL          | ❌<a href="https://github.com/matrix-org/matrix-authentication-service/issues/160">Planned</a>    | ?                                                                                                                                 | ?                                                                                                                                                                                     | ❌                                             | ?                                                                                                                                                                        |
 | Allow user to add multiple email addresses and verify them                                                                                                    | Allow HS to use email as target for notifications. Also used for Identity Server?                                                                | OPTIONAL          | ✅                                                                                                | ❌ Would need extension                                                                                                           | ❌<a href="https://support.okta.com/help/s/question/0D51Y00006cnHn1SAE/activation-email-to-secondary-email-address?language=en_US">Only one additional email </a>+ no verification(?) | ✅ Yes, through Metadata                       | ❌<a href="https://community.auth0.com/t/can-we-verify-additional-emails/49545">Additional custom fields</a> but no verification                                         |
@@ -185,13 +185,13 @@ We are planning to implement a number of migration capabilities outlined [above]
 
 ### Will I lose my old-style login/password?
 
-Assuming that your homeserver migrates you to an OIDC Provider that supports username/password login then you will still be able to use that to sign in.
+Assuming that your homeserver migrates you to an OpenID Provider that supports username/password login then you will still be able to use that to sign in.
 
-However, you will be entering your username/password into a UI controlled by the OIDC Provider, not the client.
+However, you will be entering your username/password into a UI controlled by the OpenID Provider, not the client.
 
 ### How do I do social login with this?
 
-Similar to how the homeserver achieves this today, the OIDC Provider can act as an identity broker and support login via upstream social (and other) identity providers.
+Similar to how the homeserver achieves this today, the OpenID Provider can act as an identity broker and support login via upstream social (and other) identity providers.
 
 ### How will this look in native mobile apps?
 
@@ -199,9 +199,9 @@ We've built proof of concept apps to explore this and show how it can behave:
 
 ![iOS](./assets/images/oidctest-ios.gif) ![Android](./assets/images/oidctest-android.gif)
 
-In both cases it is a lightweight app built using the [AppAuth](https://appauth.io/) SDK. The OIDC Provider used here is the matrix-authentication-service.
+In both cases it is a lightweight app built using the [AppAuth](https://appauth.io/) SDK. The OpenID Provider used here is the matrix-authentication-service.
 
-The plan is to build these out a bit further to explore some more of the handover points between the app and OIDC Provider (e.g. for account management).
+The plan is to build these out a bit further to explore some more of the handover points between the app and OpenID Provider (e.g. for account management).
 
 ### How does this work with QR code login?
 
@@ -218,9 +218,9 @@ It can work a bit like this:
 OIDC provides at least two flows that could help with this:
 
 1. Use the [*Device Authorization Grant*](https://oauth.net/2/device-flow) (a.k.a. "device flow") to complete the login on a secondary device that does have a web browser. On the QR flow demo above you can see an example URL and code that would be used on the second device.
-2. Use a [*Resource Owner Password Credentials Grant*](https://oauth.net/2/grant-types/password/) (a.k.a. "password grant" or "direct grant") where the username and password are entered into the client (i.e. the 3DS) and the client then sends the username and password to the OIDC Provider to get an access token.
+2. Use a [*Resource Owner Password Credentials Grant*](https://oauth.net/2/grant-types/password/) (a.k.a. "password grant" or "direct grant") where the username and password are entered into the client (i.e. the 3DS) and the client then sends the username and password to the OpenID Provider to get an access token.
 
-It is important to note that the second option (Resource Owner Password Credentials Grant) is considered insecure by the [OAuth 2.0 Security Best Current Practice](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics-20#section-2.4) guide. As such, it is expected that the presence of this capability in an OIDC Provider can not be relied on. For example, we don't expect that matrix.org will support this flow.
+It is important to note that the second option (Resource Owner Password Credentials Grant) is considered insecure by the [OAuth 2.0 Security Best Current Practice](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics-20#section-2.4) guide. As such, it is expected that the presence of this capability in an OpenID Provider can not be relied on. For example, we don't expect that matrix.org will support this flow.
 
 ### How will this work with E2EE?
 
@@ -236,7 +236,7 @@ Today there are also many cases where users don't have a password: SSO, social l
 
 The reason that this doesn't work well in OIDC is that there isn't a standard OIDC/OAuth grant that allows for a trusted client to authenticate using a PAKE mechanism meaning that the password can remain in the client.
 
-If the client was to just sent the password to the OIDC Provider like it does today then the E2EE could be broken by the OIDC Provider/homeserver operator.
+If the client was to just sent the password to the OpenID Provider like it does today then the E2EE could be broken by the OpenID Provider/homeserver operator.
 
 Part of the reason why there isn't a grant for this use case is that the OIDC model is predicated on the idea that the client is considered low on the trust ladder and so shouldn't be trusted with the credentials.
 
@@ -246,7 +246,7 @@ So, arguably a custom grant using PAKE could be used and not break the trust mod
 
 ### What's this matrix-authentication-service that I've heard about?
 
-[matrix-authentication-service](https://github.com/matrix-org/matrix-authentication-service) is a new OIDC Provider that we have been working on that will be used for much of the [migration support](#migration) outlined above.
+[matrix-authentication-service](https://github.com/matrix-org/matrix-authentication-service) is a new OpenID Provider that we have been working on that will be used for much of the [migration support](#migration) outlined above.
 
 It is designed to be lightweight enough (using Rust) that it can be embedded within a homeserver process (such as a Synapse).
 
@@ -254,7 +254,7 @@ At this stage you could think of it as a bit like SQLite vs PostgreSQL support i
 
 ### Are you really rebuilding all of Keycloak in matrix-authentication-service?!
 
-Hopefully not! In the same way that Matrix is not an authentication protocol, it also doesn't make sense to completely reinvent the OIDC Provider "wheel".
+Hopefully not! In the same way that Matrix is not an authentication protocol, it also doesn't make sense to completely reinvent the OpenID Provider "wheel".
 
 As to how far we will get... it will most likely depend on what we need for migration support.
 

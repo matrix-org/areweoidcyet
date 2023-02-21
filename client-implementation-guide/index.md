@@ -11,7 +11,7 @@ When implementing an OIDC-native client you can test against the [OIDC Playgroun
 # Useful terminology
 
 - OpenID Connect (OIDC) - the protocol being used to authenticate a user and acquire an access token to use with a homeserver
-- OIDC Provider (OP) - the OIDC compatible server that is capable of issuing access tokens
+- OpenID Provider (OP) - the OIDC compatible server that is capable of issuing access tokens
 - Issuer - the OP that is being used to issue access tokens for a particular homeserver
 
 # Requirements
@@ -43,7 +43,7 @@ e.g. from [https://synapse-oidc.lab.element.dev/.well-known/matrix/client](https
 
 **Client registration**
 
-Unless your client has been statically registered with the OIDC Provider you will need to make use of what is known as “dynamic client registration”. This is described in [MSC2966](https://github.com/matrix-org/matrix-spec-proposals/pull/2966) which makes use of [RFC7591](https://datatracker.ietf.org/doc/html/rfc7591).
+Unless your client has been statically registered with the OpenID Provider you will need to make use of what is known as “dynamic client registration”. This is described in [MSC2966](https://github.com/matrix-org/matrix-spec-proposals/pull/2966) which makes use of [RFC7591](https://datatracker.ietf.org/doc/html/rfc7591).
 
 It is not always that case that an OP will support dynamic client registration. If this is the case and the client doesn’t already know of a static client_id then you make an HTTP request against the OP passing metadata to 
 
@@ -99,7 +99,7 @@ GET /auth?
 
 ## Access token handling
 
-The most important point to understand here is that the OIDC provider is now responsible for issuing tokens and the homeserver isn’t involved in this process anymore.
+The most important point to understand here is that the OpenID Provider is now responsible for issuing tokens and the homeserver isn’t involved in this process anymore.
 
 Additionally access tokens must be issued with an expiration date, and so token refresh handling is a requirement of the implementation too.
 
