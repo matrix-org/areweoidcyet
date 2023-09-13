@@ -71,6 +71,8 @@ Outstanding key decision points:
 
 ### Homeservers
 
+For a homeserver to work in the new world it needs to implement the following:
+
 | **Requirement**                                                                                  | **Relevant specs**                                                                  |             | **Synapse**                                                                                                     | **Dendrite** |
 | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------- | ------------ |
 | Advertise OP to be used in /.well-known/matrix/client                                            | <a href="https://github.com/matrix-org/matrix-spec-proposals/pull/2965">MSC2965</a> | REQUIRED    | ✅                                                                                                              | ❌           |
@@ -84,9 +86,13 @@ Outstanding key decision points:
 | Advertise OP web UI in .well-known as account                                                    | MSC2965                                                                             | RECOMMENDED | ✅                                                                                                              | ❌           |
 | Advertise `m.change_password` and `m.3pid_changes` and `m.3pid_changes` capabilities as disabled |                                                                                     | REQUIRED    | ✅                                                                                                              | ❌           |
 
-n.b. this is currently all in a [branch of Synapse](https://github.com/sandhose/synapse/tree/quenting/oauth-delegation) rather than in mainline.
+The compatibility of Homeservers and OpenID Providers combinations are as follows:
 
-<a id="clients"></a>
+| **Homeserver**                                     | **Matrix Authentication Service**                                                                        |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| [Synapse](https://github.com/matrix-org/synapse)   | ✅ Supported \| [Docs](https://matrix-org.github.io/matrix-authentication-service/setup/homeserver.html) |
+| [Dendrite](https://github.com/matrix-org/dendrite) | ❌ Not supported                                                                                         |
+| [Conduit](https://gitlab.com/famedly/conduit)      | ❌ Not supported                                                                                         |
 
 ### Clients
 
@@ -152,6 +158,8 @@ These are the requirements for a client to be OIDC-aware from [MSC3824](https://
 | Allow user to add multiple email addresses and verify them                                                                                                    | Allow HS to use email as target for notifications. Also used for Identity Server?                                                                 | OPTIONAL    | ✅                                                                                                  | ❌ Would need extension                                                                                                           | ❌<a href="https://support.okta.com/help/s/question/0D51Y00006cnHn1SAE/activation-email-to-secondary-email-address?language=en_US">Only one additional email </a>+ no verification(?) | ✅ Yes, through Metadata                        | ❌<a href="https://community.auth0.com/t/can-we-verify-additional-emails/49545">Additional custom fields</a> but no verification                                         |
 | Allow user to add phone numbers and verify them                                                                                                               | ?                                                                                                                                                 | OPTIONAL    | ❌                                                                                                  |                                                                                                                                   |                                                                                                                                                                                       | ✅ Yes, if a Twillio account is configured      | ❌                                                                                                                                                                       |
 | Those email address and phone number exposed via ID token and or user info endpoint                                                                           |                                                                                                                                                   |             |                                                                                                     |                                                                                                                                   |                                                                                                                                                                                       | ✅ Yes, claims can be asserted to the ID Token  |                                                                                                                                                                          |
+
+🚫 MAS is only [planned to support upstream IdPs via OIDC](https://matrix-org.github.io/matrix-authentication-service/development/architecture.html#scope-and-goals). So, if you want to talk CAS or SAML you need to use a sidecar protocol converter.
 
 <a id="migration"></a>
 
