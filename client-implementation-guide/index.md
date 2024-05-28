@@ -6,7 +6,7 @@ a.k.a. How to make your Matrix client OIDC-native
 
 If you only want to make the client [OIDC-aware as per MSC3824](https://github.com/matrix-org/matrix-spec-proposals/pull/3824) then see the [client requirements section](https://github.com/matrix-org/matrix-spec-proposals/blob/hughns/sso-redirect-action/proposals/3824-oidc-aware-clients.md#definition-of-oidc-aware) of the MSC.
 
-When implementing an OIDC-native client you can test against the [OIDC Playground](https://github.com/vector-im/oidc-playground) where a number of Homeservers are available in different configurations.
+When implementing an OIDC-native client you can test against the [OIDC Playground](https://github.com/element-hq/oidc-playground) where a number of Homeservers are available in different configurations.
 
 # Useful terminology
 
@@ -27,16 +27,16 @@ There are two steps to get started:
 
 To determine whether a Homeserver is using auth delegated via OIDC you make use of [MSC2965](https://github.com/matrix-org/matrix-spec-proposals/pull/2965) and check the `/.well-known/matrix/client`. The presence of org.matrix.msc2965.authentication indicates that homeserver is using OIDC.
 
-e.g. from [https://synapse-oidc.lab.element.dev/.well-known/matrix/client](https://synapse-oidc.lab.element.dev/.well-known/matrix/client)
+e.g. from [https://synapse-oidc.element.dev/.well-known/matrix/client](https://synapse-oidc.element.dev/.well-known/matrix/client)
 
 ```
 {
   "m.homeserver": {
-    "base_url": "https://synapse-oidc.lab.element.dev/"
+    "base_url": "https://synapse-oidc.element.dev/"
   },
   "org.matrix.msc2965.authentication": {
-    "issuer": "https://auth-oidc.lab.element.dev/",
-    "account": "https://auth-oidc.lab.element.dev/account"
+    "issuer": "https://auth-oidc.element.dev/",
+    "account": "https://auth-oidc.element.dev/account"
   }
 }
 ```
@@ -54,7 +54,7 @@ The client registration is currently implemented on a per-device basis. The clie
 > This is due to the open nature of the Matrix eco-system where by default any client can be used to connect to any HS.
 > In the legacy (non-OIDC) architecture it is implicit that any client can connect to any HS, whereas in OIDC architecture it becomes explicit: each client either needs to be pre-registered with a HS/OP or the HS/OP allows clients to dynamically register.
 
-You can test dynamic client registration against the `synapse-oidc.lab.element.dev` homeserver in the [OIDC Playground](https://github.com/vector-im/oidc-playground).
+You can test dynamic client registration against the `synapse-oidc.element.dev` homeserver in the [OIDC Playground](https://github.com/element-hq/oidc-playground).
 
 **Recommended flows**
 
@@ -199,4 +199,4 @@ More can be found at [https://openid.net/developers/certified/](https://openid.n
 # Implementation examples
 
 - Hydrogen - [https://github.com/sandhose/hydrogen-web/blob/sandhose/oidc-login/src/matrix/net/OidcApi.ts](https://github.com/sandhose/hydrogen-web/blob/sandhose/oidc-login/src/matrix/net/OidcApi.ts)
-- files-sdk-demo - [https://github.com/vector-im/files-sdk-demo/blob/oidc/src/ClientManager.ts](https://github.com/vector-im/files-sdk-demo/blob/oidc/src/ClientManager.ts)
+- files-sdk-demo - [https://github.com/element-hq/files-sdk-demo/blob/oidc/src/ClientManager.ts](https://github.com/vector-im/files-sdk-demo/blob/oidc/src/ClientManager.ts)
