@@ -1,5 +1,6 @@
 import cx from "classnames";
 
+import matrix from "./matrix-logo-white.svg";
 import are from "./are.txt?raw";
 import we from "./we.txt?raw";
 import oidc from "./oidc.txt?raw";
@@ -16,7 +17,12 @@ const AsciiLogo = () => (
     </div>
     <div className={styles.head}>
       <a href="https://matrix.org/">
-        <img alt="Matrix" src="../../assets/images/matrix-logo-white.svg" />
+        <img
+          alt="Matrix"
+          src={matrix.src}
+          height={matrix.height}
+          width={matrix.width}
+        />
       </a>
       <div>Last updated: 2024-09-19</div>
     </div>
