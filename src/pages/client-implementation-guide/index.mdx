@@ -1,4 +1,12 @@
-# Matrix client OIDC implementation guide
+---
+title: Are we OIDC yet?
+layout: ../../layouts/Layout.astro
+---
+import { Link } from "@vector-im/compound-web";
+
+export const components = { a: Link };
+
+# Next-gen auth client implementation guide
 
 a.k.a. How to make your Matrix client OIDC-native
 
@@ -60,9 +68,9 @@ You can test dynamic client registration against the `synapse-oidc.element.dev` 
 
 Here are the recommended flows depending on whether your client also supports “legacy” (non-OIDC) auth:
 
-![Discovery with legacy fallback](./discovery%20with%20fallback.png)
+![Discovery with legacy fallback](./discovery-with-fallback.png)
 
-![Discovery without legacy fallback](./discovery%20without%20fallback.png)
+![Discovery without legacy fallback](./discovery-without-fallback.png)
 
 ## User Login and User Registration
 
@@ -74,7 +82,7 @@ Once you have generated the device ID (e.g. `ABCDEFGHIJKL`) you then use it in t
 
 There are three scopes that you need to request access to:
 
-- `openid` - standard OIDC scope 
+- `openid` - standard OIDC scope
 - `urn:matrix:org.matrix.msc2967.client:api:*` - gives full access to Client Server API. See [MSC2967: API scopes](https://github.com/matrix-org/matrix-spec-proposals/pull/2967) for details of future scopes
 - `urn:matrix:org.matrix.msc2967.client:device:<generated device ID>` - e.g. `urn:matrix:org.matrix.msc2967.client:device:ABCDEFGHIJKL`
 
@@ -121,7 +129,7 @@ The client is responsible for sign-posting the user to the account management UI
 
 For example, in Element Web the sign-posting looks like this:
 
-![Example with legacy fallback](./account%20management.png)
+![Example with legacy fallback](./account-management.png)
 
 The OP is expected to provide the following capabilities:
 

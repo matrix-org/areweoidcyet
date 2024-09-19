@@ -1,0 +1,246 @@
+---
+title: Are we OIDC yet?
+layout: ../layouts/Layout.astro
+---
+import { Link } from "@vector-im/compound-web";
+import AsciiLogo from "../ascii-logo";
+
+export const components = { a: Link };
+
+<AsciiLogo />
+
+# Almost.
+
+[What?](#what) • [Why?](#why) • [When?/Status](#when) • [FAQs](#faqs)
+
+## What?
+
+This site is being used to track the progress of [Matrix](https://matrix.org) migrating to a [Next-gen authentication protocol][MSC3861] based on OAuth 2.0/OpenID Connect proposal.
+You can join the discussion at [#matrix-auth:matrix.org](https://matrix.to/#/#matrix-auth:matrix.org).
+
+We have also set up the [Matrix OIDC Playground](https://github.com/element-hq/oidc-playground) which contains Homeservers and Clients for you to try out.
+
+There are also some videos below showing some of the use cases in action.
+
+## Why?
+
+Matrix currently uses a custom authentication protocol baked into the Matrix spec, which focuses on providing client-native user-interface for authentication and account management.
+There are two main aspects leading to this change:
+
+ - authentication through a redirect in the system browser as a first-class citizen
+ - replacement of the current `m.login.sso` flow with an OAuth 2.0/OpenID Connect based flow
+
+The umbrella proposal, [MSC3861](https://github.com/matrix-org/matrix-spec-proposals/pull/3861), starts with a detailed rationale on this project.
+Reading this MSC is **highly recommended** to understand this proposal.
+This is also the main place to discuss high-level decisions of this proposal.
+
+
+## When?
+
+Good question. There are a number of moving parts to this project which are outlined below.
+
+Jump to:
+
+- [Spec](#matrix-spec)
+- [Homeservers](#homeservers)
+- [Clients](#clients)
+
+### Matrix Spec
+
+The proposal is split into multiple reasonably-long MSCs.
+This section lists them and report on their current status.
+
+| Proposal                                                                                  | Status                                     |
+| ----------------------------------------------------------------------------------------- | ------------------------------------------ |
+| [MSC3861]: Next-generation auth for Matrix, based on OAuth 2.0/OIDC                       | ✅ Draft as dependencies are not ready yet |
+| [MSC2964]: Usage of OAuth 2.0 authorization code grant and refresh token grant            | ✅ Ready to review                         |
+| [MSC2965]: Usage of OpenID Connect Discovery for authentication server metadata discovery | ✅ Ready to review                         |
+| [MSC2966]: Usage of OAuth 2.0 Dynamic Client Registration in Matrix                       | ✅ Ready to review                         |
+| [MSC2967]: API scopes                                                                     | ✅ Ready to review                         |
+| [MSC3824]: OIDC aware clients                                                             | 🚧 Rework in progress                      |
+| [MSC4108]: Mechanism to allow OIDC sign in and E2EE set up via QR code                    | ✅ Feature complete                        |
+| [MSC4190]: Device management for application services                                     | 🚧 Waiting on implementations              |
+| [MSC4191]: Account management deep-linking                                                | 🚧 First draft out                         |
+
+#### Outstanding work missing
+
+There are a few areas not yet written down in MSCs, some need more thinking:
+
+ - **Guest accounts** currently have no equivalent with the new proposals. An earlier proposal of [MSC2967] defined scopes to map scopes to guest access, but as an effort to trim down the proposal, they got out of it as no convincing real-world implementation was done.
+ - **Application services** could be using the *client credentails grant*, instead of the current `hs_token`/`as_token`, but for now this proposal chose to not touch this area.
+ - **Encrypted application-services** currently rely on `/login` with the `m.login.application_service` method to *create devices*, which has been infamously removed from the implementation in Synapse/MAS. An alternative API to create devices is proposed in [MSC4190], but no application service implement this API yet.
+
+### Homeservers
+
+| **Homeserver** | **Status**                         |
+| -------------- | ---------------------------------- |
+| [Synapse]      | ✅ Supported \| [Docs][mas-hs-doc] |
+| [Dendrite]     | ❌ Not supported                    |
+| [Conduit]      | ❌ Not supported                    |
+
+[mas-hs-doc]: https://element-hq.github.io/matrix-authentication-service/setup/homeserver.html
+
+
+The current implementation in Synapse is done through [`matrix-authentication-service`][MAS] (MAS).
+The latter is a full rewrite of the internal authentication logic of Synapse.
+This means that not all functionnalities and APIs Synapse currently supports are available or behave the same with MAS enabled.
+
+
+### Clients
+
+[MSC3824](https://github.com/matrix-org/matrix-spec-proposals/pull/3824) proposes four types of Matrix client:
+
+1. **Next-gen auth native client** - This is a client that fully uses OIDC when talking to an OIDC enabled homeserver.
+2. **Next-gen augh aware client** - This is a client that is aware of OIDC but will still use existing auth types (e.g. `m.login.sso`) to auth with an OIDC enabled homeserver.
+3. **Legacy client with SSO support** - This is a client that is not aware of OIDC but does support `m.login.sso` flow. e.g. Element Web, iOS, Android, FluffyChat, Nheko, Cinny
+4. **Legacy client without SSO support** - This is a client that is not aware of OIDC at all and nor does it support `m.login.sso` flow. Typically auth is done via `m.login.password` only.
+
+#### Next-gen auth native clients
+
+[Client implementation guide](./client-implementation-guide)
+
+Known working implementations of the proposal include:
+
+ - [Element X iOS]
+ - [Element X Android]
+ - [Element Web] (under a lab flag)
+
+
+🚫 There is no plan to make Element (Classic) iOS/Android Next-gen auth native clients at this time. Instead the focus is on Element X.
+
+#### Next-gen auth Aware clients
+
+These are the requirements for a client to be Next-gen auth-aware from [MSC3824]:
+
+| Requirement                                                                                                                      |             | Relevant spec(s)                 |
+| -------------------------------------------------------------------------------------------------------------------------------- | ----------- | ---------------------------------|
+| Support the `m.login.sso` auth flow                                                                                              | REQUIRED    | [Matrix Spec][mx-spec-sso-login] |
+| Where a `delegated_oidc_compatibility` value of `true` is present on an `m.login.sso` then only offer that auth flow to the user | RECOMMENDED | [MSC3824]                        |
+| Append `action=login` and `action=register` parameters to the SSO redirect URLs                                                  | RECOMMENDED | [MSC3824]                        |
+| Sign post and link users to manage their account at the OP web UI given by MSC2965                                               | RECOMMENDED | [MSC2965] and [MSC4191]          |
+| Label the SSO button as "Continue"                                                                                               | RECOMMENDED | [MSC3824]                        |
+
+[mx-spec-sso-login]: https://spec.matrix.org/latest/client-server-api/#sso-client-login
+
+
+## FAQs
+
+### Will I lose my old-style login/password?
+
+The current implementation in [Synapse] with [MAS] provides local login and password login.
+We expect other homeservers implementations to provide the same kind of features.
+
+However, you will be entering your username/password into a UI controlled by the homeserver, not the client.
+
+### How do I do social login with this?
+
+Similar to how the homeserver achieves this today, the next-gen auth implementation in homeservers can act as an identity broker and support login via upstream social (and other) identity providers.
+
+### How will this look in native mobile apps?
+
+We've built proof of concept apps to explore this and show how it can behave:
+
+<img alt="iOS" src="../../assets/images/oidctest-ios.gif" />
+
+<img alt="Android" src="../../assets/images/oidctest-android.gif" />
+
+In both cases it is a lightweight app built using the [AppAuth](https://appauth.io/) SDK.
+The homeserver used here is an old version of [matrix-authentication-service][MAS].
+
+The plan is to build these out a bit further to explore some more of the handover points between the app and homeserver (e.g. for account management).
+
+### How does this work with QR code login?
+
+The [RFC8628](https://datatracker.ietf.org/doc/html/rfc8628) OAuth 2.0 Device Code Authorization Grant (aka "device flow") can be used to allow login on a device using a second device.
+
+An implementation of this is available to try in the [OIDC Playground](https://github.com/element-hq/oidc-playground).
+
+It can work a bit like this:
+
+![Device Flow demo 2](https://user-images.githubusercontent.com/6955675/180743561-e2e158cd-2caf-4e43-9eed-9e86da84597c.gif)
+
+### What do I do for my device which doesn't have a web browser?
+
+OIDC provides at least two flows that could help with this:
+
+1. Use the [*Device Authorization Grant*](https://oauth.net/2/device-flow) (a.k.a. "device flow") to complete the login on a secondary device that does have a web browser. On the QR flow demo above you can see an example URL and code that would be used on the second device.
+2. Use a [*Resource Owner Password Credentials Grant*](https://oauth.net/2/grant-types/password/) (a.k.a. "password grant" or "direct grant") where the username and password are entered into the client (i.e. the 3DS) and the client then sends the username and password to the OpenID Provider to get an access token.
+
+It is important to note that the second option (Resource Owner Password Credentials Grant) is considered insecure by the [OAuth 2.0 Security Best Current Practice](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics-20#section-2.4) guide. As such, it is expected that the presence of this capability in an OpenID Provider can not be relied on. For example, we don't expect that matrix.org will support this flow.
+
+### How will this work with E2EE?
+
+It works in the same way that the current password login works: login is separate from E2EE setup.
+
+That said, there are some scenarios that OIDC can help with. For example, when signing in to a new device you can use the OIDC device flow on an existing login to both authorise the sign in and also verify the new device for E2EE.
+
+### Does this mean I can't combine E2EE & account password?
+
+In short, yes. However, in a world that is (gradually) moving away from passwords, this isn't necessarily a bad thing.
+
+Today there are also many cases where users don't have a password: SSO, social login, web passkeys etc.
+
+The reason that this doesn't work well in OIDC is that there isn't a standard OIDC/OAuth grant that allows for a trusted client to authenticate using a PAKE mechanism meaning that the password can remain in the client.
+
+If the client was to just sent the password to the OpenID Provider like it does today then the E2EE could be broken by the OpenID Provider/homeserver operator.
+
+Part of the reason why there isn't a grant for this use case is that the OIDC model is predicated on the idea that the client is considered low on the trust ladder and so shouldn't be trusted with the credentials.
+
+However, with our use case for E2EE the client is high on the trust ladder as it is necessarily responsible for the E2EE integrity.
+
+So, arguably a custom grant using PAKE could be used and not break the trust model in Matrix.
+
+### What's this `matrix-authentication-service` that I've heard about?
+
+[`matrix-authentication-service`][MAS] is a complete rewrite of Synapse's authentication system, supporting both the next-gen auth APIs and the previous ones.
+
+At this stage, it is still a separate service, requiring a one-way migration from a classic Synapse deployment.
+It is designed to be lightweight enough (using Rust) that it will be embedded in Synapse at some point.
+
+It is designed to potentially work for other homeservers, so other implementations may choose to leverage it to replace their current auth system.
+
+### Are you really rebuilding all of Keycloak in `matrix-authentication-service`?!
+
+Hopefully not! In the same way that Matrix is not an authentication protocol, it also doesn't make sense to completely reinvent a fully-featured identity provider.
+
+### Will clients need to support both old-style and new-style auth?
+
+For a period of time, yes.
+
+Similarly, some homeservers (depending on how they are being used) will need to support both old-style and new-style client auth for a period of time.
+
+### Does this mean that the login page/screen's branding won't match the branding of my app any more?
+
+Assuming that you are following best practise, then: yes, the branding on the login form is under the control of the homeserver administrator not the client.
+
+That said, if you are operating your own client and homeserver then you can brand and customise both as you wish.
+
+The openness of the Matrix ecosystem is a defining feature. That a user can choose which client and homeserver to use is a key part of that.
+
+We believe that, by adopting the new auth model and making the division between the client and homeserver more explicit, we can better build trust in the open ecosystem and allow it to continue to grow and flourish.
+
+The branding trade-off is an interesting aspect of this: yes, as a client implementor you may lose some control over the branding of the login page.
+However, you gain from a more streamlined authentication flow, as explained in better details in the motivation of [MSC3861].
+
+### Hang on, isn't this just an MSC? It all sounds very final?
+
+Correct, it is a proposal at this stage. However, we need to prove it first - MSCs require proof in a working implementation before they can be approved.
+
+We've outlined the plan here that assumes that the MSC will be successful.
+
+[MSC2964]: https://github.com/matrix-org/matrix-spec-proposals/pull/2964
+[MSC2965]: https://github.com/matrix-org/matrix-spec-proposals/pull/2965
+[MSC2966]: https://github.com/matrix-org/matrix-spec-proposals/pull/2966
+[MSC2967]: https://github.com/matrix-org/matrix-spec-proposals/pull/2967
+[MSC3824]: https://github.com/matrix-org/matrix-spec-proposals/pull/3861
+[MSC3861]: https://github.com/matrix-org/matrix-spec-proposals/pull/3861
+[MSC4108]: https://github.com/matrix-org/matrix-spec-proposals/pull/4108
+[MSC4190]: https://github.com/matrix-org/matrix-spec-proposals/pull/4190
+[MSC4191]: https://github.com/matrix-org/matrix-spec-proposals/pull/4191
+[Synapse]: https://github.com/element-hq/synapse
+[Dendrite]: https://github.com/matrix-org/dendrite
+[Conduit]: https://gitlab.com/famedly/conduit
+[MAS]: https://github.com/element-hq/matrix-authentication-service
+[Element X Android]: https://github.com/element-hq/element-x-android
+[Element X iOS]: https://github.com/element-hq/element-x-ios
+[Element Web]: https://github.com/element-hq/element-web

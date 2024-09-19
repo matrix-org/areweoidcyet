@@ -1,0 +1,27 @@
+{
+  "name": "areweoidcyet",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.3",
+    "@astrojs/mdx": "^3.1.6",
+    "@astrojs/react": "^3.6.2",
+    "@fontsource/inconsolata": "^5.1.0",
+    "@fontsource/inter": "^5.1.0",
+    "@vector-im/compound-design-tokens": "^1.8.0",
+    "@vector-im/compound-web": "^6.2.0",
+    "astro": "^4.15.7",
+    "classnames": "^2.5.1",
+    "modern-normalize": "^3.0.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.6.2"
+  }
+}
