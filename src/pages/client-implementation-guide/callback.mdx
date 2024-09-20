@@ -1,0 +1,13 @@
+---
+title: Client implementation guide
+layout: ../../layouts/Layout.astro
+---
+
+import { CallbackParameters } from "./interactive";
+
+This is the callback page.
+We received the following parameters:
+
+<CallbackParameters client:only />
+
+You can now get the `code` parameter and close this window.

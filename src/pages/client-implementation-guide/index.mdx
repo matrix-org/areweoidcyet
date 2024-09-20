@@ -1,210 +1,104 @@
 ---
-title: Are we OIDC yet?
+title: Client implementation guide
 layout: ../../layouts/Layout.astro
 ---
 import { Link } from "@vector-im/compound-web";
+import {
+  CsApiInput,
+  AuthIssuerEndpoint,
+  AuthIssuerFetcher,
+  CurrentIssuer,
+  OidcDiscoveryDocument,
+  OidcMetadataFetcher,
+  CurrentState,
+  ClientMetadataForm,
+  CurrentClientId,
+  AuthParametersForm,
+  DisplayAuthorizationUrl,
+  CodeExchangeForm,
+} from "./interactive";
 
 export const components = { a: Link };
 
 # Next-gen auth client implementation guide
 
-a.k.a. How to make your Matrix client OIDC-native
+a.k.a. How to implement next-gen auth in your Matrix client
 
 > n.b. The plan is that this document will become a doc on matrix.org. Please feel free to make edits/comments/suggestions etc.
 
-If you only want to make the client [OIDC-aware as per MSC3824](https://github.com/matrix-org/matrix-spec-proposals/pull/3824) then see the [client requirements section](https://github.com/matrix-org/matrix-spec-proposals/blob/hughns/sso-redirect-action/proposals/3824-oidc-aware-clients.md#definition-of-oidc-aware) of the MSC.
-
-When implementing an OIDC-native client you can test against the [OIDC Playground](https://github.com/element-hq/oidc-playground) where a number of Homeservers are available in different configurations.
+When implementing an next-gen auth client you can test against the [OIDC Playground](https://github.com/element-hq/oidc-playground) where a number of Homeservers are available in different configurations.
 
 # Useful terminology
 
-- OpenID Connect (OIDC) - the protocol being used to authenticate a user and acquire an access token to use with a homeserver
-- OpenID Provider (OP) - the OIDC compatible server that is capable of issuing access tokens
-- Issuer - the OP that is being used to issue access tokens for a particular homeserver
+- OAuth 2.0 is a set of specifications defined in RFCs by the IETF
+- OpenID Connect is an identity layer on top of OAuth 2.0 specs
+- Authorisation server is the server implementing the OAuth 2.0/OpenID Connect server capabilities. In our case, this is effectively the Homeserver
+- Issuer is the canonical name and URL of an authorisation server in the OpenID Connect specification
+- Relying party is the party requesting authorisation. In our case, this is effectively the client
+- Authorisation server metadata is a set of key/values parameters associated with the authorisation server
+- Client metadata is a set of key/values parameters associated with the client
 
-# Requirements
+# Sample flow
 
-## Discovery and client registration
+## Discovery [MSC2965]
 
-There are two steps to get started:
+To interact with the OAuth 2.0/OIDC APIs of the homeserver, the client first has to discover the authorisation server metadata.
+This is defined by [MSC2965] and works as follow:
 
-1. Discovery - determining which OP is being used by a Homeserver to issue access tokens (or if OIDC is not supported)
-2. Client registration - obtaining a `client_id` [+ `client_secret`] to use when interacting with the OP
+ - determine the issuer through a new Matrix C-S API
+ - get the server metadata through OpenID Connect Discovery
 
-**Discovery**
 
-To determine whether a Homeserver is using auth delegated via OIDC you make use of [MSC2965](https://github.com/matrix-org/matrix-spec-proposals/pull/2965) and check the `/.well-known/matrix/client`. The presence of org.matrix.msc2965.authentication indicates that homeserver is using OIDC.
+<CsApiInput client:load />
 
-e.g. from [https://synapse-oidc.element.dev/.well-known/matrix/client](https://synapse-oidc.element.dev/.well-known/matrix/client)
+To first determine the issuer, we must fetch the new `GET /auth_issuer` endpoint.
+In out case, that will be <code><AuthIssuerEndpoint client:load /></code>
 
-```
-{
-  "m.homeserver": {
-    "base_url": "https://synapse-oidc.element.dev/"
-  },
-  "org.matrix.msc2965.authentication": {
-    "issuer": "https://auth-oidc.element.dev/",
-    "account": "https://auth-oidc.element.dev/account"
-  }
-}
-```
+<AuthIssuerFetcher client:load />
 
-**Client registration**
+Now that we have our issuer (<code><CurrentIssuer client:load /></code>), we can fetch the OIDC Discovery Document, at <code><OidcDiscoveryDocument client:load /></code>
 
-Unless your client has been statically registered with the OpenID Provider you will need to make use of what is known as “dynamic client registration”. This is described in [MSC2966](https://github.com/matrix-org/matrix-spec-proposals/pull/2966) which makes use of [RFC7591](https://datatracker.ietf.org/doc/html/rfc7591).
+<OidcMetadataFetcher client:load />
 
-It is not always that case that an OP will support dynamic client registration. If this is the case and the client doesn’t already know of a static `client_id` then you make an HTTP request against the OP passing metadata to describe the client.
+## Client registration [MSC2966]
 
-The client registration is currently implemented on a per-device basis. The client should store the client ID it is assigned (mapped to the specific homeserver) as this will be needed when refreshing tokens.
+We know everything about the server, let's tell them about us now, by sending out set of **client metadata** values.
+This includes things like the name of the client, the logo, redirect URI, etc.
+Have a go and customise a few things!
 
-> **A note on dynamic client registration:**
-> If you have used OIDC for auth in an app previously then you may be surprised to see that the client needs to be dynamically registered instead of statically.
-> This is due to the open nature of the Matrix eco-system where by default any client can be used to connect to any HS.
-> In the legacy (non-OIDC) architecture it is implicit that any client can connect to any HS, whereas in OIDC architecture it becomes explicit: each client either needs to be pre-registered with a HS/OP or the HS/OP allows clients to dynamically register.
+<ClientMetadataForm client:load />
 
-You can test dynamic client registration against the `synapse-oidc.element.dev` homeserver in the [OIDC Playground](https://github.com/element-hq/oidc-playground).
+The client is now registered with the client ID <code><CurrentClientId client:load /></code>
 
-**Recommended flows**
+## Authorization request [MSC2965]
 
-Here are the recommended flows depending on whether your client also supports “legacy” (non-OIDC) auth:
+We are almost ready to start an authentication flow.
+We still need to gather the a few parameters that will be used to start the flow.
 
-![Discovery with legacy fallback](./discovery-with-fallback.png)
+This includes the `state` parameter, which is a random string that will be useful to distinguish between different authentication requests.
+It also includes the `code_challenge` parameter, which is derived from a random string called the `code_verifier`.
 
-![Discovery without legacy fallback](./discovery-without-fallback.png)
+<AuthParametersForm client:load />
 
-## User Login and User Registration
+Putting it all together, we can now start the authentication flow.
 
-This is a typical OAuth/OIDC login flow. [PKCE](https://www.rfc-editor.org/rfc/rfc7636.html) is mandated in order to follow security best practises.
+<DisplayAuthorizationUrl client:load />
 
-One notable change from before is that you need to generate a device ID yourself whereas with legacy auth the Homeserver would create a device ID for you if you didn’t specify one.
+Once the authorization is complete, you'll get a `code` back, which you can paste bellow and exchange.
 
-Once you have generated the device ID (e.g. `ABCDEFGHIJKL`) you then use it in the scope parameter of the request.
-
-There are three scopes that you need to request access to:
-
-- `openid` - standard OIDC scope
-- `urn:matrix:org.matrix.msc2967.client:api:*` - gives full access to Client Server API. See [MSC2967: API scopes](https://github.com/matrix-org/matrix-spec-proposals/pull/2967) for details of future scopes
-- `urn:matrix:org.matrix.msc2967.client:device:<generated device ID>` - e.g. `urn:matrix:org.matrix.msc2967.client:device:ABCDEFGHIJKL`
-
-So, a complete scope would be:
-
-`openid urn:matrix:org.matrix.msc2967.client:api:* urn:matrix:org.matrix.msc2967.client:device:ABCDEFGHIJKL`
-
-You can use the `prompt=create` to indicate that this is a new user registration.
-
-An example from a hydrogen running on localhost is: (whitespace added just for readability)
-
-```
-GET /auth?
-  response_mode=fragment&
-  response_type=code&
-  redirect_uri=http%3A%2F%2Flocalhost%3A3000&
-  client_id=hydrogen-oidc-playground&
-  state=MaH7aaDB&
-  scope=openid+urn%3Amatrix%3Aorg.matrix.msc2967.client%3Aapi%3A*+urn%3Amatrix%3Aorg.matrix.msc2967.client%3Adevice%3AjtiAHHIr1T&
-  nonce=A2Iat6Y2&
-  code_challenge_method=S256&
-  code_challenge=d9UAwn-QGjq6wp-hVfu2INVpFiZ5kQih4hYpoRPoPFk
-```
-
-## Access token handling
-
-The most important point to understand here is that the OpenID Provider is now responsible for issuing tokens and the homeserver isn’t involved in this process anymore.
-
-Additionally, access tokens are issued with an expiration date so token refresh handling is a requirement of the implementation too.
-
-## Logout
-
-The steps for a client to follow is:
-
-1. Revoke the access and refresh tokens with the OP using [RFC7009 Token Revocation](https://datatracker.ietf.org/doc/html/rfc7009)
-2. Destroy any local state
-3. (Re)direct a browser user-agent to [RP-Initiated Logout](https://openid.net/specs/openid-connect-rpinitiated-1_0.html) endpoint so that the user can be logged out of the OP if they wish
-
-## Account management
-
-The OP is now responsible for providing an account management UI.
-
-The client is responsible for sign-posting the user to the account management UI.
-
-For example, in Element Web the sign-posting looks like this:
-
-![Example with legacy fallback](./account-management.png)
-
-The OP is expected to provide the following capabilities:
-
-- viewing other signed in devices and sessions
-- signing out other devices and sessions
-- changing password if applicable
-- deleting/deactivating the account
-
-If applicable the OP can also provide capabilities:
-
-- associating email and MSISDN with the account
-- linking to upstream identity providers (e.g. Google, Facebook, Twitter, etc)
-
-# Differences compare to legacy auth
-
-## User registration
-
-The OP is responsible for the user interface for registration. The only responsibility the client has is to indicate to the OP if the user is wishing to register vs login (via the `prompt=create` param).
-
-## User login
-
-Again, the OP is responsible for show the user interface for login.
-
-## Client is agnostic to underlying auth type
-
-The client no longer needs to know whether the user is authenticating using password or some upstream social or SSO provider. All are treated the same.
-
-## Client must explicitly register it's existence with the OP
-
-In legacy auth any client could connect to any homeserver by default. In OIDC auth the client must be registered with the OP before it can connect to the HS/OP.
-
-This can either be done statically (e.g. the client is pre-registered with the OP) or dynamically (e.g. the client registers itself with the OP).
-
-## Device IDs
-
-Matrix device IDs must be explicitly generated by the client instead of the homeserver allocating one. This is because the client needs to know the device ID in order to request the correct scope from the OP.
-
-## Refresh tokens
-
-The client must implement refresh token handling whereas it was previouslt optional.
-
-## 3PID management
-
-The OP is now responsible for adding and validating email and MSISDN 3PIDs. The client no longer needs to present a UI for this.
-
-The client can still query the available 3PIDs for the purpose of setting up notifications.
-
-## Password management
-
-Password management related operations including reset and account recovery must be managed entirely by the oP.
-
-## Signing out other devices
-
-This must now be done via the OP account management UI.
-
-## Account deactivation
-
-This must now be done via the OP account management UI.
-
-# Client libraries
-
-Some SDKs that can help with this work:
-
-| Library | MSC2965 Issuer discovery | RFC7591 Client Registration | Access token handling | RFC7009 Logout | Device Flow | Sample usage |
-|---|---|---|---|---|---|---|
-| [Matrix Rust SDK](https://github.com/matrix-org/matrix-rust-sdk) | ? | ? | ? | ? | ? | |
-| [AppAuth-JS](https://github.com/openid/AppAuth-JS) | ❌ | ❌ | ✅ | ✅ | ❌ | |
-| [AppAuth-iOS](https://github.com/openid/AppAuth-iOS) | ❌ | ✅ | ✅ | ❌ | ✅ | |
-| [AppAuth-Android](https://github.com/openid/AppAuth-Android)| ❌ | ✅ | ✅ | ❌ | 🚧 [PR](https://github.com/openid/AppAuth-Android/pull/763) | |
-| [oidc-client-ts](https://github.com/authts/oidc-client-ts) | ❌ | ❌ | ✅ | ✅ | 🚧 [Branch](https://github.com/hughns/oidc-client-ts/tree/hughns/device-flow) | files-sdk-demo |
-
-
-More can be found at [https://openid.net/developers/certified/](https://openid.net/developers/certified/) under the Certified Relying Party Libraries section.
+<CodeExchangeForm client:load />
 
 # Implementation examples
 
 - Hydrogen - [https://github.com/sandhose/hydrogen-web/blob/sandhose/oidc-login/src/matrix/net/OidcApi.ts](https://github.com/sandhose/hydrogen-web/blob/sandhose/oidc-login/src/matrix/net/OidcApi.ts)
 - files-sdk-demo - [https://github.com/element-hq/files-sdk-demo/blob/oidc/src/ClientManager.ts](https://github.com/vector-im/files-sdk-demo/blob/oidc/src/ClientManager.ts)
+
+[MSC2964]: https://github.com/matrix-org/matrix-spec-proposals/pull/2964
+[MSC2965]: https://github.com/matrix-org/matrix-spec-proposals/pull/2965
+[MSC2966]: https://github.com/matrix-org/matrix-spec-proposals/pull/2966
+[MSC2967]: https://github.com/matrix-org/matrix-spec-proposals/pull/2967
+[MSC3824]: https://github.com/matrix-org/matrix-spec-proposals/pull/3861
+[MSC3861]: https://github.com/matrix-org/matrix-spec-proposals/pull/3861
+[MSC4108]: https://github.com/matrix-org/matrix-spec-proposals/pull/4108
+[MSC4190]: https://github.com/matrix-org/matrix-spec-proposals/pull/4190
+[MSC4191]: https://github.com/matrix-org/matrix-spec-proposals/pull/4191
