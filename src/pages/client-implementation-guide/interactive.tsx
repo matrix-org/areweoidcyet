@@ -137,11 +137,7 @@ const Fetcher: React.FC<FetcherProps> = ({
           </Form.ErrorMessage>
         </Form.Field>
 
-        {data && (
-          <pre className={cx(styles["fetcher-output"])}>
-            {JSON.stringify(data, null, 2)}
-          </pre>
-        )}
+        {data && <DataViewer data={data} />}
 
         {isError && (
           <Alert type="critical" title="There was an error fetching">
@@ -300,6 +296,14 @@ export const OidcMetadataFetcher = () => {
   );
 };
 
+const DataViewer: React.FC<{ data: unknown }> = ({ data }) => {
+  return (
+    <pre className={cx(styles["output-data"], "cpd-theme-dark")}>
+      {JSON.stringify(data, null, 2)}
+    </pre>
+  );
+};
+
 export const ClientMetadataForm = () => {
   const $serverMetadata = useStore(serverMetadata);
   const [clientName, setClientName] = useState("Client implementation guide");
@@ -375,19 +379,13 @@ export const ClientMetadataForm = () => {
           />
         </Form.Field>
 
-        <pre className={cx(styles["fetcher-output"])}>
-          {JSON.stringify(clientMetadata, null, 2)}
-        </pre>
+        <DataViewer data={clientMetadata} />
 
         <Form.Submit size="sm" kind="secondary">
           Submit client metadata
         </Form.Submit>
 
-        {response && (
-          <pre className={cx(styles["fetcher-output"])}>
-            {JSON.stringify(response, null, 2)}
-          </pre>
-        )}
+        {response && <DataViewer data={response} />}
       </Form.Root>
     </div>
   );
@@ -477,11 +475,7 @@ export const CodeExchangeForm = () => {
           Exchange code for access token
         </Form.Submit>
 
-        {response && (
-          <pre className={cx(styles["fetcher-output"])}>
-            {JSON.stringify(response, null, 2)}
-          </pre>
-        )}
+        {response && <DataViewer data={response} />}
       </Form.Root>
     </div>
   );
@@ -546,7 +540,7 @@ export const DisplayAuthorizationUrl: React.FC = () => {
         disabled={$clientId === null}
         href={fullUrl.toString()}
         size="sm"
-        kind="primary"
+        kind="secondary"
         target="_blank"
       >
         Start authorization flow
@@ -560,9 +554,5 @@ export const CallbackParameters = () => {
   const stripped = hash.startsWith("#") ? hash.slice(1) : hash;
   const params = new URLSearchParams(stripped);
 
-  return (
-    <pre className={cx(styles["fetcher-output"])}>
-      {JSON.stringify(Object.fromEntries(params), null, 2)}
-    </pre>
-  );
+  return <DataViewer data={Object.fromEntries(params)} />;
 };
