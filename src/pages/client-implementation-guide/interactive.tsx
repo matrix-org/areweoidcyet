@@ -66,26 +66,28 @@ export const CsApiInput = () => {
   };
 
   return (
-    <Form.Root onSubmit={onSubmit} className={cx(styles.form)}>
-      <Form.Field name="cs-api">
-        <Form.Label>Matrix C-S API root</Form.Label>
-        <Form.TextControl
-          type="url"
-          required
-          defaultValue={$csApi}
-          placeholder="https://matrix-client.matrix.org/"
-        />
-        <Form.ErrorMessage match="valueMissing">
-          This field is required
-        </Form.ErrorMessage>
-        <Form.ErrorMessage match="typeMismatch">
-          This must be a valid URL
-        </Form.ErrorMessage>
-      </Form.Field>
-      <Form.Submit size="sm" kind="secondary">
-        Save
-      </Form.Submit>
-    </Form.Root>
+    <div className={cx(styles["form-wrapper"])}>
+      <Form.Root onSubmit={onSubmit} className={cx(styles.form)}>
+        <Form.Field name="cs-api">
+          <Form.Label>Matrix C-S API root</Form.Label>
+          <Form.TextControl
+            type="url"
+            required
+            defaultValue={$csApi}
+            placeholder="https://matrix-client.matrix.org/"
+          />
+          <Form.ErrorMessage match="valueMissing">
+            This field is required
+          </Form.ErrorMessage>
+          <Form.ErrorMessage match="typeMismatch">
+            This must be a valid URL
+          </Form.ErrorMessage>
+        </Form.Field>
+        <Form.Submit size="sm" kind="secondary">
+          Save
+        </Form.Submit>
+      </Form.Root>
+    </div>
   );
 };
 
@@ -122,37 +124,39 @@ const Fetcher: React.FC<FetcherProps> = ({
   };
 
   return (
-    <Form.Root onSubmit={onSubmit} className={cx(styles.form)}>
-      <Form.Field name="cs-api">
-        <Form.Label>Endpoint</Form.Label>
-        <Form.TextControl type="url" readOnly value={url} />
-        <Form.ErrorMessage match="valueMissing">
-          This field is required
-        </Form.ErrorMessage>
-        <Form.ErrorMessage match="typeMismatch">
-          This must be a valid URL
-        </Form.ErrorMessage>
-      </Form.Field>
+    <div className={cx(styles["form-wrapper"])}>
+      <Form.Root onSubmit={onSubmit} className={cx(styles.form)}>
+        <Form.Field name="cs-api">
+          <Form.Label>Endpoint</Form.Label>
+          <Form.TextControl type="url" readOnly value={url} />
+          <Form.ErrorMessage match="valueMissing">
+            This field is required
+          </Form.ErrorMessage>
+          <Form.ErrorMessage match="typeMismatch">
+            This must be a valid URL
+          </Form.ErrorMessage>
+        </Form.Field>
 
-      {data && (
-        <pre className={cx(styles["fetcher-output"])}>
-          {JSON.stringify(data, null, 2)}
-        </pre>
-      )}
+        {data && (
+          <pre className={cx(styles["fetcher-output"])}>
+            {JSON.stringify(data, null, 2)}
+          </pre>
+        )}
 
-      {isError && (
-        <Alert type="critical" title="There was an error fetching">
-          {error.toString()}
-        </Alert>
-      )}
+        {isError && (
+          <Alert type="critical" title="There was an error fetching">
+            {error.toString()}
+          </Alert>
+        )}
 
-      <div className={cx(styles["button-stack"])}>
-        <Form.Submit disabled={isFetching} size="sm" kind="secondary">
-          {isFetching && <LoadingIndicator />}
-          {label}
-        </Form.Submit>
-      </div>
-    </Form.Root>
+        <div className={cx(styles["button-stack"])}>
+          <Form.Submit disabled={isFetching} size="sm" kind="secondary">
+            {isFetching && <LoadingIndicator />}
+            {label}
+          </Form.Submit>
+        </div>
+      </Form.Root>
+    </div>
   );
 };
 
@@ -229,29 +233,31 @@ export const AuthParametersForm = () => {
   }, [$codeVerifier]);
 
   return (
-    <Form.Root className={cx(styles.form)}>
-      <Form.Field name="state">
-        <Form.Label>State</Form.Label>
-        <RandomStringField length={16} atom={state} />
-      </Form.Field>
+    <div className={cx(styles["form-wrapper"])}>
+      <Form.Root className={cx(styles.form)}>
+        <Form.Field name="state">
+          <Form.Label>State</Form.Label>
+          <RandomStringField length={16} atom={state} />
+        </Form.Field>
 
-      <Form.Field name="code-verifier">
-        <Form.Label>Code verifier</Form.Label>
-        <RandomStringField minLength={43} length={43} atom={codeVerifier} />
-      </Form.Field>
+        <Form.Field name="code-verifier">
+          <Form.Label>Code verifier</Form.Label>
+          <RandomStringField minLength={43} length={43} atom={codeVerifier} />
+        </Form.Field>
 
-      <Form.Field name="code-challenge">
-        <Form.Label>
-          Code challenge = <code>BASE64URL(SHA256(code verifier))</code>
-        </Form.Label>
-        <Form.TextControl
-          className={cx(styles.mono)}
-          type="text"
-          readOnly
-          value={$codeChallenge}
-        />
-      </Form.Field>
-    </Form.Root>
+        <Form.Field name="code-challenge">
+          <Form.Label>
+            Code challenge = <code>BASE64URL(SHA256(code verifier))</code>
+          </Form.Label>
+          <Form.TextControl
+            className={cx(styles.mono)}
+            type="text"
+            readOnly
+            value={$codeChallenge}
+          />
+        </Form.Field>
+      </Form.Root>
+    </div>
   );
 };
 
@@ -344,44 +350,46 @@ export const ClientMetadataForm = () => {
   };
 
   return (
-    <Form.Root className={cx(styles.form)} onSubmit={onSubmit}>
-      <Form.Field name="client-name">
-        <Form.Label>Client name</Form.Label>
-        <Form.TextControl
-          type="text"
-          required
-          value={clientName}
-          onChange={onChange}
-          placeholder="Client implementation guide"
-        />
-        <Form.ErrorMessage match="valueMissing">
-          This field is required
-        </Form.ErrorMessage>
-      </Form.Field>
+    <div className={cx(styles["form-wrapper"])}>
+      <Form.Root className={cx(styles.form)} onSubmit={onSubmit}>
+        <Form.Field name="client-name">
+          <Form.Label>Client name</Form.Label>
+          <Form.TextControl
+            type="text"
+            required
+            value={clientName}
+            onChange={onChange}
+            placeholder="Client implementation guide"
+          />
+          <Form.ErrorMessage match="valueMissing">
+            This field is required
+          </Form.ErrorMessage>
+        </Form.Field>
 
-      <Form.Field name="endpoint">
-        <Form.Label>Registration endpoint</Form.Label>
-        <Form.TextControl
-          type="url"
-          readOnly
-          value={$serverMetadata.registration_endpoint}
-        />
-      </Form.Field>
+        <Form.Field name="endpoint">
+          <Form.Label>Registration endpoint</Form.Label>
+          <Form.TextControl
+            type="url"
+            readOnly
+            value={$serverMetadata.registration_endpoint}
+          />
+        </Form.Field>
 
-      <pre className={cx(styles["fetcher-output"])}>
-        {JSON.stringify(clientMetadata, null, 2)}
-      </pre>
-
-      <Form.Submit size="sm" kind="secondary">
-        Submit client metadata
-      </Form.Submit>
-
-      {response && (
         <pre className={cx(styles["fetcher-output"])}>
-          {JSON.stringify(response, null, 2)}
+          {JSON.stringify(clientMetadata, null, 2)}
         </pre>
-      )}
-    </Form.Root>
+
+        <Form.Submit size="sm" kind="secondary">
+          Submit client metadata
+        </Form.Submit>
+
+        {response && (
+          <pre className={cx(styles["fetcher-output"])}>
+            {JSON.stringify(response, null, 2)}
+          </pre>
+        )}
+      </Form.Root>
+    </div>
   );
 };
 
@@ -430,50 +438,52 @@ export const CodeExchangeForm = () => {
   };
 
   return (
-    <Form.Root className={cx(styles.form)} onSubmit={onSubmit}>
-      <Form.Field name="endpoint">
-        <Form.Label>Token endpoint</Form.Label>
-        <Form.TextControl
-          type="url"
-          readOnly
-          value={$serverMetadata.token_endpoint}
-        />
-      </Form.Field>
-      <Form.Field name="grant-type">
-        <Form.Label>Grant type</Form.Label>
-        <Form.TextControl type="text" readOnly value="authorization_code" />
-      </Form.Field>
-      <Form.Field name="client-id">
-        <Form.Label>Client ID</Form.Label>
-        <Form.TextControl type="text" required readOnly value={$clientId} />
-        {!$clientId && (
-          <Form.ErrorMessage>
-            Client must be registered to get one
+    <div className={cx(styles["form-wrapper"])}>
+      <Form.Root className={cx(styles.form)} onSubmit={onSubmit}>
+        <Form.Field name="endpoint">
+          <Form.Label>Token endpoint</Form.Label>
+          <Form.TextControl
+            type="url"
+            readOnly
+            value={$serverMetadata.token_endpoint}
+          />
+        </Form.Field>
+        <Form.Field name="grant-type">
+          <Form.Label>Grant type</Form.Label>
+          <Form.TextControl type="text" readOnly value="authorization_code" />
+        </Form.Field>
+        <Form.Field name="client-id">
+          <Form.Label>Client ID</Form.Label>
+          <Form.TextControl type="text" required readOnly value={$clientId} />
+          {!$clientId && (
+            <Form.ErrorMessage>
+              Client must be registered to get one
+            </Form.ErrorMessage>
+          )}
+        </Form.Field>
+        <Form.Field name="code-verifier">
+          <Form.Label>Code verifier</Form.Label>
+          <Form.TextControl type="text" readOnly value={$codeVerifier} />
+        </Form.Field>
+        <Form.Field name="code">
+          <Form.Label>Code</Form.Label>
+          <Form.TextControl type="text" required />
+          <Form.ErrorMessage match="valueMissing">
+            This field is required
           </Form.ErrorMessage>
+        </Form.Field>
+
+        <Form.Submit size="sm" kind="secondary" disabled={!$clientId}>
+          Exchange code for access token
+        </Form.Submit>
+
+        {response && (
+          <pre className={cx(styles["fetcher-output"])}>
+            {JSON.stringify(response, null, 2)}
+          </pre>
         )}
-      </Form.Field>
-      <Form.Field name="code-verifier">
-        <Form.Label>Code verifier</Form.Label>
-        <Form.TextControl type="text" readOnly value={$codeVerifier} />
-      </Form.Field>
-      <Form.Field name="code">
-        <Form.Label>Code</Form.Label>
-        <Form.TextControl type="text" required />
-        <Form.ErrorMessage match="valueMissing">
-          This field is required
-        </Form.ErrorMessage>
-      </Form.Field>
-
-      <Form.Submit size="sm" kind="secondary" disabled={!$clientId}>
-        Exchange code for access token
-      </Form.Submit>
-
-      {response && (
-        <pre className={cx(styles["fetcher-output"])}>
-          {JSON.stringify(response, null, 2)}
-        </pre>
-      )}
-    </Form.Root>
+      </Form.Root>
+    </div>
   );
 };
 
@@ -526,12 +536,14 @@ export const DisplayAuthorizationUrl: React.FC = () => {
       {Object.entries(params).map(([key, value], index) => (
         <div key={key} className={cx(styles.param)}>
           {index === 0 ? "?" : "&"}
-          {key} = {encodeURIComponent(value)}
+          {key} ={" "}
+          {value === "" ? <b>{"<missing>"}</b> : encodeURIComponent(value)}
         </div>
       ))}
 
       <Button
         as="a"
+        disabled={$clientId === null}
         href={fullUrl.toString()}
         size="sm"
         kind="primary"

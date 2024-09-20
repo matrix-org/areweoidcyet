@@ -96,5 +96,6 @@ main {
 
   & code {
     font-family: var(--cpd-font-family-mono);
+    word-break: break-all;
   }
 }
