@@ -204,6 +204,7 @@ export const RandomStringField: React.FC<RandomStringFormProps> = ({
           iconOnly
           size="sm"
           Icon={RestartIcon}
+          kind="secondary"
           onClick={onRefreshClick}
         />
       </div>
@@ -444,7 +445,12 @@ export const CodeExchangeForm = () => {
       </Form.Field>
       <Form.Field name="client-id">
         <Form.Label>Client ID</Form.Label>
-        <Form.TextControl type="text" readOnly value={$clientId} />
+        <Form.TextControl type="text" required readOnly value={$clientId} />
+        {!$clientId && (
+          <Form.ErrorMessage>
+            Client must be registered to get one
+          </Form.ErrorMessage>
+        )}
       </Form.Field>
       <Form.Field name="code-verifier">
         <Form.Label>Code verifier</Form.Label>
@@ -458,7 +464,7 @@ export const CodeExchangeForm = () => {
         </Form.ErrorMessage>
       </Form.Field>
 
-      <Form.Submit size="sm" kind="secondary">
+      <Form.Submit size="sm" kind="secondary" disabled={!$clientId}>
         Exchange code for access token
       </Form.Submit>
 
