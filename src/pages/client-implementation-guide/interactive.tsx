@@ -298,9 +298,11 @@ export const OidcMetadataFetcher = () => {
 
 const DataViewer: React.FC<{ data: unknown }> = ({ data }) => {
   return (
-    <pre className={cx(styles["output-data"], "cpd-theme-dark")}>
-      {JSON.stringify(data, null, 2)}
-    </pre>
+    <textarea
+      readOnly
+      className={cx(styles["output-data"], "cpd-theme-dark")}
+      value={JSON.stringify(data, null, 2)}
+    />
   );
 };
 
