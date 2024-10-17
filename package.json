@@ -10,26 +10,24 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.3",
-    "@astrojs/mdx": "^3.1.6",
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/mdx": "^3.1.8",
     "@astrojs/react": "^3.6.2",
     "@fontsource/inconsolata": "^5.1.0",
     "@fontsource/inter": "^5.1.0",
     "@nanostores/persistent": "^0.10.2",
     "@nanostores/react": "^0.8.0",
-    "@tanstack/react-query": "^5.56.2",
+    "@tanstack/react-query": "^5.59.15",
+    "@types/react": "^18.3.11",
     "@vector-im/compound-design-tokens": "^1.8.0",
     "@vector-im/compound-web": "^7.0.0",
-    "astro": "^4.15.7",
+    "astro": "^4.16.5",
     "classnames": "^2.5.1",
     "modern-normalize": "^3.0.1",
     "nanostores": "^0.11.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.3"
   },
-  "packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247",
-  "devDependencies": {
-    "@types/react": "^18.3.11"
-  }
+  "packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247"
 }
