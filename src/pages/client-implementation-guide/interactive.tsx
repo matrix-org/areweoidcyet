@@ -303,7 +303,11 @@ export const OidcMetadataFetcher = () => {
   );
 };
 
-const DataViewer: React.FC<{ data: unknown }> = ({ data }) => {
+const DataViewer: React.FC<{ data: unknown }> = ({
+  data,
+}: {
+  data: unknown;
+}) => {
   return (
     <textarea
       readOnly
