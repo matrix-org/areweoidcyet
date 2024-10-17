@@ -15,6 +15,7 @@
     "@astrojs/react": "^3.6.2",
     "@fontsource/inconsolata": "^5.1.0",
     "@fontsource/inter": "^5.1.0",
+    "@nanostores/persistent": "^0.10.2",
     "@nanostores/react": "^0.7.3",
     "@tanstack/react-query": "^5.56.2",
     "@vector-im/compound-design-tokens": "^1.8.0",
@@ -26,5 +27,6 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "typescript": "^5.6.2"
-  }
+  },
+  "packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247"
 }

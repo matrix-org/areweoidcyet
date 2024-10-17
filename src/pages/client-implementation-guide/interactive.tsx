@@ -4,13 +4,14 @@ import {
 } from "@vector-im/compound-design-tokens/assets/web/icons";
 import { useStore } from "@nanostores/react";
 import { Alert, Button, Form } from "@vector-im/compound-web";
-import { atom, type WritableAtom } from "nanostores";
+import { atom, computed, task, type WritableAtom } from "nanostores";
+import { persistentAtom } from "@nanostores/persistent";
 import type React from "react";
+import { useEffect, useState } from "react";
 import cx from "classnames";
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 
 import styles from "./style.module.css";
-import { useEffect, useState } from "react";
 
 const baseUrl = new URL(import.meta.env.BASE_URL, import.meta.env.SITE);
 const clientUri = baseUrl.toString();
@@ -20,27 +21,42 @@ const redirectUri = new URL(
 ).toString();
 
 const queryClient = atom(new QueryClient());
-const csApi = atom("https://synapse-oidc.element.dev/");
-const issuer = atom("https://auth-oidc.element.dev/");
-const state = atom("ieXei8ohb7miesie");
-const serverMetadata = atom<ServerMetadata>({
-  authorization_endpoint: "https://auth-oidc.element.dev/authorize",
-  token_endpoint: "https://auth-oidc.element.dev/oauth2/token",
-  registration_endpoint: "https://auth-oidc.element.dev/oauth2/registration",
+const csApi = persistentAtom<string>(
+  "cs-api",
+  "https://synapse-oidc.element.dev/",
+);
+const issuer = persistentAtom<string>(
+  "issuer",
+  "https://auth-oidc.element.dev/",
+);
+const state = persistentAtom<string>("state", "ieXei8ohb7miesie");
+const serverMetadata = persistentAtom<ServerMetadata>(
+  "server-metadata",
+  {
+    authorization_endpoint: "https://auth-oidc.element.dev/authorize",
+    token_endpoint: "https://auth-oidc.element.dev/oauth2/token",
+    registration_endpoint: "https://auth-oidc.element.dev/oauth2/registration",
+  },
+  { encode: JSON.stringify, decode: JSON.parse },
+);
+const clientId = persistentAtom<string | null>("client-id", null, {
+  encode: JSON.stringify,
+  decode: JSON.parse,
 });
-const clientId = atom<string | null>(null);
-const codeVerifier = atom<string>(
+const codeVerifier = persistentAtom<string>(
+  "code-verifier",
   "ahlae7FuMahCeeseip6Shooqu6aefai5xoocea5gav2",
 );
-const codeChallenge = atom<string>(
-  "KjgOR3AZvytATpbxHdwNEYRdpwWMF7Va2zfAauJyoYo",
+const codeChallenge = computed(codeVerifier, (codeVerifier) =>
+  task(() => computeCodeChallenge(codeVerifier)),
 );
+const code = persistentAtom("code");
 
 const computeCodeChallenge = async (codeVerifier: string): Promise<string> => {
   // Hash the verifier
   const encoder = new TextEncoder();
   const data = encoder.encode(codeVerifier);
-  const hash = await window.crypto.subtle.digest("SHA-256", data);
+  const hash = await globalThis.crypto.subtle.digest("SHA-256", data);
   // Base64 encode the hash
   let str = "";
   const bytes = new Uint8Array(hash);
@@ -218,15 +234,6 @@ export const RandomStringField: React.FC<RandomStringFormProps> = ({
 
 export const AuthParametersForm = () => {
   const $codeChallenge = useStore(codeChallenge);
-  const $codeVerifier = useStore(codeVerifier);
-
-  useEffect(() => {
-    const compute = async () => {
-      const newCodeChallenge = await computeCodeChallenge($codeVerifier);
-      codeChallenge.set(newCodeChallenge);
-    };
-    compute();
-  }, [$codeVerifier]);
 
   return (
     <div className={cx(styles["form-wrapper"])}>
@@ -397,6 +404,7 @@ export const CodeExchangeForm = () => {
   const $clientId = useStore(clientId) || "";
   const $serverMetadata = useStore(serverMetadata);
   const $codeVerifier = useStore(codeVerifier);
+  const $code = useStore(code);
   const $queryClient = useStore(queryClient);
 
   const [response, setResponse] = useState<null | object>(null);
@@ -437,6 +445,12 @@ export const CodeExchangeForm = () => {
     mutation.mutate(code);
   };
 
+  const onCodeInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const input = e.currentTarget.value;
+    code.set(input);
+  };
+
   return (
     <div className={cx(styles["form-wrapper"])}>
       <Form.Root className={cx(styles.form)} onSubmit={onSubmit}>
@@ -467,7 +481,12 @@ export const CodeExchangeForm = () => {
         </Form.Field>
         <Form.Field name="code">
           <Form.Label>Code</Form.Label>
-          <Form.TextControl type="text" required />
+          <Form.TextControl
+            type="text"
+            value={$code}
+            onInput={onCodeInput}
+            required
+          />
           <Form.ErrorMessage match="valueMissing">
             This field is required
           </Form.ErrorMessage>
@@ -519,7 +538,7 @@ export const DisplayAuthorizationUrl: React.FC = () => {
       "urn:matrix:org.matrix.msc2967.client:api:* urn:matrix:org.matrix.msc2967.client:device:ABCDEFGHIJKL",
     state: $state,
     code_challenge_method: "S256",
-    code_challenge: $codeChallenge,
+    code_challenge: $codeChallenge || "",
   } satisfies Record<string, string>;
 
   const query = new URLSearchParams(params).toString();
@@ -555,6 +574,12 @@ export const CallbackParameters = () => {
   const hash = window.location?.hash || "";
   const stripped = hash.startsWith("#") ? hash.slice(1) : hash;
   const params = new URLSearchParams(stripped);
+
+  useEffect(() => {
+    if (params.get("code")) {
+      code.set(params.get("code") as string);
+    }
+  }, [params]);
 
   return <DataViewer data={Object.fromEntries(params)} />;
 };
