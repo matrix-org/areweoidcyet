@@ -50,7 +50,15 @@ const codeVerifier = persistentAtom<string>(
 const codeChallenge = computed(codeVerifier, (codeVerifier) =>
   task(() => computeCodeChallenge(codeVerifier)),
 );
-const code = persistentAtom("code");
+const code = persistentAtom<string | null>("code", null, {
+  encode: JSON.stringify,
+  decode: JSON.parse,
+});
+const accessToken = persistentAtom<string | null>("access-token", null, {
+  encode: JSON.stringify,
+  decode: JSON.parse,
+});
+const refreshToken = persistentAtom("refresh-token");
 
 const computeCodeChallenge = async (codeVerifier: string): Promise<string> => {
   // Hash the verifier
@@ -437,6 +445,14 @@ export const CodeExchangeForm = () => {
 
         const data = await res.json();
         setResponse(data);
+
+        if ("access_token" in data && typeof data.access_token === "string") {
+          accessToken.set(data.access_token);
+        }
+
+        if ("refresh_token" in data && typeof data.refresh_token === "string") {
+          refreshToken.set(data.refresh_token);
+        }
       },
     },
     $queryClient,
@@ -506,6 +522,108 @@ export const CodeExchangeForm = () => {
   );
 };
 
+export const RefreshTokenForm = () => {
+  const $refreshToken = useStore(refreshToken) || "";
+  const $queryClient = useStore(queryClient);
+  const $clientId = useStore(clientId) || "";
+  const $serverMetadata = useStore(serverMetadata);
+
+  const [response, setResponse] = useState<null | object>(null);
+
+  const mutation = useMutation(
+    {
+      mutationFn: async (): Promise<void> => {
+        const params = {
+          grant_type: "refresh_token",
+          refresh_token: $refreshToken,
+          client_id: $clientId,
+        } satisfies Record<string, string>;
+
+        const body = new URLSearchParams(params).toString();
+
+        const res = await fetch($serverMetadata.token_endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Accept: "application/json",
+          },
+          body,
+        });
+
+        const data = await res.json();
+        setResponse(data);
+
+        if ("access_token" in data && typeof data.access_token === "string") {
+          accessToken.set(data.access_token);
+        }
+
+        if ("refresh_token" in data && typeof data.refresh_token === "string") {
+          refreshToken.set(data.refresh_token);
+        }
+      },
+    },
+    $queryClient,
+  );
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    mutation.mutate();
+  };
+
+  return (
+    <div className={cx(styles["form-wrapper"])}>
+      <Form.Root onSubmit={onSubmit} className={cx(styles.form)}>
+        <Form.Field name="endpoint">
+          <Form.Label>Token endpoint</Form.Label>
+          <Form.TextControl
+            type="url"
+            readOnly
+            value={$serverMetadata.token_endpoint}
+          />
+        </Form.Field>
+
+        <Form.Field name="grant-type">
+          <Form.Label>Grant type</Form.Label>
+          <Form.TextControl type="text" readOnly value="refresh_token" />
+        </Form.Field>
+
+        <Form.Field name="client-id">
+          <Form.Label>Client ID</Form.Label>
+          <Form.TextControl type="text" required readOnly value={$clientId} />
+          {!$clientId && (
+            <Form.ErrorMessage>
+              Client must be registered to get one
+            </Form.ErrorMessage>
+          )}
+        </Form.Field>
+
+        <Form.Field name="refresh-token">
+          <Form.Label>Refresh token</Form.Label>
+          <Form.TextControl
+            type="text"
+            required
+            readOnly
+            value={$refreshToken}
+          />
+          {!$refreshToken && (
+            <Form.ErrorMessage>No refresh token available</Form.ErrorMessage>
+          )}
+        </Form.Field>
+
+        <Form.Submit
+          size="sm"
+          kind="secondary"
+          disabled={!$refreshToken || !$clientId}
+        >
+          Refresh token
+        </Form.Submit>
+
+        {response && <DataViewer data={response} />}
+      </Form.Root>
+    </div>
+  );
+};
+
 export const CurrentCsApiRoot = (): string => useStore(csApi);
 export const AuthIssuerEndpoint = (): string => {
   const $csApi = useStore(csApi);
@@ -526,6 +644,7 @@ export const OidcDiscoveryDocument = (): string => {
 
 export const CurrentState = (): string => useStore(state);
 export const CurrentClientId = (): string => `${useStore(clientId)}`;
+export const CurrentAccessToken = (): string => `${useStore(accessToken)}`;
 
 export const DisplayAuthorizationUrl: React.FC = () => {
   const $state = useStore(state);

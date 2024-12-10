@@ -16,6 +16,8 @@ import {
   AuthParametersForm,
   DisplayAuthorizationUrl,
   CodeExchangeForm,
+  CurrentAccessToken,
+  RefreshTokenForm,
 } from "./interactive";
 
 export const components = { a: Link };
@@ -87,6 +89,13 @@ Putting it all together, we can now start the authentication flow.
 Once the authorization is complete, you'll get a `code` back, which you can paste bellow and exchange.
 
 <CodeExchangeForm client:load />
+
+## Refresh token [MSC2956]
+
+The access token (<code><CurrentAccessToken client:load /></code>) is only valid for a short period of time.
+It must be refreshed before it expires.
+
+<RefreshTokenForm client:load />
 
 # Implementation examples
 
