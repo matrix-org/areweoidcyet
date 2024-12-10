@@ -50,10 +50,7 @@ const codeVerifier = persistentAtom<string>(
 const codeChallenge = computed(codeVerifier, (codeVerifier) =>
   task(() => computeCodeChallenge(codeVerifier)),
 );
-const code = persistentAtom<string | null>("code", null, {
-  encode: JSON.stringify,
-  decode: JSON.parse,
-});
+const code = persistentAtom("code");
 const accessToken = persistentAtom<string | null>("access-token", null, {
   encode: JSON.stringify,
   decode: JSON.parse,
