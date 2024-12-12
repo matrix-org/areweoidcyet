@@ -30,6 +30,8 @@ a.k.a. How to implement next-gen auth in your Matrix client
 
 When implementing an next-gen auth client you can test against the [OIDC Playground](https://github.com/element-hq/oidc-playground) where a number of Homeservers are available in different configurations.
 
+This is covering the Authorization Code Grant flow. To learn about the Device Code Grant flow, see [Device code grant](./device-code-grant).
+
 # Useful terminology
 
 - OAuth 2.0 is a set of specifications defined in RFCs by the IETF
@@ -68,7 +70,7 @@ We know everything about the server, let's tell them about us now, by sending ou
 This includes things like the name of the client, the logo, redirect URI, etc.
 Have a go and customise a few things!
 
-<ClientMetadataForm client:load />
+<ClientMetadataForm grantTypes={["authorization_code", "refresh_token"]} client:load />
 
 The client is now registered with the client ID <code><CurrentClientId client:load /></code>
 
@@ -89,6 +91,8 @@ Putting it all together, we can now start the authentication flow.
 Once the authorization is complete, you'll get a `code` back, which you can paste bellow and exchange.
 
 <CodeExchangeForm client:load />
+
+This gave us an access token, which we can now use to make authenticated requests to the homeserver.
 
 ## Refresh token [MSC2964]
 

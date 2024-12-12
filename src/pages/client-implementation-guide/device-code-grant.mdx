@@ -1,0 +1,109 @@
+---
+title: Using the Device Code Grant
+layout: ../../layouts/Layout.astro
+---
+import { Link } from "@vector-im/compound-web";
+import {
+  CsApiInput,
+  AuthIssuerEndpoint,
+  AuthIssuerFetcher,
+  CurrentIssuer,
+  OidcDiscoveryDocument,
+  OidcMetadataFetcher,
+  CurrentState,
+  ClientMetadataForm,
+  CurrentClientId,
+  DeviceCodeExchangeForm,
+  CurrentAccessToken,
+  RefreshTokenForm,
+  DeviceCodeRequestForm,
+  DeviceCodeQrCode,
+} from "./interactive";
+
+export const components = { a: Link };
+
+# Using the Device Code Grant
+
+The Device Code Grant is a type of OAuth 2.0 grant that is used in contexts where opening the user's browser is not possible or desirable.
+
+# Sample flow
+
+## Discovery [MSC2965]
+
+To interact with the OAuth 2.0/OIDC APIs of the homeserver, the client first has to discover the authorisation server metadata.
+This is defined by [MSC2965] and works as follow:
+
+ - determine the issuer through a new Matrix C-S API
+ - get the server metadata through OpenID Connect Discovery
+
+
+<CsApiInput client:load />
+
+To first determine the issuer, we must fetch the new `GET /auth_issuer` endpoint.
+In out case, that will be <code><AuthIssuerEndpoint client:load /></code>
+
+<AuthIssuerFetcher client:load />
+
+Now that we have our issuer (<code><CurrentIssuer client:load /></code>), we can fetch the OIDC Discovery Document, at <code><OidcDiscoveryDocument client:load /></code>
+
+<OidcMetadataFetcher client:load />
+
+## Client registration [MSC2966]
+
+We know everything about the server, let's tell them about us now, by sending out set of **client metadata** values.
+This includes things like the name of the client, the logo, redirect URI, etc.
+Have a go and customise a few things!
+
+Because we would like to use the Device Code Grant, we need to add the `urn:ietf:params:oauth:grant-type:device_code` grant type to the list of requested grant types.
+
+<ClientMetadataForm grantTypes={["urn:ietf:params:oauth:grant-type:device_code", "refresh_token"]} client:load />
+
+The client is now registered with the client ID <code><CurrentClientId client:load /></code>
+
+## Device authorisation request [RFC8628]
+
+We are ready to start the authentication process.
+To do so, we will start a session by sending a request to the device authorization endpoint.
+
+<DeviceCodeRequestForm client:load />
+
+This gave us three values:
+
+ - A `device_code`, which we will need to exchange for an access token
+ - A `user_code`, which we will display to the user for them to enter
+ - A `verification_uri`, which we will ask the user to visit to complete the flow
+
+<DeviceCodeQrCode client:load />
+
+## Token request [RFC8628]
+
+In the background, the client must now poll the token endpoint to exchange the device code for an access token.
+
+To do so, we will send a request to the token endpoint, with the following parameters:
+
+ - `grant_type` set to `urn:ietf:params:oauth:grant-type:device_code`
+ - `device_code` set to the device code we received from the device authorization endpoint
+ - `client_id` set to the client ID we registered
+
+<DeviceCodeExchangeForm client:load />
+
+This gave us an access token, which we can now use to make authenticated requests to the homeserver.
+
+## Refresh token [MSC2964]
+
+The access token (<code><CurrentAccessToken client:load /></code>) is only valid for a short period of time.
+It must be refreshed before it expires.
+
+<RefreshTokenForm client:load />
+
+
+[MSC2964]: https://github.com/matrix-org/matrix-spec-proposals/pull/2964
+[MSC2965]: https://github.com/matrix-org/matrix-spec-proposals/pull/2965
+[MSC2966]: https://github.com/matrix-org/matrix-spec-proposals/pull/2966
+[MSC2967]: https://github.com/matrix-org/matrix-spec-proposals/pull/2967
+[MSC3824]: https://github.com/matrix-org/matrix-spec-proposals/pull/3861
+[MSC3861]: https://github.com/matrix-org/matrix-spec-proposals/pull/3861
+[MSC4108]: https://github.com/matrix-org/matrix-spec-proposals/pull/4108
+[MSC4190]: https://github.com/matrix-org/matrix-spec-proposals/pull/4190
+[MSC4191]: https://github.com/matrix-org/matrix-spec-proposals/pull/4191
+[RFC8628]: https://datatracker.ietf.org/doc/html/rfc8628
