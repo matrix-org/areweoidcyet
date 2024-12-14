@@ -169,19 +169,50 @@ The homeserver used here is an old version of [matrix-authentication-service][MA
 
 The plan is to build these out a bit further to explore some more of the handover points between the app and homeserver (e.g. for account management).
 
-### Does relying on the system browser widen the attack surface
+### Does relying on the system browser widen the attack surface?
 
-This is relatively subjective, but we feel relatively confortable to rely on the system browser for multiple reasons:
+This is subjective, but we feel relatively confortable to rely on the system browser for multiple reasons:
 
  - most browser have heavy sandboxing between tabs
  - on native clients, the underlying operating system also sandboxes between the browser and the client
  - this only affects user credentials *not* E2EE.
  - this gives a clear seperation where the system browser is responsible for authenticating, the client is resposible for E2EE. We no longer have a single entity accessing both
- - implementations can use many web primitives to further harden their security. [matrix-autentication-service][MAS] for example has no javascript during the login flow, and loads all its assets from the same domain, and uses sub-resource integrity for all of them.
+ - implementations can use many web primitives to further harden their security: [matrix-autentication-service][MAS] for example has *no javascript* during the login flow, and loads all its assets from the same domain, and uses sub-resource integrity for all of them.
+ 
+#### But this still means the user has to execute code provided by the homeserver!
+
+This is true, the flow will involve a device (not necessarily the same one as the one with the Matrix client) displaying a web page provided by the homeserver.
+
+Again, the current implementation in [MAS] doesn’t require any javascript, so the browser can have javascript disabled and still complete the flow.
+
+The homeserver already had access to the user’s password, so this proposal doesn’t change anything on that regard, which also means we are OK with a ‘lack of improvement’ here, as there is no particular regression here.
+
+Remember that this is a one-time action at the time of logging in, at which point the client doesn’t have access to E2EE messages. Even if some browser-vulnerability in its HTML and CSS handling is used, which would have to break through the multiple layers of sandboxing from the browser and the underlying operating system, the homeserver would still not have access to the user’s E2EE messages.
+
+
+### Isn’t the UX worse for native desktop clients?
+
+Again, this is subjective, but we also feel confortable with saying than the UX will be better, even for desktop native clients.
+
+First, a good chunk of the users of the ecosystem is already using a browser-based flow through `m.login.sso`, so this move will make sure that those users are considered as first-class citizens by client developers, enhancing the UX for them.
+
+Second, many servers with open registrations have CAPTCHA protection through Google’s reCAPTCHA. The current implementation is insecure, as it requires homeservers to disable domain verification, making the CAPTCHA usually ask for stronger challenges from users.
+Some desktop native clients choose to open the system browser anyway for resolving this challenge.
+
+The point here is that native clients already have to rely on system browsers in some cases anyway with the current APIs.
+
+Another argument can then be considered for closed-registrations servers that only allow logging in with the current `m.login.password` login API.
+With the current APIs, clients are able to show a native-looking form, and this proposal is moving away from this.
+We think that relying on the system browser even for password-based accounts is still better for multiple reasons:
+
+ - it makes password managers work, as they will save the password associated with the homeserver domain, instead of the client, making using different clients easier
+ - multiple clients on the same device will usually have to enter their credentials only once
+ - logging on an untrusted device (like a computer in a public library) is possible through a second trusted device (like a personal mobile phone) without the untrusted device ever seeing the user credentials
+ - it reduces the risk of phishing, as administrators can train their users to only ever enter their account credentials on one specific website, instead of having them enter their credentials in different clients 
 
 ### How will it work for automation/bot use cases?
 
-For now, `m.login.password` isn't going away, so existing scripts won't break during migration.
+For now, the existing `m.login.password` isn't going away, so existing scripts won't break during migration.
 On the long term, there are two things to consider:
 
  - the spec could define a flow specialised for that, like standardise how Matrix could leverage the Client Credentials Grant for that
@@ -222,6 +253,15 @@ It is designed to potentially work for other homeservers, so other implementatio
 
 Hopefully not! In the same way that Matrix is not an authentication protocol, it also doesn't make sense to completely reinvent a fully-featured identity provider.
 
+### Why encrypted bridges don’t work with Synapse + MAS?
+
+The unstable encrypted application services relies on being able to ‘login’ as an application service-controlled user.
+This particular API doesn’t work with MAS.
+
+In practice, most application services only use `/_matrix/client/v3/login` and `/_matrix/client/v3/logout` to create and delete Matrix devices.
+This is why we also proposed [MSC4190] to add APIs to manipulate devices for application services, without using `/login` and `/logout`.
+This API is available since [Synapse 1.121.0](https://github.com/element-hq/synapse/releases/tag/v1.121.1), and has yet to be adopted by the various bridges.
+
 ### Will clients need to support both old-style and new-style auth?
 
 For a period of time, yes.
@@ -251,7 +291,7 @@ We've outlined the plan here that assumes that the MSC will be successful.
 [MSC2965]: https://github.com/matrix-org/matrix-spec-proposals/pull/2965
 [MSC2966]: https://github.com/matrix-org/matrix-spec-proposals/pull/2966
 [MSC2967]: https://github.com/matrix-org/matrix-spec-proposals/pull/2967
-[MSC3824]: https://github.com/matrix-org/matrix-spec-proposals/pull/3861
+[MSC3824]: https://github.com/matrix-org/matrix-spec-proposals/pull/3824
 [MSC3861]: https://github.com/matrix-org/matrix-spec-proposals/pull/3861
 [MSC4108]: https://github.com/matrix-org/matrix-spec-proposals/pull/4108
 [MSC4190]: https://github.com/matrix-org/matrix-spec-proposals/pull/4190
