@@ -127,7 +127,7 @@ These are the requirements for a client to be Next-gen auth-aware from [MSC3824]
 
 ### Will I lose my old-style login/password?
 
-The current implementation in [Synapse] with [MAS] provides local login and password login.
+The current implementation in [Synapse] with [MAS] provides SSO-based login and local password login.
 We expect other homeservers implementations to provide the same kind of features.
 
 However, you will be entering your username/password into a UI controlled by the homeserver, not the client.
@@ -136,7 +136,24 @@ However, you will be entering your username/password into a UI controlled by the
 
 Similar to how the homeserver achieves this today, the next-gen auth implementation in homeservers can act as an identity broker and support login via upstream social (and other) identity providers.
 
+### Does it mean my client needs a web browser?
+
+In its current form, the proposal embraces two main flows: the authorization code grant and the device code grant.
+
+The authorization code grant works by having the client open/redirect to the homeserver, the homeserver authenticates the user, and then redirects back to the client.
+This flow works well in web contexts, as well as native contexts where opening the system browser (or equivalent) is feasible.
+On mobile, the platform usually provides specialised APIs to do so without leaving the app.
+Checkout the [client implementation guide](./client-implementation-guide/) for details about this flow.
+
+The device code grant can be used in contexts where the client has no good way to open the system browser, and/or when it's not possible to get back to the client through a redirect.
+In this flow, the client gets from the homeserver a short URL and a short code that the user can manually enter in their browser, on the same device or not.
+The client then polls in the background, waiting for the authorisation to complete, whilst the user authenticates in the browser of their choice.
+"QR-code login" as defined by [MSC4108] relies on this flow.
+Checkout the [device code grant implementation guide](./client-implementation-guide/device-code-grant/) for details about this flow.
+
 ### How will this look in native mobile apps?
+
+*This section needs updating, now that we have stable implementations in mobile clients.*
 
 We've built proof of concept apps to explore this and show how it can behave:
 
@@ -152,24 +169,23 @@ The homeserver used here is an old version of [matrix-authentication-service][MA
 
 The plan is to build these out a bit further to explore some more of the handover points between the app and homeserver (e.g. for account management).
 
-### How does this work with QR code login?
+### Does relying on the system browser widen the attack surface
 
-The [RFC8628](https://datatracker.ietf.org/doc/html/rfc8628) OAuth 2.0 Device Code Authorization Grant (aka "device flow") can be used to allow login on a device using a second device.
+This is relatively subjective, but we feel relatively confortable to rely on the system browser for multiple reasons:
 
-An implementation of this is available to try in the [OIDC Playground](https://github.com/element-hq/oidc-playground).
+ - most browser have heavy sandboxing between tabs
+ - on native clients, the underlying operating system also sandboxes between the browser and the client
+ - this only affects user credentials *not* E2EE.
+ - this gives a clear seperation where the system browser is responsible for authenticating, the client is resposible for E2EE. We no longer have a single entity accessing both
+ - implementations can use many web primitives to further harden their security. [matrix-autentication-service][MAS] for example has no javascript during the login flow, and loads all its assets from the same domain, and uses sub-resource integrity for all of them.
 
-It can work a bit like this:
+### How will it work for automation/bot use cases?
 
-![Device Flow demo 2](https://user-images.githubusercontent.com/6955675/180743561-e2e158cd-2caf-4e43-9eed-9e86da84597c.gif)
+For now, `m.login.password` isn't going away, so existing scripts won't break during migration.
+On the long term, there are two things to consider:
 
-### What do I do for my device which doesn't have a web browser?
-
-OIDC provides at least two flows that could help with this:
-
-1. Use the [*Device Authorization Grant*](https://oauth.net/2/device-flow) (a.k.a. "device flow") to complete the login on a secondary device that does have a web browser. On the QR flow demo above you can see an example URL and code that would be used on the second device.
-2. Use a [*Resource Owner Password Credentials Grant*](https://oauth.net/2/grant-types/password/) (a.k.a. "password grant" or "direct grant") where the username and password are entered into the client (i.e. the 3DS) and the client then sends the username and password to the OpenID Provider to get an access token.
-
-It is important to note that the second option (Resource Owner Password Credentials Grant) is considered insecure by the [OAuth 2.0 Security Best Current Practice](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics-20#section-2.4) guide. As such, it is expected that the presence of this capability in an OpenID Provider can not be relied on. For example, we don't expect that matrix.org will support this flow.
+ - the spec could define a flow specialised for that, like standardise how Matrix could leverage the Client Credentials Grant for that
+ - implementations can imagine features to help with that. For example, [matrix-authentication-service][MAS] plans to add a "Personal access token" feature to help user issue long-lived access tokens for their bots.
 
 ### How will this work with E2EE?
 
