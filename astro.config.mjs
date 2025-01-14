@@ -5,5 +5,6 @@ import react from "@astrojs/react";
 
 export default defineConfig({
   site: "https://areweoidcyet.com",
+  trailingSlash: "always",
   integrations: [mdx(), react()],
 });

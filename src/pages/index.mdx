@@ -97,7 +97,7 @@ This means that not all functionnalities and APIs Synapse currently supports are
 
 #### Next-gen auth native clients
 
-[Client implementation guide](./client-implementation-guide)
+[Client implementation guide](./client-implementation-guide/index.mdx)
 
 Known working implementations of the proposal include:
 
@@ -178,7 +178,7 @@ This is subjective, but we feel relatively confortable to rely on the system bro
  - this only affects user credentials *not* E2EE.
  - this gives a clear seperation where the system browser is responsible for authenticating, the client is resposible for E2EE. We no longer have a single entity accessing both
  - implementations can use many web primitives to further harden their security: [matrix-autentication-service][MAS] for example has *no javascript* during the login flow, and loads all its assets from the same domain, and uses sub-resource integrity for all of them.
- 
+
 #### But this still means the user has to execute code provided by the homeserver!
 
 This is true, the flow will involve a device (not necessarily the same one as the one with the Matrix client) displaying a web page provided by the homeserver.
@@ -208,7 +208,7 @@ We think that relying on the system browser even for password-based accounts is 
  - it makes password managers work, as they will save the password associated with the homeserver domain, instead of the client, making using different clients easier
  - multiple clients on the same device will usually have to enter their credentials only once
  - logging on an untrusted device (like a computer in a public library) is possible through a second trusted device (like a personal mobile phone) without the untrusted device ever seeing the user credentials
- - it reduces the risk of phishing, as administrators can train their users to only ever enter their account credentials on one specific website, instead of having them enter their credentials in different clients 
+ - it reduces the risk of phishing, as administrators can train their users to only ever enter their account credentials on one specific website, instead of having them enter their credentials in different clients
 
 ### How will it work for automation/bot use cases?
 
