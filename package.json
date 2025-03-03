@@ -11,25 +11,25 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/mdx": "^4.0.8",
+    "@astrojs/mdx": "^4.1.0",
     "@astrojs/react": "^4.2.1",
-    "@fontsource/inconsolata": "^5.1.1",
-    "@fontsource/inter": "^5.1.1",
+    "@fontsource/inconsolata": "^5.2.5",
+    "@fontsource/inter": "^5.2.5",
     "@nanostores/persistent": "^0.10.2",
     "@nanostores/react": "^0.8.4",
     "@tanstack/react-query": "^5.66.11",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
-    "@vector-im/compound-design-tokens": "^3.0.1",
+    "@vector-im/compound-design-tokens": "^4.0.0",
     "@vector-im/compound-web": "^7.6.4",
-    "astro": "^5.2.5",
+    "astro": "^5.4.1",
     "classnames": "^2.5.1",
     "modern-normalize": "^3.0.1",
     "nanostores": "^0.11.4",
     "qrcode.react": "^4.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.2"
   },
   "packageManager": "pnpm@10.5.2+sha1.ca68c0441df195b7e2992f1d1cb12fb731f82d78"
 }
