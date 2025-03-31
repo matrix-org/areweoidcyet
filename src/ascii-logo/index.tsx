@@ -24,7 +24,7 @@ const AsciiLogo = () => (
           width={matrix.width}
         />
       </a>
-      <div>Last updated: 2024-09-19</div>
+      <div>Last updated: 2025-03-31</div>
     </div>
   </div>
 );
