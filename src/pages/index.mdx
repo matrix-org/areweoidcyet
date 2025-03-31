@@ -4,12 +4,13 @@ layout: ../layouts/Layout.astro
 ---
 import { Link } from "@vector-im/compound-web";
 import AsciiLogo from "../ascii-logo";
+import Confetti from "./_confetti";
 
 export const components = { a: Link };
 
 <AsciiLogo />
 
-# Almost.
+# We are! 🎉 <Confetti client:only />
 
 [What?](#what) • [Why?](#why) • [When?/Status](#when) • [FAQs](#faqs)
 
@@ -52,11 +53,12 @@ This section lists them and report on their current status.
 
 | Proposal                                                                                  | Status                                     |
 | ----------------------------------------------------------------------------------------- | ------------------------------------------ |
-| [MSC3861]: Next-generation auth for Matrix, based on OAuth 2.0/OIDC                       | ✅ Draft as dependencies are not ready yet |
-| [MSC2964]: Usage of OAuth 2.0 authorization code grant and refresh token grant            | ✅ Ready to review                         |
-| [MSC2965]: Usage of OpenID Connect Discovery for authentication server metadata discovery | ✅ Ready to review                         |
-| [MSC2966]: Usage of OAuth 2.0 Dynamic Client Registration in Matrix                       | ✅ Ready to review                         |
-| [MSC2967]: API scopes                                                                     | ✅ Ready to review                         |
+| [MSC3861]: Next-generation auth for Matrix, based on OAuth 2.0/OIDC                       | 🚀 In FCP                                  |
+| [MSC2964]: Usage of OAuth 2.0 authorization code grant and refresh token grant            | 🚀 In FCP                                  |
+| [MSC2965]: Usage of OpenID Connect Discovery for authentication server metadata discovery | 🚀 Merged!                                 |
+| [MSC2966]: Usage of OAuth 2.0 Dynamic Client Registration in Matrix                       | 🚀 In FCP                                  |
+| [MSC2967]: API scopes                                                                     | 🚀 In FCP                                  |
+| [MSC4254]: Usage of RFC7009 Token Revocation for Matrix client logout                     | 🚀 Merged!                                 |
 | [MSC3824]: OIDC aware clients                                                             | 🚧 Rework in progress                      |
 | [MSC4108]: Mechanism to allow OIDC sign in and E2EE set up via QR code                    | ✅ Feature complete                        |
 | [MSC4190]: Device management for application services                                     | 🚧 Waiting on implementations              |
@@ -281,12 +283,6 @@ We believe that, by adopting the new auth model and making the division between 
 The branding trade-off is an interesting aspect of this: yes, as a client implementor you may lose some control over the branding of the login page.
 However, you gain from a more streamlined authentication flow, as explained in better details in the motivation of [MSC3861].
 
-### Hang on, isn't this just an MSC? It all sounds very final?
-
-Correct, it is a proposal at this stage. However, we need to prove it first - MSCs require proof in a working implementation before they can be approved.
-
-We've outlined the plan here that assumes that the MSC will be successful.
-
 [MSC2964]: https://github.com/matrix-org/matrix-spec-proposals/pull/2964
 [MSC2965]: https://github.com/matrix-org/matrix-spec-proposals/pull/2965
 [MSC2966]: https://github.com/matrix-org/matrix-spec-proposals/pull/2966
@@ -296,6 +292,7 @@ We've outlined the plan here that assumes that the MSC will be successful.
 [MSC4108]: https://github.com/matrix-org/matrix-spec-proposals/pull/4108
 [MSC4190]: https://github.com/matrix-org/matrix-spec-proposals/pull/4190
 [MSC4191]: https://github.com/matrix-org/matrix-spec-proposals/pull/4191
+[MSC4254]: https://github.com/matrix-org/matrix-spec-proposals/pull/4254
 [Synapse]: https://github.com/element-hq/synapse
 [Dendrite]: https://github.com/matrix-org/dendrite
 [Conduit]: https://gitlab.com/famedly/conduit
