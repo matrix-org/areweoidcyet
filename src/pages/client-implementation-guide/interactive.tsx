@@ -27,11 +27,8 @@ const csApi = persistentAtom<string>(
   "cs-api",
   "https://synapse-oidc.element.dev/",
 );
-const issuer = persistentAtom<string>(
-  "issuer",
-  "https://auth-oidc.element.dev/",
-);
 const state = persistentAtom<string>("state", "ieXei8ohb7miesie");
+const deviceId = persistentAtom<string>("device-id", "ABCDEFGHIJKL");
 const serverMetadata = persistentAtom<ServerMetadata>(
   "server-metadata",
   {
@@ -253,6 +250,11 @@ export const AuthParametersForm = () => {
   return (
     <div className={cx(styles["form-wrapper"])}>
       <Form.Root className={cx(styles.form)}>
+        <Form.Field name="device-id">
+          <Form.Label>Device ID</Form.Label>
+          <RandomStringField length={16} atom={deviceId} />
+        </Form.Field>
+
         <Form.Field name="state">
           <Form.Label>State</Form.Label>
           <RandomStringField length={16} atom={state} />
@@ -279,22 +281,6 @@ export const AuthParametersForm = () => {
   );
 };
 
-export const AuthIssuerFetcher = () => {
-  const $csApi = useStore(csApi);
-  const endpoint = new URL(
-    "/_matrix/client/unstable/org.matrix.msc2965/auth_issuer",
-    $csApi,
-  );
-
-  const onSave = (data: unknown) => {
-    issuer.set((data as { issuer: string }).issuer);
-  };
-
-  return (
-    <Fetcher url={endpoint.toString()} onSave={onSave} label="Fetch issuer" />
-  );
-};
-
 type ServerMetadata = {
   authorization_endpoint: string;
   token_endpoint: string;
@@ -302,9 +288,12 @@ type ServerMetadata = {
   device_authorization_endpoint: string;
 };
 
-export const OidcMetadataFetcher = () => {
-  const $issuer = useStore(issuer);
-  const endpoint = new URL(".well-known/openid-configuration", $issuer);
+export const AuthMetadataFetcher = () => {
+  const $csApi = useStore(csApi);
+  const endpoint = new URL(
+    "/_matrix/client/unstable/org.matrix.msc2965/auth_metadata",
+    $csApi,
+  );
 
   const onSave = (data: unknown) => {
     serverMetadata.set(data as ServerMetadata);
@@ -314,7 +303,7 @@ export const OidcMetadataFetcher = () => {
     <Fetcher
       url={endpoint.toString()}
       onSave={onSave}
-      label="Fetch server parameters"
+      label="Fetch server metadata"
     />
   );
 };
@@ -431,18 +420,18 @@ export const DeviceCodeRequestForm = () => {
   const $clientId = useStore(clientId) || "";
   const $serverMetadata = useStore(serverMetadata);
   const $queryClient = useStore(queryClient);
+  const $deviceId = useStore(deviceId);
 
   const [response, setResponse] = useState<null | object>(null);
+
+  const params = {
+    client_id: $clientId,
+    scope: `urn:matrix:org.matrix.msc2967.client:api:* urn:matrix:org.matrix.msc2967.client:device:${$deviceId}`,
+  } satisfies Record<string, string>;
 
   const mutation = useMutation(
     {
       mutationFn: async (): Promise<void> => {
-        const params = {
-          client_id: $clientId,
-          scope:
-            "urn:matrix:org.matrix.msc2967.client:api:* urn:matrix:org.matrix.msc2967.client:device:ABCDEFGHIJKL",
-        } satisfies Record<string, string>;
-
         const body = new URLSearchParams(params).toString();
 
         const res = await fetch($serverMetadata.device_authorization_endpoint, {
@@ -482,33 +471,53 @@ export const DeviceCodeRequestForm = () => {
   };
 
   return (
-    <div className={cx(styles["form-wrapper"])}>
-      <Form.Root className={cx(styles.form)} onSubmit={onSubmit}>
-        <Form.Field name="endpoint">
-          <Form.Label>Device authorization endpoint</Form.Label>
-          <Form.TextControl
-            type="url"
-            readOnly
-            value={$serverMetadata.device_authorization_endpoint}
-          />
-        </Form.Field>
-        <Form.Field name="client-id">
-          <Form.Label>Client ID</Form.Label>
-          <Form.TextControl type="text" required readOnly value={$clientId} />
-          {!$clientId && (
-            <Form.ErrorMessage>
-              Client must be registered to get one
-            </Form.ErrorMessage>
-          )}
-        </Form.Field>
+    <>
+      <div className={cx(styles["form-wrapper"])}>
+        <Form.Root className={cx(styles.form)} onSubmit={onSubmit}>
+          <Form.Field name="endpoint">
+            <Form.Label>Device authorization endpoint</Form.Label>
+            <Form.TextControl
+              type="url"
+              readOnly
+              value={$serverMetadata.device_authorization_endpoint}
+            />
+          </Form.Field>
+          <Form.Field name="client-id">
+            <Form.Label>Client ID</Form.Label>
+            <Form.TextControl type="text" required readOnly value={$clientId} />
+            {!$clientId && (
+              <Form.ErrorMessage>
+                Client must be registered to get one
+              </Form.ErrorMessage>
+            )}
+          </Form.Field>
 
-        <Form.Submit size="sm" kind="secondary" disabled={!$clientId}>
-          Start device authorization flow
-        </Form.Submit>
+          <Form.Field name="device-id">
+            <Form.Label>Device ID</Form.Label>
+            <RandomStringField length={16} atom={deviceId} />
+          </Form.Field>
 
-        {response && <DataViewer data={response} />}
-      </Form.Root>
-    </div>
+          <Form.Submit size="sm" kind="secondary" disabled={!$clientId}>
+            Start device authorization flow
+          </Form.Submit>
+
+          {response && <DataViewer data={response} />}
+        </Form.Root>
+      </div>
+
+      <div className={cx(styles["authorization-url"], "cpd-theme-dark")}>
+        <div className={cx(styles.base)}>
+          {$serverMetadata.device_authorization_endpoint}
+        </div>
+        {Object.entries(params).map(([key, value], index) => (
+          <div key={key} className={cx(styles.param)}>
+            {index === 0 ? "?" : "&"}
+            {key} ={" "}
+            {value === "" ? <b>{"<missing>"}</b> : encodeURIComponent(value)}
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 
@@ -872,23 +881,15 @@ export const RefreshTokenForm = () => {
 };
 
 export const CurrentCsApiRoot = (): string => useStore(csApi);
-export const AuthIssuerEndpoint = (): string => {
+export const AuthMetadataEndpoint = (): string => {
   const $csApi = useStore(csApi);
   const endpoint = new URL(
-    "/_matrix/client/unstable/org.matrix.msc2965/auth_issuer",
+    "/_matrix/client/unstable/org.matrix.msc2965/auth_metadata",
     $csApi,
   );
 
   return endpoint.toString();
 };
-
-export const CurrentIssuer = (): string => useStore(issuer);
-export const OidcDiscoveryDocument = (): string => {
-  const $issuer = useStore(issuer);
-  const endpoint = new URL("/.well-known/openid-configuration", $issuer);
-  return endpoint.toString();
-};
-
 export const CurrentState = (): string => useStore(state);
 export const CurrentClientId = (): string => `${useStore(clientId)}`;
 export const CurrentAccessToken = (): string => `${useStore(accessToken)}`;
@@ -898,14 +899,14 @@ export const DisplayAuthorizationUrl: React.FC = () => {
   const $metadata = useStore(serverMetadata);
   const $codeChallenge = useStore(codeChallenge);
   const $clientId = useStore(clientId);
+  const $deviceId = useStore(deviceId);
 
   const params = {
     response_type: "code",
     response_mode: "fragment",
     client_id: $clientId || "",
     redirect_uri: redirectUri,
-    scope:
-      "urn:matrix:org.matrix.msc2967.client:api:* urn:matrix:org.matrix.msc2967.client:device:ABCDEFGHIJKL",
+    scope: `urn:matrix:org.matrix.msc2967.client:api:* urn:matrix:org.matrix.msc2967.client:device:${$deviceId}`,
     state: $state,
     code_challenge_method: "S256",
     code_challenge: $codeChallenge || "",

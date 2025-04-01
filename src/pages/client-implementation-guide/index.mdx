@@ -5,11 +5,9 @@ layout: ../../layouts/Layout.astro
 import { Link } from "@vector-im/compound-web";
 import {
   CsApiInput,
-  AuthIssuerEndpoint,
-  AuthIssuerFetcher,
+  AuthMetadataEndpoint,
+  AuthMetadataFetcher,
   CurrentIssuer,
-  OidcDiscoveryDocument,
-  OidcMetadataFetcher,
   CurrentState,
   ClientMetadataForm,
   CurrentClientId,
@@ -46,26 +44,15 @@ This is covering the Authorization Code Grant flow. To learn about the Device Co
 
 ## Discovery [MSC2965]
 
-**Warning**: This part implements a previous version of [MSC2965], which was slightly different.
-The updated proposal isn't yet implemented by clients and servers. The rest of the flow remains unchanged.
-
 To interact with the OAuth 2.0/OIDC APIs of the homeserver, the client first has to discover the authorisation server metadata.
-This is defined by [MSC2965] and works as follow:
-
- - determine the issuer through a new Matrix C-S API
- - get the server metadata through OpenID Connect Discovery
-
+[MSC2965] defines a new Matrix C-S API to do just that.
 
 <CsApiInput client:load />
 
-To first determine the issuer, we must fetch the new `GET /auth_issuer` endpoint.
-In out case, that will be <code><AuthIssuerEndpoint client:load /></code>
+To get the server metadata, we must fetch the new `GET /auth_metadata` endpoint.
+In out case, that will be <code><AuthMetadataEndpoint client:load /></code>
 
-<AuthIssuerFetcher client:load />
-
-Now that we have our issuer (<code><CurrentIssuer client:load /></code>), we can fetch the OIDC Discovery Document, at <code><OidcDiscoveryDocument client:load /></code>
-
-<OidcMetadataFetcher client:load />
+<AuthMetadataFetcher client:load />
 
 ## Client registration [MSC2966]
 
@@ -84,6 +71,8 @@ We still need to gather the a few parameters that will be used to start the flow
 
 This includes the `state` parameter, which is a random string that will be useful to distinguish between different authentication requests.
 It also includes the `code_challenge` parameter, which is derived from a random string called the `code_verifier`.
+
+As per [MSC2967], we also need to generate the device ID we want to use.
 
 <AuthParametersForm client:load />
 
