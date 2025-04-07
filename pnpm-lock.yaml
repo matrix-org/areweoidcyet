@@ -10,10 +10,10 @@ importers:
     dependencies:
       '@astrojs/check':
         specifier: ^0.9.4
-        version: 0.9.4(prettier@3.4.2)(typescript@5.8.2)
+        version: 0.9.4(prettier@3.4.2)(typescript@5.8.3)
       '@astrojs/mdx':
         specifier: ^4.2.3
-        version: 4.2.3(astro@5.5.6(rollup@4.38.0)(typescript@5.8.2)(yaml@2.7.0))
+        version: 4.2.3(astro@5.5.6(rollup@4.38.0)(typescript@5.8.3)(yaml@2.7.0))
       '@astrojs/react':
         specifier: ^4.2.3
         version: 4.2.3(@types/react-dom@19.0.4(@types/react@19.0.12))(@types/react@19.0.12)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(yaml@2.7.0)
@@ -30,8 +30,8 @@ importers:
         specifier: ^0.8.4
         version: 0.8.4(nanostores@0.11.4)(react@19.1.0)
       '@tanstack/react-query':
-        specifier: ^5.71.1
-        version: 5.71.1(react@19.1.0)
+        specifier: ^5.71.10
+        version: 5.71.10(react@19.1.0)
       '@types/react':
         specifier: ^19.0.12
         version: 19.0.12
@@ -42,11 +42,11 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1(@types/react@19.0.12)(react@19.1.0)
       '@vector-im/compound-web':
-        specifier: ^7.10.0
-        version: 7.10.0(@fontsource/inconsolata@5.2.5)(@fontsource/inter@5.2.5)(@types/react-dom@19.0.4(@types/react@19.0.12))(@types/react@19.0.12)(@vector-im/compound-design-tokens@4.0.1(@types/react@19.0.12)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: ^7.10.1
+        version: 7.10.1(@fontsource/inconsolata@5.2.5)(@fontsource/inter@5.2.5)(@types/react-dom@19.0.4(@types/react@19.0.12))(@types/react@19.0.12)(@vector-im/compound-design-tokens@4.0.1(@types/react@19.0.12)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       astro:
         specifier: ^5.5.6
-        version: 5.5.6(rollup@4.38.0)(typescript@5.8.2)(yaml@2.7.0)
+        version: 5.5.6(rollup@4.38.0)(typescript@5.8.3)(yaml@2.7.0)
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -69,8 +69,8 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
       typescript:
-        specifier: ^5.8.2
-        version: 5.8.2
+        specifier: ^5.8.3
+        version: 5.8.3
 
 packages:
 
@@ -549,8 +549,8 @@ packages:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
 
-  '@floating-ui/react@0.27.5':
-    resolution: {integrity: sha512-BX3jKxo39Ba05pflcQmqPPwc0qdNsdNi/eweAFtoIdrJWNen2sVEWMEac3i6jU55Qfx+lOcdMNKYn2CtWmlnOQ==}
+  '@floating-ui/react@0.27.6':
+    resolution: {integrity: sha512-9GLOPbW8jTeboR2ar9uMMUDUZjpTLscUvOjNvRw2EgppgoLHLUh/P/OW9evULosnvDjhYf2Gwk/gMOP9KvXD2A==}
     peerDependencies:
       react: '>=17.0.0'
       react-dom: '>=17.0.0'
@@ -1278,11 +1278,11 @@ packages:
   '@shikijs/vscode-textmate@10.0.2':
     resolution: {integrity: sha512-83yeghZ2xxin3Nj8z1NMd/NCuca+gsYXswywDy5bHvwlWL8tpTQmzGeUuHd9FC3E/SBEMvzJRwWEOz5gGes9Qg==}
 
-  '@tanstack/query-core@5.71.1':
-    resolution: {integrity: sha512-4+ZswCHOfJX+ikhXNoocamTUmJcHtB+Ljjz/oJkC7/eKB5IrzEwR4vEwZUENiPi+wISucJHR5TUbuuJ26w3kdQ==}
+  '@tanstack/query-core@5.71.10':
+    resolution: {integrity: sha512-/fKEY8fO1nbszfrBatzmhJa1nEwIKn0c6Tv2A1ocSA5OiD2GukOIV8nnBbvJRgZb/VIoBy9/N4PVbABI8YQLow==}
 
-  '@tanstack/react-query@5.71.1':
-    resolution: {integrity: sha512-6BTkaSIGT58MroI4kIGXNdx/NhirXPU+75AJObLq+WBa39WmoxhzSk0YX+hqWJ/bvqZJFxslbEU4qIHaRZq+8Q==}
+  '@tanstack/react-query@5.71.10':
+    resolution: {integrity: sha512-mQYM/ObpL8YMDz8vCoUuHkbe8Yu7NnVRH8aBaBa/3zlufjp1f1VuWjeO3TcumNHfuVMDwEAGinsgwrB7OKADiQ==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -1356,8 +1356,8 @@ packages:
       react:
         optional: true
 
-  '@vector-im/compound-web@7.10.0':
-    resolution: {integrity: sha512-lqIA/eHum5tekFkNeHmgK9Cm48pl7leWKVvJDy/hJFX2KDHqGvPcIy6E0waqTIsodV8z0GAztj1c/1cYRpdYIA==}
+  '@vector-im/compound-web@7.10.1':
+    resolution: {integrity: sha512-3tVIPCNxXCrMz6TqJc5GiOndPC7bjCRdYIcSKIb7T3B0gVo81aAD2wWL5xSb33yDbXc/tdlKCiav57eQB8dRsQ==}
     peerDependencies:
       '@fontsource/inconsolata': ^5
       '@fontsource/inter': ^5
@@ -2471,8 +2471,8 @@ packages:
   typescript-auto-import-cache@0.3.5:
     resolution: {integrity: sha512-fAIveQKsoYj55CozUiBoj4b/7WpN0i4o74wiGY5JVUEoD0XiqDk1tJqTEjgzL2/AizKQrXxyRosSebyDzBZKjw==}
 
-  typescript@5.8.2:
-    resolution: {integrity: sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==}
+  typescript@5.8.3:
+    resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -2858,12 +2858,12 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.8
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@astrojs/check@0.9.4(prettier@3.4.2)(typescript@5.8.2)':
+  '@astrojs/check@0.9.4(prettier@3.4.2)(typescript@5.8.3)':
     dependencies:
-      '@astrojs/language-server': 2.15.4(prettier@3.4.2)(typescript@5.8.2)
+      '@astrojs/language-server': 2.15.4(prettier@3.4.2)(typescript@5.8.3)
       chokidar: 4.0.3
       kleur: 4.1.5
-      typescript: 5.8.2
+      typescript: 5.8.3
       yargs: 17.7.2
     transitivePeerDependencies:
       - prettier
@@ -2875,12 +2875,12 @@ snapshots:
 
   '@astrojs/internal-helpers@0.6.1': {}
 
-  '@astrojs/language-server@2.15.4(prettier@3.4.2)(typescript@5.8.2)':
+  '@astrojs/language-server@2.15.4(prettier@3.4.2)(typescript@5.8.3)':
     dependencies:
       '@astrojs/compiler': 2.10.4
       '@astrojs/yaml2ts': 0.2.2
       '@jridgewell/sourcemap-codec': 1.5.0
-      '@volar/kit': 2.4.11(typescript@5.8.2)
+      '@volar/kit': 2.4.11(typescript@5.8.3)
       '@volar/language-core': 2.4.11
       '@volar/language-server': 2.4.11
       '@volar/language-service': 2.4.11
@@ -2926,12 +2926,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/mdx@4.2.3(astro@5.5.6(rollup@4.38.0)(typescript@5.8.2)(yaml@2.7.0))':
+  '@astrojs/mdx@4.2.3(astro@5.5.6(rollup@4.38.0)(typescript@5.8.3)(yaml@2.7.0))':
     dependencies:
       '@astrojs/markdown-remark': 6.3.1
       '@mdx-js/mdx': 3.1.0(acorn@8.14.1)
       acorn: 8.14.1
-      astro: 5.5.6(rollup@4.38.0)(typescript@5.8.2)(yaml@2.7.0)
+      astro: 5.5.6(rollup@4.38.0)(typescript@5.8.3)(yaml@2.7.0)
       es-module-lexer: 1.6.0
       estree-util-visit: 2.0.0
       hast-util-to-html: 9.0.5
@@ -3291,7 +3291,7 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
-  '@floating-ui/react@0.27.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@floating-ui/react@0.27.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@floating-ui/react-dom': 2.1.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@floating-ui/utils': 0.2.9
@@ -3918,11 +3918,11 @@ snapshots:
 
   '@shikijs/vscode-textmate@10.0.2': {}
 
-  '@tanstack/query-core@5.71.1': {}
+  '@tanstack/query-core@5.71.10': {}
 
-  '@tanstack/react-query@5.71.1(react@19.1.0)':
+  '@tanstack/react-query@5.71.10(react@19.1.0)':
     dependencies:
-      '@tanstack/query-core': 5.71.1
+      '@tanstack/query-core': 5.71.10
       react: 19.1.0
 
   '@types/acorn@4.0.6':
@@ -3997,9 +3997,9 @@ snapshots:
       '@types/react': 19.0.12
       react: 19.1.0
 
-  '@vector-im/compound-web@7.10.0(@fontsource/inconsolata@5.2.5)(@fontsource/inter@5.2.5)(@types/react-dom@19.0.4(@types/react@19.0.12))(@types/react@19.0.12)(@vector-im/compound-design-tokens@4.0.1(@types/react@19.0.12)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@vector-im/compound-web@7.10.1(@fontsource/inconsolata@5.2.5)(@fontsource/inter@5.2.5)(@types/react-dom@19.0.4(@types/react@19.0.12))(@types/react@19.0.12)(@vector-im/compound-design-tokens@4.0.1(@types/react@19.0.12)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
-      '@floating-ui/react': 0.27.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@floating-ui/react': 0.27.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@fontsource/inconsolata': 5.2.5
       '@fontsource/inter': 5.2.5
       '@radix-ui/react-context-menu': 2.2.6(@types/react-dom@19.0.4(@types/react@19.0.12))(@types/react@19.0.12)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -4029,12 +4029,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@volar/kit@2.4.11(typescript@5.8.2)':
+  '@volar/kit@2.4.11(typescript@5.8.3)':
     dependencies:
       '@volar/language-service': 2.4.11
       '@volar/typescript': 2.4.11
       typesafe-path: 0.2.2
-      typescript: 5.8.2
+      typescript: 5.8.3
       vscode-languageserver-textdocument: 1.0.12
       vscode-uri: 3.1.0
 
@@ -4123,7 +4123,7 @@ snapshots:
 
   astring@1.9.0: {}
 
-  astro@5.5.6(rollup@4.38.0)(typescript@5.8.2)(yaml@2.7.0):
+  astro@5.5.6(rollup@4.38.0)(typescript@5.8.3)(yaml@2.7.0):
     dependencies:
       '@astrojs/compiler': 2.11.0
       '@astrojs/internal-helpers': 0.6.1
@@ -4169,7 +4169,7 @@ snapshots:
       shiki: 3.2.1
       tinyexec: 0.3.2
       tinyglobby: 0.2.12
-      tsconfck: 3.1.5(typescript@5.8.2)
+      tsconfck: 3.1.5(typescript@5.8.3)
       ultrahtml: 1.5.3
       unist-util-visit: 5.0.0
       unstorage: 1.15.0
@@ -4181,7 +4181,7 @@ snapshots:
       yocto-spinner: 0.2.1
       zod: 3.24.2
       zod-to-json-schema: 3.24.5(zod@3.24.2)
-      zod-to-ts: 1.2.0(typescript@5.8.2)(zod@3.24.2)
+      zod-to-ts: 1.2.0(typescript@5.8.3)(zod@3.24.2)
     optionalDependencies:
       sharp: 0.33.5
     transitivePeerDependencies:
@@ -5674,9 +5674,9 @@ snapshots:
 
   trough@2.2.0: {}
 
-  tsconfck@3.1.5(typescript@5.8.2):
+  tsconfck@3.1.5(typescript@5.8.3):
     optionalDependencies:
-      typescript: 5.8.2
+      typescript: 5.8.3
 
   tslib@2.8.1: {}
 
@@ -5688,7 +5688,7 @@ snapshots:
     dependencies:
       semver: 7.7.1
 
-  typescript@5.8.2: {}
+  typescript@5.8.3: {}
 
   ufo@1.5.4: {}
 
@@ -6000,9 +6000,9 @@ snapshots:
     dependencies:
       zod: 3.24.2
 
-  zod-to-ts@1.2.0(typescript@5.8.2)(zod@3.24.2):
+  zod-to-ts@1.2.0(typescript@5.8.3)(zod@3.24.2):
     dependencies:
-      typescript: 5.8.2
+      typescript: 5.8.3
       zod: 3.24.2
 
   zod@3.24.2: {}
