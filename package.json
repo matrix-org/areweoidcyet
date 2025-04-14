@@ -17,7 +17,7 @@
     "@fontsource/inter": "^5.2.5",
     "@nanostores/persistent": "^0.10.2",
     "@nanostores/react": "^1.0.0",
-    "@tanstack/react-query": "^5.71.10",
+    "@tanstack/react-query": "^5.74.0",
     "@types/react": "^19.1.1",
     "@types/react-dom": "^19.1.2",
     "@vector-im/compound-design-tokens": "^4.0.1",
