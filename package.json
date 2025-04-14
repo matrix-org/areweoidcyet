@@ -16,7 +16,7 @@
     "@fontsource/inconsolata": "^5.2.5",
     "@fontsource/inter": "^5.2.5",
     "@nanostores/persistent": "^0.10.2",
-    "@nanostores/react": "^0.8.4",
+    "@nanostores/react": "^1.0.0",
     "@tanstack/react-query": "^5.71.10",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.1",
