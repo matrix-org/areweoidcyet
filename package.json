@@ -22,7 +22,7 @@
     "@types/react-dom": "^19.1.2",
     "@vector-im/compound-design-tokens": "^4.0.1",
     "@vector-im/compound-web": "^7.10.1",
-    "astro": "^5.6.1",
+    "astro": "^5.7.4",
     "classnames": "^2.5.1",
     "modern-normalize": "^3.0.1",
     "nanostores": "^1.0.1",
