@@ -20,7 +20,7 @@
     "@tanstack/react-query": "^5.83.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@vector-im/compound-design-tokens": "^4.0.5",
+    "@vector-im/compound-design-tokens": "^5.0.2",
     "@vector-im/compound-web": "^8.2.0",
     "astro": "^5.12.0",
     "classnames": "^2.5.1",
