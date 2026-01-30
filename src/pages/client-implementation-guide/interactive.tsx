@@ -85,7 +85,7 @@ export const LoadingIndicator = () => (
 export const CsApiInput = () => {
   const $csApi = useStore(csApi);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const value = formData.get("cs-api");
@@ -146,7 +146,7 @@ const Fetcher: React.FC<FetcherProps> = ({
     client,
   );
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     refetch();
   };
@@ -373,7 +373,7 @@ export const ClientMetadataForm: React.FC<{ grantTypes: string[] }> = ({
     clientMetadata.response_types = ["code"];
   }
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutation.mutate(clientMetadata);
   };
@@ -465,7 +465,7 @@ export const DeviceCodeRequestForm = () => {
     $queryClient,
   );
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutation.mutate();
   };
@@ -620,14 +620,14 @@ export const CodeExchangeForm = () => {
     $queryClient,
   );
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const code = data.get("code") as string;
     mutation.mutate(code);
   };
 
-  const onCodeInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onCodeInput = (e: React.InputEvent<HTMLInputElement>) => {
     e.preventDefault();
     const input = e.currentTarget.value;
     code.set(input);
@@ -727,7 +727,7 @@ export const DeviceCodeExchangeForm = () => {
     $queryClient,
   );
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutation.mutate();
   };
@@ -821,7 +821,7 @@ export const RefreshTokenForm = () => {
     $queryClient,
   );
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutation.mutate();
   };
