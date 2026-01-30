@@ -53,16 +53,16 @@ This section lists them and report on their current status.
 
 | Proposal                                                                                  | Status                                     |
 | ----------------------------------------------------------------------------------------- | ------------------------------------------ |
-| [MSC3861]: Next-generation auth for Matrix, based on OAuth 2.0/OIDC                       | 🚀 In FCP                                  |
-| [MSC2964]: Usage of OAuth 2.0 authorization code grant and refresh token grant            | 🚀 In FCP                                  |
+| [MSC3861]: Next-generation auth for Matrix, based on OAuth 2.0/OIDC                       | 🚀 Merged!                                 |
+| [MSC2964]: Usage of OAuth 2.0 authorization code grant and refresh token grant            | 🚀 Merged!                                 |
 | [MSC2965]: Usage of OpenID Connect Discovery for authentication server metadata discovery | 🚀 Merged!                                 |
-| [MSC2966]: Usage of OAuth 2.0 Dynamic Client Registration in Matrix                       | 🚀 In FCP                                  |
-| [MSC2967]: API scopes                                                                     | 🚀 In FCP                                  |
+| [MSC2966]: Usage of OAuth 2.0 Dynamic Client Registration in Matrix                       | 🚀 Merged!                                 |
+| [MSC2967]: API scopes                                                                     | 🚀 Merged!                                 |
 | [MSC4254]: Usage of RFC7009 Token Revocation for Matrix client logout                     | 🚀 Merged!                                 |
-| [MSC3824]: OIDC aware clients                                                             | 🚧 Rework in progress                      |
-| [MSC4108]: Mechanism to allow OIDC sign in and E2EE set up via QR code                    | ✅ Feature complete                        |
-| [MSC4190]: Device management for application services                                     | 🚧 Waiting on implementations              |
-| [MSC4191]: Account management deep-linking                                                | 🚧 First draft out                         |
+| [MSC3824]: OIDC aware clients                                                             | 🚀 Merged!                                 |
+| [MSC4108]: Mechanism to allow OIDC sign in and E2EE set up via QR code                    | 🚧 Reworrk in progress                     |
+| [MSC4190]: Device management for application services                                     | 🚀 Merged!                                 |
+| [MSC4191]: Account management deep-linking                                                | 🚀 Merged!                                 |
 
 #### Outstanding work missing
 
@@ -70,7 +70,7 @@ There are a few areas not yet written down in MSCs, some need more thinking:
 
  - **Guest accounts** currently have no equivalent with the new proposals. An earlier proposal of [MSC2967] defined scopes to map scopes to guest access, but as an effort to trim down the proposal, they got out of it as no convincing real-world implementation was done.
  - **Application services** could be using the *client credentails grant*, instead of the current `hs_token`/`as_token`, but for now this proposal chose to not touch this area.
- - **Encrypted application-services** currently rely on `/login` with the `m.login.application_service` method to *create devices*, which has been infamously removed from the implementation in Synapse/MAS. An alternative API to create devices is proposed in [MSC4190], but no application service implement this API yet.
+ - **Encrypted application-services** currently rely on `/login` with the `m.login.application_service` method to *create devices*, which has been infamously removed from the implementation in Synapse/MAS. An alternative API to create devices is proposed in [MSC4190], which is supported by some application services.
 
 ### Homeservers
 
