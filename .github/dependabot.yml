@@ -11,9 +11,12 @@ updates:
       minor:
         patterns: ["*"]
         update-types: ["minor"]
+    cooldown:
+      default-days: 14
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-
+    cooldown:
+      default-days: 14
