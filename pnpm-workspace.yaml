@@ -1,0 +1,15 @@
+minimumReleaseAge: 20160 # 14d, matches dependabot
+
+trustPolicy: no-downgrade
+
+trustPolicyExclude:
+  - "chokidar@4.0.3"
+  - "semver@6.3.1"
+
+strictDepBuilds: true
+
+allowBuilds:
+  esbuild: false
+  sharp: false
+
+strictPeerDependencies: true

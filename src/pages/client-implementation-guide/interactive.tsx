@@ -5,7 +5,8 @@ import {
 } from "@vector-im/compound-design-tokens/assets/web/icons";
 import { useStore } from "@nanostores/react";
 import { Alert, Button, Form, Link } from "@vector-im/compound-web";
-import { atom, computed, task, type WritableAtom } from "nanostores";
+import { atom, task, type WritableAtom } from "nanostores";
+import { computedAsync } from "@nanostores/async";
 import { persistentAtom } from "@nanostores/persistent";
 import type React from "react";
 import { useEffect, useState } from "react";
@@ -48,7 +49,7 @@ const codeVerifier = persistentAtom<string>(
   "code-verifier",
   "ahlae7FuMahCeeseip6Shooqu6aefai5xoocea5gav2",
 );
-const codeChallenge = computed(codeVerifier, (codeVerifier) =>
+const codeChallenge = computedAsync(codeVerifier, (codeVerifier) =>
   task(() => computeCodeChallenge(codeVerifier)),
 );
 const code = persistentAtom("code");
@@ -273,7 +274,7 @@ export const AuthParametersForm = () => {
             className={cx(styles.mono)}
             type="text"
             readOnly
-            value={$codeChallenge}
+            value={$codeChallenge.state === "ready" ? $codeChallenge.value : ""}
           />
         </Form.Field>
       </Form.Root>
@@ -909,7 +910,8 @@ export const DisplayAuthorizationUrl: React.FC = () => {
     scope: `urn:matrix:org.matrix.msc2967.client:api:* urn:matrix:org.matrix.msc2967.client:device:${$deviceId}`,
     state: $state,
     code_challenge_method: "S256",
-    code_challenge: $codeChallenge || "",
+    code_challenge:
+      $codeChallenge.state === "ready" ? $codeChallenge.value : "",
   } satisfies Record<string, string>;
 
   const query = new URLSearchParams(params).toString();
