@@ -112,7 +112,7 @@ export const CsApiInput = () => {
             This must be a valid URL
           </Form.ErrorMessage>
         </Form.Field>
-        <Form.Submit size="sm" kind="secondary">
+        <Form.Submit size="md" kind="secondary">
           Save
         </Form.Submit>
       </Form.Root>
@@ -175,7 +175,7 @@ const Fetcher: React.FC<FetcherProps> = ({
         )}
 
         <div className={cx(styles["button-stack"])}>
-          <Form.Submit disabled={isFetching} size="sm" kind="secondary">
+          <Form.Submit disabled={isFetching} size="md" kind="secondary">
             {isFetching && <LoadingIndicator />}
             {label}
           </Form.Submit>
@@ -231,7 +231,7 @@ export const RandomStringField: React.FC<RandomStringFormProps> = ({
         />
         <Button
           iconOnly
-          size="sm"
+          size="md"
           Icon={RestartIcon}
           kind="secondary"
           onClick={onRefreshClick}
@@ -407,7 +407,7 @@ export const ClientMetadataForm: React.FC<{ grantTypes: string[] }> = ({
 
         <DataViewer data={clientMetadata} />
 
-        <Form.Submit size="sm" kind="secondary">
+        <Form.Submit size="md" kind="secondary">
           Submit client metadata
         </Form.Submit>
 
@@ -498,7 +498,7 @@ export const DeviceCodeRequestForm = () => {
             <RandomStringField length={16} atom={deviceId} />
           </Form.Field>
 
-          <Form.Submit size="sm" kind="secondary" disabled={!$clientId}>
+          <Form.Submit size="md" kind="secondary" disabled={!$clientId}>
             Start device authorization flow
           </Form.Submit>
 
@@ -557,7 +557,7 @@ export const DeviceCodeQrCode = () => {
           <Button
             Icon={CopyIcon}
             kind="secondary"
-            size="sm"
+            size="md"
             onClick={(e) => {
               e.preventDefault();
               if ($userCode === "") return;
@@ -675,7 +675,7 @@ export const CodeExchangeForm = () => {
           </Form.ErrorMessage>
         </Form.Field>
 
-        <Form.Submit size="sm" kind="secondary" disabled={!$clientId}>
+        <Form.Submit size="md" kind="secondary" disabled={!$clientId}>
           Exchange code for access token
         </Form.Submit>
 
@@ -769,7 +769,7 @@ export const DeviceCodeExchangeForm = () => {
           )}
         </Form.Field>
 
-        <Form.Submit size="sm" kind="secondary" disabled={!$clientId}>
+        <Form.Submit size="md" kind="secondary" disabled={!$clientId}>
           Poll with device code
         </Form.Submit>
 
@@ -868,7 +868,7 @@ export const RefreshTokenForm = () => {
         </Form.Field>
 
         <Form.Submit
-          size="sm"
+          size="md"
           kind="secondary"
           disabled={!$refreshToken || !$clientId}
         >
@@ -933,7 +933,7 @@ export const DisplayAuthorizationUrl: React.FC = () => {
         as="a"
         disabled={$clientId === null}
         href={fullUrl.toString()}
-        size="sm"
+        size="md"
         kind="secondary"
         target="_blank"
       >
