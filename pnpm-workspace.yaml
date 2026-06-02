@@ -1,5 +1,8 @@
 minimumReleaseAge: 20160 # 14d, matches dependabot
 
+minimumReleaseAgeExclude:
+  - "@vector-im/*"
+
 trustPolicy: no-downgrade
 
 trustPolicyExclude:
