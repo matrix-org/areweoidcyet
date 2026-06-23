@@ -291,10 +291,7 @@ type ServerMetadata = {
 
 export const AuthMetadataFetcher = () => {
   const $csApi = useStore(csApi);
-  const endpoint = new URL(
-    "/_matrix/client/unstable/org.matrix.msc2965/auth_metadata",
-    $csApi,
-  );
+  const endpoint = new URL("/_matrix/client/v1/auth_metadata", $csApi);
 
   const onSave = (data: unknown) => {
     serverMetadata.set(data as ServerMetadata);
@@ -427,7 +424,7 @@ export const DeviceCodeRequestForm = () => {
 
   const params = {
     client_id: $clientId,
-    scope: `urn:matrix:org.matrix.msc2967.client:api:* urn:matrix:org.matrix.msc2967.client:device:${$deviceId}`,
+    scope: `urn:matrix:client:api:* urn:matrix:client:device:${$deviceId}`,
   } satisfies Record<string, string>;
 
   const mutation = useMutation(
@@ -884,10 +881,7 @@ export const RefreshTokenForm = () => {
 export const CurrentCsApiRoot = (): string => useStore(csApi);
 export const AuthMetadataEndpoint = (): string => {
   const $csApi = useStore(csApi);
-  const endpoint = new URL(
-    "/_matrix/client/unstable/org.matrix.msc2965/auth_metadata",
-    $csApi,
-  );
+  const endpoint = new URL("/_matrix/client/v1/auth_metadata", $csApi);
 
   return endpoint.toString();
 };
@@ -907,7 +901,7 @@ export const DisplayAuthorizationUrl: React.FC = () => {
     response_mode: "fragment",
     client_id: $clientId || "",
     redirect_uri: redirectUri,
-    scope: `urn:matrix:org.matrix.msc2967.client:api:* urn:matrix:org.matrix.msc2967.client:device:${$deviceId}`,
+    scope: `urn:matrix:client:api:* urn:matrix:client:device:${$deviceId}`,
     state: $state,
     code_challenge_method: "S256",
     code_challenge:
