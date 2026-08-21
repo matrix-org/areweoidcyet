@@ -5,6 +5,10 @@ interface Props {
 }
 
 const { title } = Astro.props;
+
+const commitSha = __COMMIT_SHA__;
+const commitUrl =
+    commitSha && `https://github.com/matrix-org/areweoidcyet/commit/${commitSha}`;
 ---
 
 <!doctype html>
@@ -20,5 +24,25 @@ const { title } = Astro.props;
         <main>
             <slot />
         </main>
+        <footer>
+            {
+                commitSha ? (
+                    <span>
+                        Built from{" "}
+                        <a href={commitUrl}>
+                            <code>{commitSha.slice(0, 7)}</code>
+                        </a>{" "}
+                        &middot;{" "}
+                        <a href="https://github.com/matrix-org/areweoidcyet">
+                            Source on GitHub
+                        </a>
+                    </span>
+                ) : (
+                    <a href="https://github.com/matrix-org/areweoidcyet">
+                        Source on GitHub
+                    </a>
+                )
+            }
+        </footer>
     </body>
 </html>

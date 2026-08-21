@@ -99,3 +99,21 @@ main {
     word-break: break-all;
   }
 }
+
+footer {
+  width: 80ch;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--cpd-space-4x) var(--cpd-space-8x);
+  color: var(--cpd-color-text-secondary);
+  font: var(--cpd-font-body-sm-regular);
+  text-align: center;
+
+  & a {
+    color: var(--cpd-color-text-link-external);
+  }
+
+  & code {
+    font-family: var(--cpd-font-family-mono);
+  }
+}
