@@ -26,18 +26,17 @@ const redirectUri = new URL(
 const queryClient = atom(new QueryClient());
 const csApi = persistentAtom<string>(
   "cs-api",
-  "https://synapse-oidc.element.dev/",
+  "https://matrix-client.matrix.org/",
 );
 const state = persistentAtom<string>("state", "ieXei8ohb7miesie");
 const deviceId = persistentAtom<string>("device-id", "ABCDEFGHIJKL");
 const serverMetadata = persistentAtom<ServerMetadata>(
   "server-metadata",
   {
-    authorization_endpoint: "https://auth-oidc.element.dev/authorize",
-    token_endpoint: "https://auth-oidc.element.dev/oauth2/token",
-    registration_endpoint: "https://auth-oidc.element.dev/oauth2/registration",
-    device_authorization_endpoint:
-      "https://auth-oidc.element.dev/oauth2/device",
+    authorization_endpoint: "https://account.matrix.org/authorize",
+    token_endpoint: "https://account.matrix.org/oauth2/token",
+    registration_endpoint: "https://account.matrix.org/oauth2/registration",
+    device_authorization_endpoint: "https://account.matrix.org/oauth2/device",
   },
   { encode: JSON.stringify, decode: JSON.parse },
 );
@@ -62,7 +61,7 @@ const deviceCode = persistentAtom("device-code");
 const userCode = persistentAtom("user-code");
 const verificationUri = persistentAtom(
   "verification-uri",
-  "https://auth-oidc.element.dev/link",
+  "https://account.matrix.org/link",
 );
 
 const computeCodeChallenge = async (codeVerifier: string): Promise<string> => {
